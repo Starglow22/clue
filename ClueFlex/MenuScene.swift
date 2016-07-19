@@ -11,6 +11,10 @@ import SpriteKit
 class MenuScene: SKScene {
     var lastClicked: SKNode?
     
+    var numPlayers = 0
+    var difficulty = 0
+    var characterName = ""
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
@@ -19,6 +23,9 @@ class MenuScene: SKScene {
             child.alpha = 0.0;
         }
         
+        self.childNodeWithName("Start")?.runAction(SKAction.hide())
+        
+        
         fadePlayerIcons()
         resizeCharacterIcons()
         
@@ -26,11 +33,6 @@ class MenuScene: SKScene {
     
     override func mouseDown(theEvent: NSEvent) {
         /* Called when a mouse click occurs */
-        var numPlayers = 0
-        var difficulty = 0
-        var characterName: String
-        
-        
         
         let location = theEvent.locationInNode(self)
         let node = self.nodeAtPoint(location)
@@ -65,27 +67,39 @@ class MenuScene: SKScene {
             
         case "C1"?:
             selectCharacter(node)
-            characterName = "red"
+            characterName = "Miss Scarlet"
             
         case "C2"?:
             selectCharacter(node)
-            characterName = "blue"
+            characterName = "Mrs Peacock"
             
         case "C3"?:
             selectCharacter(node)
-            characterName = "green"
+            characterName = "Mr Green"
             
         case "C4"?:
             selectCharacter(node)
-            characterName = "yellow"
+            characterName = "Colonel Mustard"
             
         case "C5"?:
             selectCharacter(node)
-            characterName = "lilac"
+            characterName = "Prof. Plum"
             
         case "C6"?:
             selectCharacter(node)
-            characterName = "cyan"
+            characterName = "Mrs White"
+            
+        case "Start"?:
+            let gameObj = initialize()
+            let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+        
+            
+            let nextScene = BoardScene(fileNamed: "BoardScene")
+            nextScene?.size = self.size
+            nextScene?.scaleMode = .AspectFill
+            self.view?.presentScene(nextScene!, transition: reveal)
+            
+            nextScene?.game = gameObj
             
             
         default: break
@@ -94,6 +108,11 @@ class MenuScene: SKScene {
             
         }
         lastClicked = node
+        
+        if(numPlayers != 0 && difficulty != 0 && characterName != "" && self.childNodeWithName("Start")?.hidden == true)
+        {
+            self.childNodeWithName("Start")?.runAction(SKAction.unhide())
+        }
         
     }
     
@@ -146,7 +165,84 @@ class MenuScene: SKScene {
         }
     }
     
+    func initialize() -> Game
+    {
+        let p1 = Card(n: "Miss Scarlet", t: Type.CHARACTER, file: "scarlet.jpg")
+        let p2 = Card(n: "Prof. Plum", t: Type.CHARACTER, file: "plum.jpg")
+        let p3 = Card(n: "Mrs Peacock", t: Type.CHARACTER, file: "peacock.jpg")
+        let p4 = Card(n: "Mr Green", t: Type.CHARACTER, file: "green.jpg")
+        let p5 = Card(n: "Colonel Mustard", t: Type.CHARACTER, file: "mustard.jpg")
+        let p6 = Card(n: "Mrs White", t: Type.CHARACTER, file: "white.jpg")
+        
+        let w1 = Card(n: "Candlestick", t: Type.WEAPON, file: "candlestick.jpg")
+        let w2 = Card(n: "Knife", t: Type.WEAPON, file: "knife.jpg")
+        let w3 = Card(n: "Lead Pipe", t: Type.WEAPON, file: "leadpipe.jpg")
+        let w4 = Card(n: "Revolver", t: Type.WEAPON, file: "revolver.jpg")
+        let w5 = Card(n: "Rope", t: Type.WEAPON, file: "rope.jpg")
+        let w6 = Card(n: "Wrench", t: Type.WEAPON, file: "wrench.jpg")
+        
+        let r1 = Card(n: "Kitchen", t: Type.LOCATION, file: "kitchen.jpg")
+        let r2 = Card(n: "Ballroom", t: Type.LOCATION, file: "ballroom.jpg")
+        let r3 = Card(n: "Conservatory", t: Type.LOCATION, file: "conservatory.jpg")
+        let r4 = Card(n: "Dining room", t: Type.LOCATION, file: "dining.jpg")
+        let r5 = Card(n: "Billard", t: Type.LOCATION, file: "billard.jpg")
+        let r6 = Card(n: "Library", t: Type.LOCATION, file: "library.jpg")
+        let r7 = Card(n: "Lounge", t: Type.LOCATION, file: "lounge.jpg")
+        let r8 = Card(n: "Hall", t: Type.LOCATION, file: "hall.jpg")
+        let r9 = Card(n: "Study", t: Type.LOCATION, file: "study.jpg")
+        
+        var people = [p1, p2, p3, p4, p5, p6]
+        var weapons = [w1, w2, w3, w4, w5, w6]
+        var rooms = [r1, r2, r3, r4, r5, r6, r7, r8, r9]
+        
+        
+        // pick solution
+        let chosenP = people[Int(arc4random_uniform(6))]
+        let chosenW = weapons[Int(arc4random_uniform(6))]
+        let chosenR = rooms[Int(arc4random_uniform(9))]
+        
+        let solution = Trio(person: chosenP, weapon: chosenW, location: chosenR)
+        
+        //take solution cards out of deck
+        var cards = people + weapons + rooms
+        cards.removeAtIndex(cards.indexOf(chosenP)!)
+        cards.removeAtIndex(cards.indexOf(chosenW)!)
+        cards.removeAtIndex(cards.indexOf(chosenR)!)
+        
+        var availableChars = people+[]
+        
+        var players = [Player]()
+        
+        //initialize players with a character card attached
+        players.append(HumanPlayer(c: availableChars[availableChars.indexOf({$0.name == characterName})!]))
+        availableChars.removeAtIndex(availableChars.indexOf({$0.name == characterName})!)
+        for _ in 1...numPlayers{
+            let i = arc4random_uniform(UInt32(availableChars.count))
+            players.append(Player(c: availableChars[Int(i)]))
+            availableChars.removeAtIndex(Int(i))
+            
+        }
+        
+        //distribute cards between players
+        while cards.count > 0{
+            for i in 1...players.count-1{
+                if(cards.count>0)
+                {
+                    let x = arc4random_uniform(UInt32(cards.count))
+                    players[i].hand.append(cards.removeAtIndex(Int(x)))
+                }
+            }
+        }
+
+        return Game(players: players, s: solution)
+        
+        
+    }
+    
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        
+        
     }
 }

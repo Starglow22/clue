@@ -13,10 +13,14 @@ class Game: NSObject {
     var players: [Player]
     var currentPlayer: Player
     
-    override init()
+    var solution: Trio
+    
+    init(players: [Player], s:Trio)
     {
-        players = [Player]()
-        currentPlayer = Player()
+        self.players = players
+        currentPlayer = players[Int(arc4random_uniform(UInt32(players.count)))]
+        
+        solution = s
     }
 
 }

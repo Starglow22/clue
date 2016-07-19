@@ -8,6 +8,6 @@
 
 import Cocoa
 
-class AIPlayer: NSObject {
+class EasyAIPlayer: Player {
 
 }

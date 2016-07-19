@@ -8,6 +8,6 @@
 
 import Cocoa
 
-class HumanPlayer: NSObject {
+class HumanPlayer: Player {
 
 }

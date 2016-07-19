@@ -7,10 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3359924D1D3D769B00CDB2E1 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359924C1D3D769B00CDB2E1 /* Card.swift */; };
+		3359924F1D3D774200CDB2E1 /* Trio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359924E1D3D774200CDB2E1 /* Trio.swift */; };
 		337787C91D35F19A00825C34 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787C81D35F19A00825C34 /* Game.swift */; };
 		337787CB1D35F2C300825C34 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CA1D35F2C300825C34 /* Player.swift */; };
 		337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CC1D35F3A000825C34 /* HumanPlayer.swift */; };
-		337787CF1D35F3C800825C34 /* AIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CE1D35F3C800825C34 /* AIPlayer.swift */; };
+		337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */; };
+		33B183AB1D3DCE180062274F /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AA1D3DCE180062274F /* Position.swift */; };
+		33B183AD1D3DF1B00062274F /* BoardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AC1D3DF1B00062274F /* BoardScene.swift */; };
+		33B183AF1D3DF1C50062274F /* RoomScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AE1D3DF1C50062274F /* RoomScene.swift */; };
+		33B183B51D3DF20C0062274F /* BoardScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 33B183B41D3DF20C0062274F /* BoardScene.sks */; };
+		33B183B71D3DF21C0062274F /* RoomScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 33B183B61D3DF21C0062274F /* RoomScene.sks */; };
 		33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D28CEC1D336464001FB8C7 /* AppDelegate.swift */; };
 		33D28CEF1D336464001FB8C7 /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D28CEE1D336464001FB8C7 /* StartScene.swift */; };
 		33D28CF11D336464001FB8C7 /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 33D28CF01D336464001FB8C7 /* StartScene.sks */; };
@@ -21,10 +28,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3359924C1D3D769B00CDB2E1 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		3359924E1D3D774200CDB2E1 /* Trio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trio.swift; sourceTree = "<group>"; };
 		337787C81D35F19A00825C34 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		337787CA1D35F2C300825C34 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		337787CC1D35F3A000825C34 /* HumanPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanPlayer.swift; sourceTree = "<group>"; };
-		337787CE1D35F3C800825C34 /* AIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIPlayer.swift; sourceTree = "<group>"; };
+		337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EasyAIPlayer.swift; sourceTree = "<group>"; };
+		33B183AA1D3DCE180062274F /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		33B183AC1D3DF1B00062274F /* BoardScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardScene.swift; sourceTree = "<group>"; };
+		33B183AE1D3DF1C50062274F /* RoomScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomScene.swift; sourceTree = "<group>"; };
+		33B183B41D3DF20C0062274F /* BoardScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = BoardScene.sks; path = ../BoardScene.sks; sourceTree = "<group>"; };
+		33B183B61D3DF21C0062274F /* RoomScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = RoomScene.sks; path = ../RoomScene.sks; sourceTree = "<group>"; };
 		33D28CE91D336464001FB8C7 /* ClueFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClueFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33D28CEC1D336464001FB8C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33D28CEE1D336464001FB8C7 /* StartScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScene.swift; sourceTree = "<group>"; };
@@ -52,8 +66,11 @@
 			children = (
 				337787C81D35F19A00825C34 /* Game.swift */,
 				337787CA1D35F2C300825C34 /* Player.swift */,
+				3359924E1D3D774200CDB2E1 /* Trio.swift */,
 				337787CC1D35F3A000825C34 /* HumanPlayer.swift */,
-				337787CE1D35F3C800825C34 /* AIPlayer.swift */,
+				337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */,
+				3359924C1D3D769B00CDB2E1 /* Card.swift */,
+				33B183AA1D3DCE180062274F /* Position.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -80,8 +97,12 @@
 				33D28CEC1D336464001FB8C7 /* AppDelegate.swift */,
 				33D28CEE1D336464001FB8C7 /* StartScene.swift */,
 				33D28CFF1D336639001FB8C7 /* MenuScene.swift */,
+				33B183AC1D3DF1B00062274F /* BoardScene.swift */,
+				33B183AE1D3DF1C50062274F /* RoomScene.swift */,
 				33D28CF01D336464001FB8C7 /* StartScene.sks */,
 				33D28CFD1D3365F5001FB8C7 /* MenuScene.sks */,
+				33B183B41D3DF20C0062274F /* BoardScene.sks */,
+				33B183B61D3DF21C0062274F /* RoomScene.sks */,
 				33D28CF21D336464001FB8C7 /* Assets.xcassets */,
 				33D28CF41D336464001FB8C7 /* MainMenu.xib */,
 				33D28CF71D336464001FB8C7 /* Info.plist */,
@@ -149,9 +170,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				33D28CF31D336464001FB8C7 /* Assets.xcassets in Resources */,
+				33B183B71D3DF21C0062274F /* RoomScene.sks in Resources */,
 				33D28CF11D336464001FB8C7 /* StartScene.sks in Resources */,
 				33D28CF61D336464001FB8C7 /* MainMenu.xib in Resources */,
 				33D28CFE1D3365F5001FB8C7 /* MenuScene.sks in Resources */,
+				33B183B51D3DF20C0062274F /* BoardScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,10 +188,15 @@
 				33D28D001D336639001FB8C7 /* MenuScene.swift in Sources */,
 				337787C91D35F19A00825C34 /* Game.swift in Sources */,
 				337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */,
+				3359924F1D3D774200CDB2E1 /* Trio.swift in Sources */,
 				33D28CEF1D336464001FB8C7 /* StartScene.swift in Sources */,
 				33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */,
 				337787CB1D35F2C300825C34 /* Player.swift in Sources */,
-				337787CF1D35F3C800825C34 /* AIPlayer.swift in Sources */,
+				337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */,
+				33B183AB1D3DCE180062274F /* Position.swift in Sources */,
+				33B183AF1D3DF1C50062274F /* RoomScene.swift in Sources */,
+				3359924D1D3D769B00CDB2E1 /* Card.swift in Sources */,
+				33B183AD1D3DF1B00062274F /* BoardScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
