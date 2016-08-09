@@ -26,10 +26,15 @@ class StartScene: SKScene {
             //let nextScene = MenuScene(size: self.size)
             
             let nextScene = MenuScene(fileNamed: "MenuScene")
+            
+            
+            //for testing purposes
+            nextScene?.moveToBoardScene()
+            /*
             nextScene?.size = self.size
             nextScene?.scaleMode = .AspectFill
             self.view?.presentScene(nextScene!, transition: reveal)
-            
+            */
         }
     }
     

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3347444A1D4D495A00DD21A0 /* HardAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334744491D4D495A00DD21A0 /* HardAIPlayer.swift */; };
+		3347444C1D4D498D00DD21A0 /* TricksterAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */; };
+		3347444E1D4D503A00DD21A0 /* UIStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444D1D4D503A00DD21A0 /* UIStates.swift */; };
 		3359924D1D3D769B00CDB2E1 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359924C1D3D769B00CDB2E1 /* Card.swift */; };
 		3359924F1D3D774200CDB2E1 /* Trio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359924E1D3D774200CDB2E1 /* Trio.swift */; };
 		337787C91D35F19A00825C34 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787C81D35F19A00825C34 /* Game.swift */; };
@@ -28,6 +31,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		334744491D4D495A00DD21A0 /* HardAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardAIPlayer.swift; sourceTree = "<group>"; };
+		3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TricksterAIPlayer.swift; sourceTree = "<group>"; };
+		3347444D1D4D503A00DD21A0 /* UIStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStates.swift; sourceTree = "<group>"; };
 		3359924C1D3D769B00CDB2E1 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		3359924E1D3D774200CDB2E1 /* Trio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trio.swift; sourceTree = "<group>"; };
 		337787C81D35F19A00825C34 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -69,8 +75,11 @@
 				3359924E1D3D774200CDB2E1 /* Trio.swift */,
 				337787CC1D35F3A000825C34 /* HumanPlayer.swift */,
 				337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */,
+				334744491D4D495A00DD21A0 /* HardAIPlayer.swift */,
+				3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */,
 				3359924C1D3D769B00CDB2E1 /* Card.swift */,
 				33B183AA1D3DCE180062274F /* Position.swift */,
+				3347444D1D4D503A00DD21A0 /* UIStates.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -193,9 +202,12 @@
 				33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */,
 				337787CB1D35F2C300825C34 /* Player.swift in Sources */,
 				337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */,
+				3347444E1D4D503A00DD21A0 /* UIStates.swift in Sources */,
 				33B183AB1D3DCE180062274F /* Position.swift in Sources */,
 				33B183AF1D3DF1C50062274F /* RoomScene.swift in Sources */,
+				3347444C1D4D498D00DD21A0 /* TricksterAIPlayer.swift in Sources */,
 				3359924D1D3D769B00CDB2E1 /* Card.swift in Sources */,
+				3347444A1D4D495A00DD21A0 /* HardAIPlayer.swift in Sources */,
 				33B183AD1D3DF1B00062274F /* BoardScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

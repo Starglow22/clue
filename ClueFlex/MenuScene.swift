@@ -39,10 +39,6 @@ class MenuScene: SKScene {
         if(lastClicked != node)
         {
         switch node.name {
-        case "P1"?:
-                selectNode(node)
-                numPlayers = 1
-            
         case "P2"?:
                 selectNode(node)
                 numPlayers = 2
@@ -100,6 +96,8 @@ class MenuScene: SKScene {
             self.view?.presentScene(nextScene!, transition: reveal)
             
             nextScene?.game = gameObj
+            nextScene?.setUpTiles()
+            gameObj.boardScene = nextScene
             
             
         default: break
@@ -115,6 +113,26 @@ class MenuScene: SKScene {
         }
         
     }
+    
+    func moveToBoardScene(){
+        numPlayers = 3
+        difficulty = 3
+        characterName = "Mrs White"
+        
+        let gameObj = initialize()
+        let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+        
+        
+        let nextScene = BoardScene(fileNamed: "BoardScene")
+        nextScene?.size = self.size
+        nextScene?.scaleMode = .AspectFill
+        self.view?.presentScene(nextScene!, transition: reveal)
+        
+        nextScene?.game = gameObj
+        nextScene?.setUpTiles()
+        gameObj.boardScene = nextScene
+    }
+    
     
     func selectCharacter(node: SKNode)
     {
@@ -216,10 +234,48 @@ class MenuScene: SKScene {
         //initialize players with a character card attached
         players.append(HumanPlayer(c: availableChars[availableChars.indexOf({$0.name == characterName})!]))
         availableChars.removeAtIndex(availableChars.indexOf({$0.name == characterName})!)
-        for _ in 1...numPlayers{
+        
+        let numHard = (difficulty + 10%numPlayers) / Int(ceil(10.0 / Double(numPlayers)))
+        let numTrick = (difficulty + 10%numPlayers) % Int(ceil(10.0 / Double(numPlayers)))
+        let numEasy = numPlayers - numHard - numTrick
+        
+        var AIPlayers = [Player]()
+        
+        for _ in 1...numHard{
+            // choose a token at random
             let i = arc4random_uniform(UInt32(availableChars.count))
-            players.append(Player(c: availableChars[Int(i)]))
+
+            //instantiate and remove token from options
+            AIPlayers.append(HardAIPlayer(c: availableChars[Int(i)]))
             availableChars.removeAtIndex(Int(i))
+            
+        }
+        for _ in 1...numTrick{
+            // choose a token at random
+            let i = arc4random_uniform(UInt32(availableChars.count))
+            
+            //instantiate and remove token from options
+            AIPlayers.append(TricksterAIPlayer(c: availableChars[Int(i)]))
+            availableChars.removeAtIndex(Int(i))
+            
+        }
+        for _ in 1...numEasy{
+            // choose a token at random
+            let i = arc4random_uniform(UInt32(availableChars.count))
+            
+            //instantiate and remove token from options
+            AIPlayers.append(EasyAIPlayer(c: availableChars[Int(i)]))
+            availableChars.removeAtIndex(Int(i))
+            
+        }
+        
+        while (AIPlayers.count > 0){
+            // choose a token at random
+            let i = arc4random_uniform(UInt32(AIPlayers.count))
+            
+            //instantiate and remove token from options
+            players.append(AIPlayers[Int(i)])
+            AIPlayers.removeAtIndex(Int(i))
             
         }
         
@@ -234,7 +290,9 @@ class MenuScene: SKScene {
             }
         }
 
-        return Game(players: players, s: solution)
+        let game = Game(players: players, s: solution)
+        game.roomCards = rooms
+        return game
         
         
     }

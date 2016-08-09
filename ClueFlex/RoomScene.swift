@@ -9,9 +9,11 @@
 import SpriteKit
 
 class RoomScene: SKScene {
+    var game : Game?
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        game = Game.getGame()
         
     }
     
@@ -36,6 +38,15 @@ class RoomScene: SKScene {
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+    }
+    
+    func switchToBoardView()
+    {
+        let reveal = SKTransition.pushWithDirection(SKTransitionDirection.Right, duration: 0.5)
+        let nextScene = game?.boardScene
+        nextScene?.size = self.size
+        nextScene?.scaleMode = .AspectFill
+        self.view?.presentScene(nextScene!, transition: reveal)
     }
 
 

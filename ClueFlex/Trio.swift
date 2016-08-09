@@ -16,3 +16,8 @@ struct Trio{
     
 
 }
+
+struct Answer{
+    var card: Card?
+    var person: Player?
+}

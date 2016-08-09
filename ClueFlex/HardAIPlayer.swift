@@ -1,16 +1,15 @@
 //
-//  AIPlayer.swift
+//  HardAIPlayer.swift
 //  ClueFlex
 //
-//  Created by Gina Bolognesi on 2016-07-12.
+//  Created by Gina Bolognesi on 2016-07-30.
 //  Copyright © 2016 Gina Bolognesi. All rights reserved.
 //
 
 import Cocoa
 
-class EasyAIPlayer: Player {
-    
-    // Simple elimination: never aska combo you already know. May ask with cards from hand but not all
+class HardAIPlayer: Player {
+    // makes deductions from other peopl's plays - my current strategy
     
     override func reply(t: Trio) -> Card?
     {
