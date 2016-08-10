@@ -20,8 +20,10 @@ class Position: Equatable {
         self.isRoom = isRoom;
         self.sprite = node
         self.room = room;
-        self.adjacent = [Position]()
+        self.adjacent = []
+        //super.init()
     }
+    
     
     func reachablePositions(moves: Int) -> [Position]
     {

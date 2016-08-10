@@ -86,17 +86,39 @@ class MenuScene: SKScene {
                 characterName = "Mrs White"
                 
             case "Start"?:
+                
                 let gameObj = initialize()
                 let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
                 
-                
                 let nextScene = BoardScene(fileNamed: "BoardScene")
+                
+                
+               
                 nextScene?.size = self.size
                 nextScene?.scaleMode = .AspectFill
                 self.view?.presentScene(nextScene!, transition: reveal)
                 
                 nextScene?.game = gameObj
                 nextScene?.setUpTiles()
+                 for player in gameObj.players
+                 {
+                 switch player.character.name
+                 {
+                 case "Miss Scarlett":
+                 player.position = nextScene?.board["scarlett start"]
+                 case "Prof. Plum":
+                 player.position = nextScene?.board["plum start"]
+                 case "Mrs Peacock":
+                 player.position = nextScene?.board["peacock start"]
+                 case "Mr Green":
+                 player.position = nextScene?.board["green start"]
+                 case "Colonel Mustard":
+                 player.position = nextScene?.board["mustard start"]
+                 default:
+                 player.position = nextScene?.board["white start"]
+                 }
+                 }
+                 
                 gameObj.boardScene = nextScene
                 
                 
@@ -115,22 +137,44 @@ class MenuScene: SKScene {
     }
     
     func moveToBoardScene(){
-        numPlayers = 3
-        difficulty = 3
+        numPlayers = 2
+        difficulty = 8
         characterName = "Mrs White"
         
         let gameObj = initialize()
         let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
         
-        
         let nextScene = BoardScene(fileNamed: "BoardScene")
+        
+        
+        
         nextScene?.size = self.size
         nextScene?.scaleMode = .AspectFill
         self.view?.presentScene(nextScene!, transition: reveal)
         
         nextScene?.game = gameObj
         nextScene?.setUpTiles()
+        for player in gameObj.players
+        {
+            switch player.character.name
+            {
+            case "Miss Scarlett":
+                player.position = nextScene?.board["scarlett start"]
+            case "Prof. Plum":
+                player.position = nextScene?.board["plum start"]
+            case "Mrs Peacock":
+                player.position = nextScene?.board["peacock start"]
+            case "Mr Green":
+                player.position = nextScene?.board["green start"]
+            case "Colonel Mustard":
+                player.position = nextScene?.board["mustard start"]
+            default:
+                player.position = nextScene?.board["white start"]
+            }
+        }
+        
         gameObj.boardScene = nextScene
+
         
     }
     
@@ -186,7 +230,7 @@ class MenuScene: SKScene {
     
     func initialize() -> Game
     {
-        let p1 = Card(n: "Miss Scarlet", t: Type.CHARACTER, file: "scarlet.jpg")
+        let p1 = Card(n: "Miss Scarlett", t: Type.CHARACTER, file: "scarlett.jpg")
         let p2 = Card(n: "Prof. Plum", t: Type.CHARACTER, file: "plum.jpg")
         let p3 = Card(n: "Mrs Peacock", t: Type.CHARACTER, file: "peacock.jpg")
         let p4 = Card(n: "Mr Green", t: Type.CHARACTER, file: "green.jpg")
@@ -242,14 +286,16 @@ class MenuScene: SKScene {
         
         var AIPlayers = [Player]()
         
-        for _ in 1...numHard{
-            // choose a token at random
-            let i = arc4random_uniform(UInt32(availableChars.count))
-            
-            //instantiate and remove token from options
-            AIPlayers.append(HardAIPlayer(c: availableChars[Int(i)]))
-            availableChars.removeAtIndex(Int(i))
-            
+        if(numHard > 0){
+            for _ in 1...numHard{
+                // choose a token at random
+                let i = arc4random_uniform(UInt32(availableChars.count))
+                
+                //instantiate and remove token from options
+                AIPlayers.append(HardAIPlayer(c: availableChars[Int(i)]))
+                availableChars.removeAtIndex(Int(i))
+                
+            }
         }
         
         //cannot have for loop where end < start
@@ -264,7 +310,7 @@ class MenuScene: SKScene {
                 
             }
         }
-        if(numTrick > 0){
+        if(numEasy > 0){
             for _ in 1...numEasy{
                 // choose a token at random
                 let i = arc4random_uniform(UInt32(availableChars.count))
@@ -302,14 +348,17 @@ class MenuScene: SKScene {
         
         
         //init roomscene for game
-        let roomScene = RoomScene(fileNamed: "RoomScene")
+        //let roomScene = RoomScene(fileNamed: "RoomScene")
+        let roomScene = BoardScene(fileNamed: "BoardScene")
         roomScene?.size = self.size
         roomScene?.scaleMode = .AspectFill
         
+        /*
         roomScene?.people = people
         roomScene?.weapons = weapons
         roomScene?.rooms = rooms
         game.roomScene = roomScene
+ */
         
         return game
         

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class Card : Equatable {
+class Card : NSObject {
     var type: Type
     var imageName: String
     var name: String

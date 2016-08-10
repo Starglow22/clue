@@ -11,13 +11,13 @@ import SpriteKit
 class BoardScene: SKScene {
     var game : Game?
     
-    var board = [String: Position]()
+    var board : [String: Position] = [:]
     
     var playerNameDisplay :SKNode?
     
     var dieRoll: Int?
-    var possibleDestinations: [Position]?
-    
+    //var possibleDestinations: [Position] = []
+	   
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -71,7 +71,8 @@ class BoardScene: SKScene {
             {
                 dieRoll = rollDie();
                 game?.state = State.waitingForMoveDestination
-                possibleDestinations = game?.currentPlayer.position?.reachablePositions(dieRoll!)
+                
+//possibleDestinations = (game?.currentPlayer.position?.reachablePositions(dieRoll!))!
                 textDisplay.text = "Select your destination"
             }
             
@@ -79,7 +80,9 @@ class BoardScene: SKScene {
             let selection = board[node.name!.lowercaseString]
             //nil if not a position
             
-            if (selection != nil && possibleDestinations!.contains(selection!))
+            //let possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!))
+            
+            if (selection != nil )//&& possibleDestinations.contains(selection!))
             {
                 moveToPosition(selection!)
                 textDisplay.runAction(SKAction.hide())
@@ -158,7 +161,7 @@ class BoardScene: SKScene {
     {
         //reset
         dieRoll = 0
-        possibleDestinations = []
+        //possibleDestinations = []
         
         let reveal = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 0.5)
         var nextScene = game?.roomScene
@@ -440,6 +443,6 @@ class BoardScene: SKScene {
         //116,175
         
     }
-
-
+    
+    
 }

@@ -21,20 +21,18 @@ class StartScene: SKScene {
         let node = self.nodeAtPoint(location)
         if(node.name == "Start")
         {
-            //let reveal = SKTransition.flipHorizontalWithDuration(0.5)
             let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
-            //let nextScene = MenuScene(size: self.size)
-            
             let nextScene = MenuScene(fileNamed: "MenuScene")
             
             
             //for testing purposes
-            nextScene?.moveToBoardScene()
-            /*
+            //nextScene?.moveToBoardScene()
+            
+            
             nextScene?.size = self.size
             nextScene?.scaleMode = .AspectFill
             self.view?.presentScene(nextScene!, transition: reveal)
-            */
+            
         }
     }
     

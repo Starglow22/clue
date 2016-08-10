@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class Player: Equatable{
+class Player: NSObject{
     
     var hand: [Card]
     var position: Position?

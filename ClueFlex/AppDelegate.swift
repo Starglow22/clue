@@ -18,6 +18,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         /* Pick a size for the scene */
+
+    
         
         
         if let scene = StartScene(fileNamed:"StartScene") {
