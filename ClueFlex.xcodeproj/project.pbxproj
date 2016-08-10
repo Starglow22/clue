@@ -15,6 +15,7 @@
 		3359C97B1D5AE4E400DECB9D /* BoardScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C97A1D5AE4E400DECB9D /* BoardScene.sks */; };
 		3359C97D1D5AE4F300DECB9D /* RoomScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C97C1D5AE4F300DECB9D /* RoomScene.sks */; };
 		3359C97F1D5AFBA300DECB9D /* BoardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359C97E1D5AFBA300DECB9D /* BoardScene.swift */; };
+		3359C9811D5B068700DECB9D /* Board.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C9801D5B068700DECB9D /* Board.sks */; };
 		337787C91D35F19A00825C34 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787C81D35F19A00825C34 /* Game.swift */; };
 		337787CB1D35F2C300825C34 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CA1D35F2C300825C34 /* Player.swift */; };
 		337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CC1D35F3A000825C34 /* HumanPlayer.swift */; };
@@ -39,6 +40,7 @@
 		3359C97A1D5AE4E400DECB9D /* BoardScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BoardScene.sks; sourceTree = "<group>"; };
 		3359C97C1D5AE4F300DECB9D /* RoomScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = RoomScene.sks; sourceTree = "<group>"; };
 		3359C97E1D5AFBA300DECB9D /* BoardScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardScene.swift; sourceTree = "<group>"; };
+		3359C9801D5B068700DECB9D /* Board.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Board.sks; sourceTree = "<group>"; };
 		337787C81D35F19A00825C34 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		337787CA1D35F2C300825C34 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		337787CC1D35F3A000825C34 /* HumanPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanPlayer.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				3359C97E1D5AFBA300DECB9D /* BoardScene.swift */,
 				33B183AE1D3DF1C50062274F /* RoomScene.swift */,
 				33D28CF01D336464001FB8C7 /* StartScene.sks */,
+				3359C9801D5B068700DECB9D /* Board.sks */,
 				33D28CFD1D3365F5001FB8C7 /* MenuScene.sks */,
 				3359C97A1D5AE4E400DECB9D /* BoardScene.sks */,
 				3359C97C1D5AE4F300DECB9D /* RoomScene.sks */,
@@ -178,6 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3359C9811D5B068700DECB9D /* Board.sks in Resources */,
 				33D28CF31D336464001FB8C7 /* Assets.xcassets in Resources */,
 				3359C97B1D5AE4E400DECB9D /* BoardScene.sks in Resources */,
 				33D28CF11D336464001FB8C7 /* StartScene.sks in Resources */,

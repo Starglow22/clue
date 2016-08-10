@@ -99,7 +99,7 @@ class MenuScene: SKScene {
                 self.view?.presentScene(nextScene!, transition: reveal)
                 
                 nextScene?.game = gameObj
-                nextScene?.setUpTiles()
+                //nextScene?.setUpTiles()
                  for player in gameObj.players
                  {
                  switch player.character.name
@@ -348,17 +348,16 @@ class MenuScene: SKScene {
         
         
         //init roomscene for game
-        //let roomScene = RoomScene(fileNamed: "RoomScene")
-        let roomScene = BoardScene(fileNamed: "BoardScene")
+        let roomScene = RoomScene(fileNamed: "RoomScene")
         roomScene?.size = self.size
         roomScene?.scaleMode = .AspectFill
         
-        /*
+        
         roomScene?.people = people
         roomScene?.weapons = weapons
         roomScene?.rooms = rooms
         game.roomScene = roomScene
- */
+ 
         
         return game
         
