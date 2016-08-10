@@ -15,6 +15,9 @@ class BoardScene: SKScene {
     
     var playerNameDisplay :SKNode?
     
+    var dieRoll: Int?
+    var possibleDestinations: [Position]?
+    
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -36,10 +39,19 @@ class BoardScene: SKScene {
         }
         highlightCurrentPlayer()
         
+        for node in (self.childNodeWithName("UICONTROLS")?.children)!
+        {
+            node.runAction(SKAction.hide())
+        }
+        
+        (self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode).text = "Your turn!"
+        
     }
     
     override func mouseDown(theEvent: NSEvent) {
         /* Called when a mouse click occurs */
+        
+        let textDisplay = self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode
         
         let location = theEvent.locationInNode(self)
         let node = self.nodeAtPoint(location)
@@ -47,16 +59,86 @@ class BoardScene: SKScene {
         {
         case State.waitingForTurn:
             //allow notecard to be opened
+            break;
+            
+        case State.startOfTurn:
+            //any click moves to next stage
+            textDisplay.text = "Please roll the die"
+            game?.state = State.waitingForDieRoll
+            
         case State.waitingForDieRoll:
+            if(node.name == "Die")
+            {
+                dieRoll = rollDie();
+                game?.state = State.waitingForMoveDestination
+                possibleDestinations = game?.currentPlayer.position?.reachablePositions(dieRoll!)
+                textDisplay.text = "Select your destination"
+            }
             
         case State.waitingForMoveDestination:
+            let selection = board[node.name!.lowercaseString]
+            //nil if not a position
             
-            case State.waitingForQuestion
+            if (selection != nil && possibleDestinations!.contains(selection!))
+            {
+                moveToPosition(selection!)
+                textDisplay.runAction(SKAction.hide())
+                if (selection!.isRoom)
+                {
+                    switchToRoomView()
+                    game?.state = State.waitingForSuspectOrAccuse
+                }else{
+                    game?.currentPlayer.passTurn()
+                    //pass turn
+                }
+            }else{
+                textDisplay.text = "Thats is not a valid move, sorry"
+            }
+            
+            
+        default:
+            //do nothing
+            break;
         }
     }
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+    }
+    
+    //animation - move sprite node in 2 moves x and y, largest first, set new position
+    func moveToPosition(newPos: Position)
+    {
+        // move to new position
+        let newX = newPos.sprite.position.x
+        let newY = newPos.sprite.position.y
+        
+        let oldX = game!.currentPlayer.sprite!.position.x
+        let oldY = game!.currentPlayer.sprite!.position.y
+        
+        if (abs(oldX-newX) > abs(oldY - newY))
+        {
+            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: oldY), duration: 0.5))
+            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 0.5))
+        }else{
+            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: oldX, y: newY), duration: 0.5))
+            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 0.5))
+        }
+        
+        
+        
+        game?.currentPlayer.position = newPos
+    }
+    
+    //including animation
+    func rollDie() -> Int
+    {
+        let roll = arc4random_uniform(6) + 1
+        let node  = self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die") as! SKSpriteNode
+        node.runAction(SKAction.rotateByAngle(CGFloat(M_PI * 16), duration: 1.5))
+        node.runAction(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll)")))
+        return Int(roll);
+        
     }
     
     func highlightCurrentPlayer()
@@ -74,6 +156,10 @@ class BoardScene: SKScene {
     
     func switchToRoomView()
     {
+        //reset
+        dieRoll = 0
+        possibleDestinations = []
+        
         let reveal = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 0.5)
         var nextScene = game?.roomScene
         if(nextScene == nil){

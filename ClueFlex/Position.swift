@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class Position: NSObject {
+class Position: Equatable {
     var isRoom : Bool
     var room: Card?
     var adjacent: [Position]
@@ -34,8 +34,12 @@ class Position: NSObject {
             {
                 neighbors += p.reachablePositions(moves-1)
             }
-            return Array(Set(neighbors))
+            return neighbors
         }
     }
 
+}
+
+func ==(lhs: Position, rhs: Position) -> Bool {
+    return lhs.sprite == rhs.sprite && lhs.adjacent == rhs.adjacent && lhs.room == rhs.room && rhs.isRoom == rhs.isRoom
 }

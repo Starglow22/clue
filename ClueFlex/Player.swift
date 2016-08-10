@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class Player: NSObject{
+class Player: Equatable{
     
     var hand: [Card]
     var position: Position?
@@ -70,7 +70,7 @@ class Player: NSObject{
     
     func selectPersonWeapon() -> Trio
     {
-        return Trio(person: nil, weapon: nil, location: nil)
+        return Trio(person: Game.getGame().players[0].character , weapon: (Game.getGame().roomScene?.weapons![0])!, location: self.position!.room!)
     }
     
     func ask(question: Trio) -> Answer
@@ -107,10 +107,24 @@ class Player: NSObject{
     
     func passTurn()
     {
-        Game.getGame().currentPlayer = Game.getGame().players[Game.getGame().players.indexOf(self)!+1]
+        Game.getGame().currentPlayer = Game.getGame().players[(Game.getGame().players.indexOf(self)!+1) % Game.getGame().players.count]
         Game.getGame().updatePList()
+        
+        
+        if(Game.getGame().currentPlayer is HumanPlayer)
+        {
+            Game.getGame().boardScene!.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay")?.runAction(SKAction.unhide())
+            Game.getGame().state = State.startOfTurn
+        }else{
+        Game.getGame().boardScene!.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay")?.runAction(SKAction.hide())
+            Game.getGame().state = State.waitingForTurn
+        }
     }
     
     
     
+}
+
+func ==(lhs: Player, rhs: Player) -> Bool {
+    return lhs.sprite == rhs.sprite && lhs.hand == rhs.hand && lhs.position == rhs.position && rhs.character == rhs.character
 }

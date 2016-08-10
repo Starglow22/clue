@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Trio{
+struct Trio: Equatable{
     
     var person: Card
     var weapon: Card
@@ -17,7 +17,16 @@ struct Trio{
 
 }
 
-struct Answer{
+struct Answer: Equatable{
     var card: Card?
     var person: Player?
+}
+
+func ==(lhs: Trio, rhs: Trio) -> Bool {
+    return lhs.person == rhs.person && lhs.weapon == rhs.weapon && lhs.location == rhs.location
+}
+
+
+func ==(lhs: Answer, rhs: Answer) -> Bool {
+    return lhs.card == rhs.card && lhs.person == rhs.person
 }

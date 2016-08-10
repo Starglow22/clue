@@ -39,7 +39,7 @@ class HumanPlayer: Player {
     
     override func selectPersonWeapon() -> Trio
     {
-        return Trio(person: nil, weapon: nil, location: nil)
+        return Trio(person: Game.getGame().players[0].character , weapon: (Game.getGame().roomScene?.weapons![0])!, location: self.position!.room!)
     }
     
     

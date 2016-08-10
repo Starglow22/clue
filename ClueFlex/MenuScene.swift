@@ -38,70 +38,70 @@ class MenuScene: SKScene {
         let node = self.nodeAtPoint(location)
         if(lastClicked != node)
         {
-        switch node.name {
-        case "P2"?:
+            switch node.name {
+            case "P2"?:
                 selectNode(node)
                 numPlayers = 2
-            
-        case "P3"?:
-            selectNode(node)
+                
+            case "P3"?:
+                selectNode(node)
                 numPlayers = 3
-            
-        case "P4"?:
+                
+            case "P4"?:
                 selectNode(node)
                 numPlayers = 4
-            
-        case "P5"?:
+                
+            case "P5"?:
                 selectNode(node)
                 numPlayers = 5
-            
-        case "D1"?, "D2"?, "D3"?, "D4"?, "D5"?, "D6"?, "D7"?, "D8"?, "D9"?, "D10"?:
-            resetNumbers()
-             let label = node as? SKLabelNode
-            label?.fontSize = 64
-            difficulty = ((label?.text)! as NSString).integerValue
-            
-        case "C1"?:
-            selectCharacter(node)
-            characterName = "Miss Scarlet"
-            
-        case "C2"?:
-            selectCharacter(node)
-            characterName = "Mrs Peacock"
-            
-        case "C3"?:
-            selectCharacter(node)
-            characterName = "Mr Green"
-            
-        case "C4"?:
-            selectCharacter(node)
-            characterName = "Colonel Mustard"
-            
-        case "C5"?:
-            selectCharacter(node)
-            characterName = "Prof. Plum"
-            
-        case "C6"?:
-            selectCharacter(node)
-            characterName = "Mrs White"
-            
-        case "Start"?:
-            let gameObj = initialize()
-            let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
-        
-            
-            let nextScene = BoardScene(fileNamed: "BoardScene")
-            nextScene?.size = self.size
-            nextScene?.scaleMode = .AspectFill
-            self.view?.presentScene(nextScene!, transition: reveal)
-            
-            nextScene?.game = gameObj
-            nextScene?.setUpTiles()
-            gameObj.boardScene = nextScene
-            
-            
-        default: break
-            // do nothing
+                
+            case "D1"?, "D2"?, "D3"?, "D4"?, "D5"?, "D6"?, "D7"?, "D8"?, "D9"?, "D10"?:
+                resetNumbers()
+                let label = node as? SKLabelNode
+                label?.fontSize = 64
+                difficulty = ((label?.text)! as NSString).integerValue
+                
+            case "C1"?:
+                selectCharacter(node)
+                characterName = "Miss Scarlet"
+                
+            case "C2"?:
+                selectCharacter(node)
+                characterName = "Mrs Peacock"
+                
+            case "C3"?:
+                selectCharacter(node)
+                characterName = "Mr Green"
+                
+            case "C4"?:
+                selectCharacter(node)
+                characterName = "Colonel Mustard"
+                
+            case "C5"?:
+                selectCharacter(node)
+                characterName = "Prof. Plum"
+                
+            case "C6"?:
+                selectCharacter(node)
+                characterName = "Mrs White"
+                
+            case "Start"?:
+                let gameObj = initialize()
+                let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+                
+                
+                let nextScene = BoardScene(fileNamed: "BoardScene")
+                nextScene?.size = self.size
+                nextScene?.scaleMode = .AspectFill
+                self.view?.presentScene(nextScene!, transition: reveal)
+                
+                nextScene?.game = gameObj
+                nextScene?.setUpTiles()
+                gameObj.boardScene = nextScene
+                
+                
+            default: break
+                // do nothing
             }
             
         }
@@ -131,13 +131,14 @@ class MenuScene: SKScene {
         nextScene?.game = gameObj
         nextScene?.setUpTiles()
         gameObj.boardScene = nextScene
+        
     }
     
     
     func selectCharacter(node: SKNode)
     {
         resizeCharacterIcons()
-       node.runAction(SKAction.scaleTo(1.4, duration: 0.1))
+        node.runAction(SKAction.scaleTo(1.4, duration: 0.1))
     }
     
     func resetNumbers()
@@ -209,9 +210,9 @@ class MenuScene: SKScene {
         let r8 = Card(n: "Hall", t: Type.LOCATION, file: "hall.jpg")
         let r9 = Card(n: "Study", t: Type.LOCATION, file: "study.jpg")
         
-        var people = [p1, p2, p3, p4, p5, p6]
-        var weapons = [w1, w2, w3, w4, w5, w6]
-        var rooms = [r1, r2, r3, r4, r5, r6, r7, r8, r9]
+        let people = [p1, p2, p3, p4, p5, p6]
+        let weapons = [w1, w2, w3, w4, w5, w6]
+        let rooms = [r1, r2, r3, r4, r5, r6, r7, r8, r9]
         
         
         // pick solution
@@ -244,29 +245,35 @@ class MenuScene: SKScene {
         for _ in 1...numHard{
             // choose a token at random
             let i = arc4random_uniform(UInt32(availableChars.count))
-
+            
             //instantiate and remove token from options
             AIPlayers.append(HardAIPlayer(c: availableChars[Int(i)]))
             availableChars.removeAtIndex(Int(i))
             
         }
-        for _ in 1...numTrick{
-            // choose a token at random
-            let i = arc4random_uniform(UInt32(availableChars.count))
-            
-            //instantiate and remove token from options
-            AIPlayers.append(TricksterAIPlayer(c: availableChars[Int(i)]))
-            availableChars.removeAtIndex(Int(i))
-            
+        
+        //cannot have for loop where end < start
+        if(numTrick > 0){
+            for _ in 1...numTrick{
+                // choose a token at random
+                let i = arc4random_uniform(UInt32(availableChars.count))
+                
+                //instantiate and remove token from options
+                AIPlayers.append(TricksterAIPlayer(c: availableChars[Int(i)]))
+                availableChars.removeAtIndex(Int(i))
+                
+            }
         }
-        for _ in 1...numEasy{
-            // choose a token at random
-            let i = arc4random_uniform(UInt32(availableChars.count))
-            
-            //instantiate and remove token from options
-            AIPlayers.append(EasyAIPlayer(c: availableChars[Int(i)]))
-            availableChars.removeAtIndex(Int(i))
-            
+        if(numTrick > 0){
+            for _ in 1...numEasy{
+                // choose a token at random
+                let i = arc4random_uniform(UInt32(availableChars.count))
+                
+                //instantiate and remove token from options
+                AIPlayers.append(EasyAIPlayer(c: availableChars[Int(i)]))
+                availableChars.removeAtIndex(Int(i))
+                
+            }
         }
         
         while (AIPlayers.count > 0){
@@ -289,11 +296,22 @@ class MenuScene: SKScene {
                 }
             }
         }
-
+        
         let game = Game(players: players, s: solution)
         game.roomCards = rooms
-        return game
         
+        
+        //init roomscene for game
+        let roomScene = RoomScene(fileNamed: "RoomScene")
+        roomScene?.size = self.size
+        roomScene?.scaleMode = .AspectFill
+        
+        roomScene?.people = people
+        roomScene?.weapons = weapons
+        roomScene?.rooms = rooms
+        game.roomScene = roomScene
+        
+        return game
         
     }
     

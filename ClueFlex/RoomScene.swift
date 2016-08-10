@@ -11,6 +11,11 @@ import SpriteKit
 class RoomScene: SKScene {
     var game : Game?
     
+    var people: [Card]?
+    var weapons: [Card]?
+    var rooms: [Card]?
+    
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         game = Game.getGame()
@@ -24,14 +29,7 @@ class RoomScene: SKScene {
         let node = self.nodeAtPoint(location)
         if(node.name == "Start")
         {
-            //let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-            let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
-            //let nextScene = MenuScene(size: self.size)
-            
-            let nextScene = MenuScene(fileNamed: "MenuScene")
-            nextScene?.size = self.size
-            nextScene?.scaleMode = .AspectFill
-            self.view?.presentScene(nextScene!, transition: reveal)
+
             
         }
     }

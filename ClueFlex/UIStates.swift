@@ -11,6 +11,7 @@ import Foundation
 
 enum State{
     case waitingForTurn
+    case startOfTurn
     case waitingForDieRoll
     case waitingForMoveDestination
     case waitingForSuspectOrAccuse

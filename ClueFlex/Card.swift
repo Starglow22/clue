@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class Card: NSObject {
+class Card : Equatable {
     var type: Type
     var imageName: String
     var name: String
@@ -18,7 +18,15 @@ class Card: NSObject {
         type = t;
         imageName = file;
     }
+    
+    
+    
 }
+
+ func ==(lhs: Card, rhs: Card) -> Bool {
+    return lhs.name == rhs.name && lhs.type == rhs.type
+}
+
 
 enum Type{
     case CHARACTER
