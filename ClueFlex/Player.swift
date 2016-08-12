@@ -113,10 +113,10 @@ class Player: NSObject{
         
         if(Game.getGame().currentPlayer is HumanPlayer)
         {
-            Game.getGame().boardScene!.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay")?.runAction(SKAction.unhide())
+            Game.getGame().boardScene.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay")?.runAction(SKAction.unhide())
             Game.getGame().state = State.startOfTurn
         }else{
-        Game.getGame().boardScene!.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay")?.runAction(SKAction.hide())
+        Game.getGame().boardScene.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay")?.runAction(SKAction.hide())
             Game.getGame().state = State.waitingForTurn
         }
     }

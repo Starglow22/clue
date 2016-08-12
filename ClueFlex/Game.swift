@@ -6,7 +6,7 @@
 //  Copyright © 2016 Gina Bolognesi. All rights reserved.
 //
 
-import Foundation
+import SpriteKit
 
 
 class Game: NSObject {
@@ -24,27 +24,31 @@ class Game: NSObject {
     var solution: Trio
     var state: State
     
-    var boardScene: BoardScene?
+    var boardScene: BoardScene
     var roomScene: RoomScene?
     
     var roomCards: [Card]?
     
+    var noteCard: NoteCard
     
     
-    init(players: [Player], s:Trio)
+    init(players: [Player], s:Trio, scene:BoardScene)
     {
         self.players = players
         currentPlayer = players[Int(arc4random_uniform(UInt32(players.count)))]
         
         solution = s
         state = State.waitingForTurn
+        boardScene = scene
+        noteCard = NoteCard(sprite: boardScene.childNodeWithName("NoteCard") as! SKSpriteNode)
+        
         super.init()
         Game.instance = self;
     }
     
     func updatePList()
     {
-        boardScene?.highlightCurrentPlayer()
+        boardScene.highlightCurrentPlayer()
     }
     
     func moveToBoardView()
@@ -54,7 +58,7 @@ class Game: NSObject {
     
     func moveToRoomView()
     {
-        boardScene?.switchToRoomView()
+        boardScene.switchToRoomView()
     }
 
 }

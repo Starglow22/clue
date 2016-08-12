@@ -63,7 +63,7 @@ class MenuScene: SKScene {
                 
             case "C1"?:
                 selectCharacter(node)
-                characterName = "Miss Scarlet"
+                characterName = "Miss Scarlett"
                 
             case "C2"?:
                 selectCharacter(node)
@@ -86,42 +86,43 @@ class MenuScene: SKScene {
                 characterName = "Mrs White"
                 
             case "Start"?:
-                
-                let gameObj = initialize()
-                let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
-                
                 let nextScene = BoardScene(fileNamed: "BoardScene")
-                
-                
-               
                 nextScene?.size = self.size
                 nextScene?.scaleMode = .AspectFill
+
+            
+                let gameObj = initialize(nextScene!)
+                gameObj.boardScene = nextScene!
+                let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+                
+                
                 self.view?.presentScene(nextScene!, transition: reveal)
                 
                 nextScene?.game = gameObj
-                //nextScene?.setUpTiles()
-                 for player in gameObj.players
-                 {
-                 switch player.character.name
-                 {
-                 case "Miss Scarlett":
-                 player.position = nextScene?.board["scarlett start"]
-                 case "Prof. Plum":
-                 player.position = nextScene?.board["plum start"]
-                 case "Mrs Peacock":
-                 player.position = nextScene?.board["peacock start"]
-                 case "Mr Green":
-                 player.position = nextScene?.board["green start"]
-                 case "Colonel Mustard":
-                 player.position = nextScene?.board["mustard start"]
-                 default:
-                 player.position = nextScene?.board["white start"]
-                 }
-                 }
-                 
-                gameObj.boardScene = nextScene
                 
+                gameObj.roomScene?.addChild((nextScene?.childNodeWithName("NoteCard"))!)
+                nextScene?.setUpTiles()
                 
+                for player in gameObj.players
+                {
+                    switch player.character.name
+                    {
+                    case "Miss Scarlett":
+                        player.position = nextScene?.board["scarlett start"]
+                    case "Prof. Plum":
+                        player.position = nextScene?.board["plum start"]
+                    case "Mrs Peacock":
+                        player.position = nextScene?.board["peacock start"]
+                    case "Mr Green":
+                        player.position = nextScene?.board["green start"]
+                    case "Colonel Mustard":
+                        player.position = nextScene?.board["mustard start"]
+                    default:
+                        player.position = nextScene?.board["white start"]
+                    }
+                }
+                
+    
             default: break
                 // do nothing
             }
@@ -141,12 +142,10 @@ class MenuScene: SKScene {
         difficulty = 8
         characterName = "Mrs White"
         
-        let gameObj = initialize()
-        let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
-        
         let nextScene = BoardScene(fileNamed: "BoardScene")
         
-        
+        let gameObj = initialize(nextScene!)
+        let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
         
         nextScene?.size = self.size
         nextScene?.scaleMode = .AspectFill
@@ -173,7 +172,7 @@ class MenuScene: SKScene {
             }
         }
         
-        gameObj.boardScene = nextScene
+        gameObj.boardScene = nextScene!
 
         
     }
@@ -228,7 +227,7 @@ class MenuScene: SKScene {
         }
     }
     
-    func initialize() -> Game
+    func initialize(scene: BoardScene) -> Game
     {
         let p1 = Card(n: "Miss Scarlett", t: Type.CHARACTER, file: "scarlett.jpg")
         let p2 = Card(n: "Prof. Plum", t: Type.CHARACTER, file: "plum.jpg")
@@ -343,7 +342,7 @@ class MenuScene: SKScene {
             }
         }
         
-        let game = Game(players: players, s: solution)
+        let game = Game(players: players, s: solution, scene: scene)
         game.roomCards = rooms
         
         

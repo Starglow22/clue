@@ -48,6 +48,10 @@ class BoardScene: SKScene {
         
     }
     
+    override func keyDown(theEvent: NSEvent) {
+        game?.noteCard.handleKey(theEvent)
+    }
+    
     override func mouseDown(theEvent: NSEvent) {
         /* Called when a mouse click occurs */
         
@@ -55,6 +59,19 @@ class BoardScene: SKScene {
         
         let location = theEvent.locationInNode(self)
         let node = self.nodeAtPoint(location)
+        
+        // allow notecard to be interacted with regardless of state
+        if(node.name == "NoteCard")
+        {
+            game?.noteCard.clicked()
+        }
+        game?.noteCard.clearSelected()
+        if(node.parent?.parent?.name == "NoteCard")
+        {
+            game?.noteCard.selectBox(node as! SKLabelNode)
+        }
+        
+        
         switch game!.state
         {
         case State.waitingForTurn:
@@ -196,7 +213,7 @@ class BoardScene: SKScene {
         board["green start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Green start") as! SKSpriteNode)
         board["peacock start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Peacock start") as! SKSpriteNode)
         board["white start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("White start") as! SKSpriteNode)
-        board["mustard start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("mustard start") as! SKSpriteNode)
+        board["mustard start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Mustard start") as! SKSpriteNode)
         board["plum start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Plum start") as! SKSpriteNode)
         connectTiles()
     }
@@ -225,14 +242,14 @@ class BoardScene: SKScene {
         board["tile2"]?.adjacent = [board["tile3"]!, board["tile6"]!]
         board["tile3"]?.adjacent = [board["tile2"]!, board["tile7"]!]
         board["tile4"]?.adjacent = [board["tile5"]!, board["tile8"]!]
-        board["tile5"]?.adjacent = [board["tile4"]!, board["tile9"]!, board["Scarlett start"]!]
+        board["tile5"]?.adjacent = [board["tile4"]!, board["tile9"]!, board["scarlett start"]!]
         board["tile6"]?.adjacent = [board["tile7"]!, board["tile10"]!, board["tile2"]!]
         board["tile7"]?.adjacent = [board["tile3"]!, board["tile6"]!, board["tile11"]!]
         board["tile8"]?.adjacent = [board["tile4"]!, board["tile9"]!, board["tile12"]!]
         board["tile9"]?.adjacent = [board["tile5"]!, board["tile8"]!, board["tile13"]!]
         board["tile10"]?.adjacent = [board["tile6"]!, board["tile11"]!, board["tile20"]!]
         
-        board["tile11"]?.adjacent = [board["tile7"]!, board["til10"]!, board["tile21"]!]
+        board["tile11"]?.adjacent = [board["tile7"]!, board["tile10"]!, board["tile21"]!]
         board["tile12"]?.adjacent = [board["tile8"]!, board["tile13"]!, board["tile22"]!]
         board["tile13"]?.adjacent = [board["tile9"]!, board["tile12"]!, board["tile23"]!]
         board["tile14"]?.adjacent = [board["tile15"]!, board["tile24"]!]
@@ -246,7 +263,7 @@ class BoardScene: SKScene {
         board["tile21"]?.adjacent = [board["tile20"]!, board["tile31"]!, board["tile11"]!]
         board["tile22"]?.adjacent = [board["tile32"]!, board["tile12"]!, board["tile23"]!]
         board["tile23"]?.adjacent = [board["tile22"]!, board["tile13"]!, board["tile33"]!]
-        board["tile24"]?.adjacent = [board["tile14"]!, board["tile25"]!, board["Plum start"]!]
+        board["tile24"]?.adjacent = [board["tile14"]!, board["tile25"]!, board["plum start"]!]
         board["tile25"]?.adjacent = [board["tile15"]!, board["tile24"]!, board["tile26"]!]
         board["tile26"]?.adjacent = [board["tile16"]!, board["tile25"]!, board["tile27"]!]
         board["tile27"]?.adjacent = [board["tile17"]!, board["tile26"]!, board["tile28"]!]
@@ -416,8 +433,8 @@ class BoardScene: SKScene {
         board["tile176"]?.adjacent = [board["tile175"]!, board["tile172"]!]
         board["tile177"]?.adjacent = [board["tile174"]!, board["tile178"]!]
         board["tile178"]?.adjacent = [board["tile177"]!, board["tile179"]!]
-        board["tile179"]?.adjacent = [board["tile178"]!, board["Green start"]!]
-        board["tile180"]?.adjacent = [board["tile181"]!, board["White start"]!]
+        board["tile179"]?.adjacent = [board["tile178"]!, board["green start"]!]
+        board["tile180"]?.adjacent = [board["tile181"]!, board["white start"]!]
         
         board["tile181"]?.adjacent = [board["tile180"]!, board["tile182"]!]
         board["tile182"]?.adjacent = [board["tile181"]!, board["tile175"]!]
