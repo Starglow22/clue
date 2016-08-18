@@ -17,5 +17,6 @@ enum State{
     case waitingForSuspectOrAccuse
     case waitingForQuestion
     case waitingForDoneWithNoteTaking
+    case waitingForAnswer
     
 }

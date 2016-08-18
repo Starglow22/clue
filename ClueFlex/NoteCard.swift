@@ -59,7 +59,7 @@ class NoteCard: NSObject {
     
     func handleKey(event: NSEvent)
     {
-        if(selected != nil && event.characters != "") // is vallid key
+        if(selected != nil && event.characters != "" && event.characters != " ") // is vallid key
         {
             selected?.text = event.characters
         }

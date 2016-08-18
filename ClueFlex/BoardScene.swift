@@ -44,7 +44,17 @@ class BoardScene: SKScene {
             node.runAction(SKAction.hide())
         }
         
-        (self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode).text = "Your turn!"
+        if(game?.state == State.startOfTurn)
+        {
+            (self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode).text = "Your turn!"
+        }else{
+            (self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode).text = (game?.currentPlayer.character.name)!+"'s turn"
+        }
+        
+        
+        self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.hide())
+        
+        (self.childNodeWithName("CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
         
     }
     
@@ -81,6 +91,7 @@ class BoardScene: SKScene {
         case State.startOfTurn:
             //any click moves to next stage
             textDisplay.text = "Please roll the die"
+            self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.unhide())
             game?.state = State.waitingForDieRoll
             
         case State.waitingForDieRoll:
@@ -88,8 +99,8 @@ class BoardScene: SKScene {
             {
                 dieRoll = rollDie();
                 game?.state = State.waitingForMoveDestination
+                self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.hide())
                 
-//possibleDestinations = (game?.currentPlayer.position?.reachablePositions(dieRoll!))!
                 textDisplay.text = "Select your destination"
             }
             
@@ -97,9 +108,9 @@ class BoardScene: SKScene {
             let selection = board[node.name!.lowercaseString]
             //nil if not a position
             
-            //let possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!))
+            let possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!))
             
-            if (selection != nil )//&& possibleDestinations.contains(selection!))
+            if (selection != nil && possibleDestinations.contains(selection!))
             {
                 moveToPosition(selection!)
                 textDisplay.runAction(SKAction.hide())
@@ -110,6 +121,7 @@ class BoardScene: SKScene {
                 }else{
                     game?.currentPlayer.passTurn()
                     //pass turn
+                    textDisplay.text = (game?.currentPlayer.character.name)! + "'s turn"
                 }
             }else{
                 textDisplay.text = "Thats is not a valid move, sorry"
@@ -188,6 +200,12 @@ class BoardScene: SKScene {
         }
         nextScene?.size = self.size
         nextScene?.scaleMode = .AspectFill
+        
+        //bring noteCard with you so that it stays the same - can't belong to 2 scenes
+        let noteCard = self.childNodeWithName("NoteCard")
+        self.removeChildrenInArray([self.childNodeWithName("NoteCard")!])
+        nextScene?.addChild(noteCard!)
+        
         self.view?.presentScene(nextScene!, transition: reveal)
     }
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		332655891D5D2F2D0085BDD7 /* NoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332655881D5D2F2D0085BDD7 /* NoteCard.swift */; };
+		3326558B1D5EA3710085BDD7 /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326558A1D5EA3710085BDD7 /* Hand.swift */; };
 		3347444A1D4D495A00DD21A0 /* HardAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334744491D4D495A00DD21A0 /* HardAIPlayer.swift */; };
 		3347444C1D4D498D00DD21A0 /* TricksterAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */; };
 		3347444E1D4D503A00DD21A0 /* UIStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444D1D4D503A00DD21A0 /* UIStates.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		332655881D5D2F2D0085BDD7 /* NoteCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteCard.swift; sourceTree = "<group>"; };
+		3326558A1D5EA3710085BDD7 /* Hand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
 		334744491D4D495A00DD21A0 /* HardAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardAIPlayer.swift; sourceTree = "<group>"; };
 		3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TricksterAIPlayer.swift; sourceTree = "<group>"; };
 		3347444D1D4D503A00DD21A0 /* UIStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStates.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				33B183AA1D3DCE180062274F /* Position.swift */,
 				3347444D1D4D503A00DD21A0 /* UIStates.swift */,
 				332655881D5D2F2D0085BDD7 /* NoteCard.swift */,
+				3326558A1D5EA3710085BDD7 /* Hand.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				337787C91D35F19A00825C34 /* Game.swift in Sources */,
 				337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */,
 				3359924F1D3D774200CDB2E1 /* Trio.swift in Sources */,
+				3326558B1D5EA3710085BDD7 /* Hand.swift in Sources */,
 				33D28CEF1D336464001FB8C7 /* StartScene.swift in Sources */,
 				33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */,
 				337787CB1D35F2C300825C34 /* Player.swift in Sources */,

@@ -26,6 +26,7 @@ class Player: NSObject{
     
     func reply(t: Trio) -> Card?
     {
+        
         return nil
     }
     
@@ -49,7 +50,7 @@ class Player: NSObject{
     
     func rollDie() -> Int
     {
-        return 0;
+        return Int(arc4random_uniform(UInt32(6))+1);
     }
     
     func move(num: Int)
@@ -127,4 +128,14 @@ class Player: NSObject{
 
 func ==(lhs: Player, rhs: Player) -> Bool {
     return lhs.sprite == rhs.sprite && lhs.hand == rhs.hand && lhs.position == rhs.position && rhs.character == rhs.character
+}
+
+
+enum PlayerStates{
+    case needAnswer
+    
+    /*case needSuspectOrAccuse
+    case needQuestion
+    case needRoll
+ */
 }

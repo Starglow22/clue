@@ -20,6 +20,7 @@ class Game: NSObject {
     
     var players: [Player]
     var currentPlayer: Player
+    var humanPlayer: Player
     
     var solution: Trio
     var state: State
@@ -32,7 +33,7 @@ class Game: NSObject {
     var noteCard: NoteCard
     
     
-    init(players: [Player], s:Trio, scene:BoardScene)
+    init(players: [Player], s:Trio, scene:BoardScene, human:HumanPlayer)
     {
         self.players = players
         currentPlayer = players[Int(arc4random_uniform(UInt32(players.count)))]
@@ -41,6 +42,7 @@ class Game: NSObject {
         state = State.waitingForTurn
         boardScene = scene
         noteCard = NoteCard(sprite: boardScene.childNodeWithName("NoteCard") as! SKSpriteNode)
+        humanPlayer = human
         
         super.init()
         Game.instance = self;

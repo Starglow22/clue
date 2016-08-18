@@ -100,7 +100,6 @@ class MenuScene: SKScene {
                 
                 nextScene?.game = gameObj
                 
-                gameObj.roomScene?.addChild((nextScene?.childNodeWithName("NoteCard"))!)
                 nextScene?.setUpTiles()
                 
                 for player in gameObj.players
@@ -342,7 +341,7 @@ class MenuScene: SKScene {
             }
         }
         
-        let game = Game(players: players, s: solution, scene: scene)
+        let game = Game(players: players, s: solution, scene: scene, human:players[0] as! HumanPlayer)
         game.roomCards = rooms
         
         

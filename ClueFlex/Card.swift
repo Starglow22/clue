@@ -6,7 +6,7 @@
 //  Copyright © 2016 Gina Bolognesi. All rights reserved.
 //
 
-import Cocoa
+import SpriteKit
 
 class Card : NSObject {
     var type: Type

@@ -15,21 +15,38 @@ class Position: Equatable {
     
     var sprite : SKSpriteNode
     
+    var isOccupied : Bool
+    
     init(isRoom: Bool, room: Card?, node: SKSpriteNode)
     {
         self.isRoom = isRoom;
         self.sprite = node
         self.room = room;
         self.adjacent = []
-        //super.init()
+        
+        if(node.name!.containsString("start"))
+        {
+            isOccupied = true
+        }else{
+            isOccupied = false
+        }
+        
     }
     
     
     func reachablePositions(moves: Int) -> [Position]
     {
-        if(moves == 0 || self.room != nil)
+        if(self.room != nil)
         {
             return [self]
+        }else if(moves == 0){
+            if(!isOccupied)
+            {
+                return [self]
+            }else{
+                return [Position]()
+            }
+            
         }else{
             var neighbors = [Position]()
             for p in self.adjacent
