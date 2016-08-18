@@ -18,19 +18,29 @@ class BoardScene: SKScene {
     var dieRoll: Int?
     //var possibleDestinations: [Position] = []
 	   
-    
-    override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
+    func firstDisplay()
+    {
         game = Game.getGame()
         playerNameDisplay = self.childNodeWithName("PlayersList")!
         
-        (playerNameDisplay?.childNodeWithName("P1") as! SKLabelNode).text = game?.currentPlayer.character.name
+        if(game?.currentPlayer is HumanPlayer)
+        {
+            (playerNameDisplay?.childNodeWithName("P1") as! SKLabelNode).text = "You"
+        }else{
+            (playerNameDisplay?.childNodeWithName("P1") as! SKLabelNode).text = game?.currentPlayer.character.name
+        }
+        
         
         let i = game!.players.indexOf(game!.currentPlayer)!
         
         for x in 2...game!.players.count
         {
-            (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text = game?.players[(i+x)%game!.players.count].character.name
+            if(game?.players[(i+x)%game!.players.count] is HumanPlayer)
+            {
+                (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text = "You"
+            }else{
+                (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text = game?.players[(i+x)%game!.players.count].character.name
+            }
         }
         
         for x in game!.players.count...6
@@ -39,9 +49,18 @@ class BoardScene: SKScene {
         }
         highlightCurrentPlayer()
         
-        for node in (self.childNodeWithName("UICONTROLS")?.children)!
+        
+        for p in game!.players
         {
-            node.runAction(SKAction.hide())
+            p.sprite = self.childNodeWithName(p.character.name) as? SKSpriteNode
+        }
+    }
+    
+    override func didMoveToView(view: SKView) {
+        /* Setup your scene here */
+        if(game == nil)
+        {
+            firstDisplay()
         }
         
         if(game?.state == State.startOfTurn)
@@ -112,7 +131,7 @@ class BoardScene: SKScene {
             
             if (selection != nil && possibleDestinations.contains(selection!))
             {
-                moveToPosition(selection!)
+                game?.currentPlayer.moveToken(selection!)
                 textDisplay.runAction(SKAction.hide())
                 if (selection!.isRoom)
                 {
@@ -138,30 +157,6 @@ class BoardScene: SKScene {
         /* Called before each frame is rendered */
     }
     
-    //animation - move sprite node in 2 moves x and y, largest first, set new position
-    func moveToPosition(newPos: Position)
-    {
-        // move to new position
-        let newX = newPos.sprite.position.x
-        let newY = newPos.sprite.position.y
-        
-        let oldX = game!.currentPlayer.sprite!.position.x
-        let oldY = game!.currentPlayer.sprite!.position.y
-        
-        if (abs(oldX-newX) > abs(oldY - newY))
-        {
-            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: oldY), duration: 0.5))
-            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 0.5))
-        }else{
-            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: oldX, y: newY), duration: 0.5))
-            game?.currentPlayer.sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 0.5))
-        }
-        
-        
-        
-        game?.currentPlayer.position = newPos
-    }
-    
     //including animation
     func rollDie() -> Int
     {
@@ -177,7 +172,8 @@ class BoardScene: SKScene {
     {
         for x in 1...game!.players.count
         {
-            if((playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text == game?.currentPlayer.character.name)
+            if((playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text == game?.currentPlayer.character.name
+                || (game?.currentPlayer is HumanPlayer && (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text == "You"))
             {
                 (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).fontSize = 36
             }else{

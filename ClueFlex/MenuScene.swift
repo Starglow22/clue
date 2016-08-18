@@ -75,7 +75,7 @@ class MenuScene: SKScene {
                 
             case "C4"?:
                 selectCharacter(node)
-                characterName = "Colonel Mustard"
+                characterName = "Col. Mustard"
                 
             case "C5"?:
                 selectCharacter(node)
@@ -93,6 +93,7 @@ class MenuScene: SKScene {
             
                 let gameObj = initialize(nextScene!)
                 gameObj.boardScene = nextScene!
+                
                 let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
                 
                 
@@ -114,7 +115,7 @@ class MenuScene: SKScene {
                         player.position = nextScene?.board["peacock start"]
                     case "Mr Green":
                         player.position = nextScene?.board["green start"]
-                    case "Colonel Mustard":
+                    case "Col. Mustard":
                         player.position = nextScene?.board["mustard start"]
                     default:
                         player.position = nextScene?.board["white start"]
@@ -164,7 +165,7 @@ class MenuScene: SKScene {
                 player.position = nextScene?.board["peacock start"]
             case "Mr Green":
                 player.position = nextScene?.board["green start"]
-            case "Colonel Mustard":
+            case "Col. Mustard":
                 player.position = nextScene?.board["mustard start"]
             default:
                 player.position = nextScene?.board["white start"]
@@ -232,7 +233,7 @@ class MenuScene: SKScene {
         let p2 = Card(n: "Prof. Plum", t: Type.CHARACTER, file: "plum.jpg")
         let p3 = Card(n: "Mrs Peacock", t: Type.CHARACTER, file: "peacock.jpg")
         let p4 = Card(n: "Mr Green", t: Type.CHARACTER, file: "green.jpg")
-        let p5 = Card(n: "Colonel Mustard", t: Type.CHARACTER, file: "mustard.jpg")
+        let p5 = Card(n: "Col. Mustard", t: Type.CHARACTER, file: "mustard.jpg")
         let p6 = Card(n: "Mrs White", t: Type.CHARACTER, file: "white.jpg")
         
         let w1 = Card(n: "Candlestick", t: Type.WEAPON, file: "candlestick.jpg")
@@ -356,9 +357,17 @@ class MenuScene: SKScene {
         roomScene?.rooms = rooms
         game.roomScene = roomScene
  
+        game.currentPlayer = game.players[Int(arc4random_uniform(UInt32(game.players.count)))]
+        
+        if(game.currentPlayer is HumanPlayer)
+        {
+            game.state = State.startOfTurn
+        }else{
+            game.state = State.waitingForTurn
+            game.currentPlayer.play()
+        }
         
         return game
-        
     }
     
     

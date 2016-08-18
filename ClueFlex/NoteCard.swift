@@ -22,7 +22,7 @@ class NoteCard: NSObject {
     init(sprite: SKSpriteNode) {
         rootSprite = sprite
         up = false
-        /*info = ["Miss Scarlett": [" ", " "," "," "], "Prof. Plum": [" ", " "," "," "], "Mrs Peacock": [" ", " "," "," "], "Mr Green": [" ", " "," "," "], "Colonel Mustard": [" ", " "," "," "], "Mrs White": [" ", " "," "," "],
+        /*info = ["Miss Scarlett": [" ", " "," "," "], "Prof. Plum": [" ", " "," "," "], "Mrs Peacock": [" ", " "," "," "], "Mr Green": [" ", " "," "," "], "Col. Mustard": [" ", " "," "," "], "Mrs White": [" ", " "," "," "],
                 
         "Candlestick": [" ", " "," "," "], "Knife": [" ", " "," "," "], "Lead Pipe": [" ", " "," "," "], "Revolver": [" ", " "," "," "], "Rope": [" ", " "," "," "], "Wrench": [" ", " "," "," "],
         

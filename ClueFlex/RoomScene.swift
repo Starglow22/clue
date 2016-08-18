@@ -22,7 +22,6 @@ class RoomScene: SKScene {
     
     var answer: Answer?
     var question: Trio?
-    var asker: Player?
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -64,14 +63,13 @@ class RoomScene: SKScene {
         if(game?.state == State.waitingForSuspectOrAccuse)
         {
             question = nil
-            asker = nil
             
         }else if(game?.state == State.waitingForAnswer){
             hand?.clicked()
             self.childNodeWithName("Mode")?.runAction(SKAction.hide())
             self.childNodeWithName("Answer")?.runAction(SKAction.unhide())
             
-            (self.childNodeWithName("Answer")?.childNodeWithName("Ask") as! SKLabelNode).text = (asker?.character.name)! + " asks for:"
+            (self.childNodeWithName("Answer")?.childNodeWithName("Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
             
             (self.childNodeWithName("Answer")?.childNodeWithName("Person") as! SKLabelNode).text = question?.person.name
             (self.childNodeWithName("Answer")?.childNodeWithName("Weapon") as! SKLabelNode).text = question?.weapon.name
@@ -109,12 +107,14 @@ class RoomScene: SKScene {
             if(node.name == "SUSPECT")
             {
                 suspect = true
+                game?.currentPlayer.suspect = true
                 self.childNodeWithName("Mode")?.runAction(SKAction.hide())
                 self.childNodeWithName("Characters")?.runAction(SKAction.unhide())
                 self.childNodeWithName("Weapons")?.runAction(SKAction.unhide())
                 game?.state = State.waitingForQuestion
             }else if (node.name == "ACCUSE"){
                 suspect = false
+                game?.currentPlayer.suspect = false
                 self.childNodeWithName("Mode")?.runAction(SKAction.hide())
                 self.childNodeWithName("Characters")?.runAction(SKAction.unhide())
                 self.childNodeWithName("Weapons")?.runAction(SKAction.unhide())
@@ -143,8 +143,14 @@ class RoomScene: SKScene {
                 let question = Trio(person: person!, weapon: weapon!, location: (game?.currentPlayer.position?.room)! )
                 answer = game?.currentPlayer.ask(question)
                 
-                (self.childNodeWithName("Result")?.childNodeWithName("Image") as! SKSpriteNode).texture = SKTexture(imageNamed: (answer!.card?.imageName)!)
-                (self.childNodeWithName("Result")?.childNodeWithName("Text") as! SKLabelNode).text = (answer?.person?.character.name)!+"showed you "+(answer?.card?.name)!
+                if(answer?.card == nil)
+                {
+                    (self.childNodeWithName("Result")?.childNodeWithName("Image") as! SKSpriteNode).texture = SKTexture(imageNamed: "NoAnswer")
+                    (self.childNodeWithName("Result")?.childNodeWithName("Text") as! SKLabelNode).text = "No one had anything!"
+                }else{
+                    (self.childNodeWithName("Result")?.childNodeWithName("Image") as! SKSpriteNode).texture = SKTexture(imageNamed: (answer!.card?.imageName)!)
+                    (self.childNodeWithName("Result")?.childNodeWithName("Text") as! SKLabelNode).text = (answer?.person?.character.name)!+"showed you "+(answer?.card?.name)!
+                }
                 self.childNodeWithName("Result")?.runAction(SKAction.unhide())
                 
                 game?.state = State.waitingForDoneWithNoteTaking
@@ -164,10 +170,21 @@ class RoomScene: SKScene {
             {
                 if (question!.contains((hand?.getCard(node))!))
                 {
-                    
+                    game?.currentPlayer.resumeAsk(question!, humanAns: hand?.getCard(node))
                 }
             }
             
+            if(node.name == "None")
+            {
+                if(hand!.cards.contains(question!.person) || hand!.cards.contains(question!.weapon) || hand!.cards.contains(question!.location))
+                {
+                    (self.childNodeWithName("Ask")?.childNodeWithName("None")?.childNodeWithName("None") as! SKLabelNode).text = "Are you sure?"
+                }else{
+                    game?.currentPlayer.resumeAsk(question!, humanAns: nil)
+                }
+            }
+        default:
+            break; // exhaustive switch
         }
     }
     
