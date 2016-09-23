@@ -10,38 +10,149 @@ import Cocoa
 
 class EasyAIPlayer: Player {
     
-    // Simple elimination: never aska combo you already know. May ask with cards from hand but not all
+    // Simple elimination: never ask a combo you already know. May ask with cards from hand but not all
     
-    override func reply(t: Trio) -> Card?
-    {
-        return nil
-    }
+    var charInfo: [String : Player?]
+    var weaponInfo: [String : Player?]
+    var roomInfo: [String : Player?]
     
+    var shown: [String : [Card]]
     
-    override func rollDie() -> Int
-    {
-        return 0;
-    }
+    var charSoln: Card?
+    var weaponSoln: Card?
+    var roomSoln: Card?
     
-    override func move(num: Int)
-    {
+    override init(c: Card) {
+        charInfo = ["Miss Scarlett": nil, "Prof. Plum": nil, "Mrs Peacock": nil, "Mr Green": nil, "Col. Mustard": nil, "Mrs White": nil]
+         
+         weaponInfo = ["Candlestick": nil, "Knife": nil, "Lead Pipe": nil, "Revolver": nil, "Rope": nil, "Wrench": nil]
+         
+         roomInfo = ["Kitchen": nil, "Ballroom": nil, "Conservatory": nil, "Dining room": nil, "Billard": nil, "Library": nil, "Lounge": nil, "Hall": nil, "Study": nil]
+        
+        shown = ["Miss Scarlett": [], "Prof. Plum": [], "Mrs Peacock": [], "Mr Green": [], "Col. Mustard": [], "Mrs White": []]
+        
+        super.init(c: c)
+        for x in hand
+        {
+            if(x.type == Type.CHARACTER)
+            {
+                charInfo[x.name] = self
+            }else if (x.type == Type.WEAPON){
+                weaponInfo[x.name] = self
+            }else{
+                roomInfo[x.name] = self
+            }
+        }
+        
         
     }
     
-    override func isInRoom() -> Bool
+
+    
+    override func reply(t: Trio, p:Player) -> Card?
     {
-        return false;
+        let numIHave = (hand.contains(t.location) ? 1 : 0) + (hand.contains(t.weapon) ? 1 : 0) + (hand.contains(t.person) ? 1 : 0)
+        let response : Card
+        
+        
+        if(numIHave == 0)
+        {
+            return nil;
+        }else if (numIHave == 1)
+        {
+            if(hand.contains(t.person))
+            {
+                response = t.person;
+            }else if (hand.contains(t.weapon)){
+                response = t.weapon
+            }else{
+                response = t.location
+            }
+        }else{
+            if(shown[p.character.name]!.contains(t.location))
+            {
+                response = t.location
+            }else if(shown[p.character.name]!.contains(t.person)){
+                response = t.person
+            }else if(shown[p.character.name]!.contains(t.weapon)){
+                response = t.weapon
+            }else{
+                if(hand.contains(t.person))
+                {
+                    response = t.person;
+                }else if (hand.contains(t.weapon)){
+                    response = t.weapon
+                }else{
+                    response = t.location
+                }
+            }
+        }
+        
+        shown[p.character.name]?.append(response)
+        return response
+    }
+    
+    
+    override func move(num: Int)
+    {
+        let options = position!.reachablePositions(num)
+        let target: Position
+        if(suspect)
+        {
+            target = (position?.closestRoom([Position]()))!
+        }else{
+            target = Game.getGame().boardScene.board[(roomSoln?.name)!]! //roomSoln.
+        }
+        
+        let pathToDestination = position!.shortestPathTo(target, pathSoFar: [Position]())
+        for i in 1...pathToDestination.count
+        {
+            if(options.contains(pathToDestination[pathToDestination.count-i]))
+            {
+                moveToken(pathToDestination[pathToDestination.count-i])
+                return;
+                
+            }
+        }
         
     }
     
     override func chooseSuspectOrAccuse()
     {
-        
+        if(charSoln != nil && weaponSoln != nil && roomSoln != nil)
+        {
+            suspect = true;
+        }else{
+            suspect = false;
+        }
     }
     
     override func selectPersonWeapon() -> Trio
     {
-        return Trio(person: Game.getGame().players[0].character , weapon: (Game.getGame().roomScene?.weapons![0])!, location: self.position!.room!)
+        let char : String
+        let weapon: String
+        
+        for s in charInfo
+        {
+            if(s.1 == nil)
+            {
+                char = s.0
+                break
+            }
+        }
+        
+        for s in weaponInfo
+        {
+            if(s.1 == nil)
+            {
+                weapon = s.0
+                break
+            }
+        }
+        
+        
+        return Trio(person: Game.getGame().roomScene?.people. , weapon: (Game.getGame().roomScene?.weapons![0])!,
+                    location: self.position!.room!)
     }
     
     

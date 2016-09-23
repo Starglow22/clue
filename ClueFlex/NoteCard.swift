@@ -9,7 +9,6 @@
 import SpriteKit
 
 class NoteCard: NSObject {
-    //var info: [String : [Character]]
     static let DEFAULT_COLOR = NSColor.whiteColor()
     static let HIGHLIGHT_COLOR = NSColor.redColor()
     
@@ -22,12 +21,6 @@ class NoteCard: NSObject {
     init(sprite: SKSpriteNode) {
         rootSprite = sprite
         up = false
-        /*info = ["Miss Scarlett": [" ", " "," "," "], "Prof. Plum": [" ", " "," "," "], "Mrs Peacock": [" ", " "," "," "], "Mr Green": [" ", " "," "," "], "Col. Mustard": [" ", " "," "," "], "Mrs White": [" ", " "," "," "],
-                
-        "Candlestick": [" ", " "," "," "], "Knife": [" ", " "," "," "], "Lead Pipe": [" ", " "," "," "], "Revolver": [" ", " "," "," "], "Rope": [" ", " "," "," "], "Wrench": [" ", " "," "," "],
-        
-        "Kitchen": [" ", " "," "," "], "Ballroom": [" ", " "," "," "], "Conservatory": [" ", " "," "," "], "Dining room": [" ", " "," "," "], "Billard": [" ", " "," "," "], "Library": [" ", " "," "," "], "Lounge": [" ", " "," "," "], "Hall": [" ", " "," "," "], "Study": [" ", " "," "," "]]
- */
     }
     
     func clicked()

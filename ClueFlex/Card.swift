@@ -19,7 +19,10 @@ class Card : NSObject {
         imageName = file;
     }
     
-    
+    static func getCardWithName(name:String)
+    {
+        
+    }
     
 }
 

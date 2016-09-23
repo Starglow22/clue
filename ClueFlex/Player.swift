@@ -30,7 +30,7 @@ class Player: NSObject{
     }
     
     
-    func reply(t: Trio) -> Card?
+    func reply(t: Trio, p:Player) -> Card?
     {
         
         return nil
@@ -121,10 +121,10 @@ class Player: NSObject{
         {
             if(players[counter] is HumanPlayer)
             {
-                players[counter].reply(question)
+                players[counter].reply(question, p: self)
                 return nil
             }
-            answer = players[counter].reply(question)
+            answer = players[counter].reply(question, p: self)
             
             if(answer != nil)
             {
@@ -157,7 +157,7 @@ class Player: NSObject{
             while(answer == nil && counter != me)
             {
                 
-                answer = players[counter].reply(question)
+                answer = players[counter].reply(question, p:self)
                 
                 if(answer != nil)
                 {

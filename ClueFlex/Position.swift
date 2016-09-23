@@ -56,6 +56,39 @@ class Position: Equatable {
             return neighbors
         }
     }
+    
+    //breadth first search
+    func closestRoom(queue: [Position]) -> Position
+    {
+        if(self.isRoom)
+        {
+            return self
+        }else{
+            var newQueue = queue + self.adjacent
+            return newQueue.removeLast().closestRoom(newQueue)
+        }
+    }
+    
+    //dfs
+    // first item is current position, last item is adjacent to room
+    func shortestPathTo(room: Position, pathSoFar: [Position]) -> [Position]
+    {
+        if(self == room)
+        {
+            return pathSoFar
+        }else{
+            var shortestPath:[Position]? = nil
+            for p in self.adjacent
+            {
+                let result = p.shortestPathTo(room, pathSoFar: pathSoFar + [self])
+                if(shortestPath == nil || shortestPath!.count > result.count)
+                {
+                    shortestPath = result
+                }
+            }
+            return shortestPath!
+        }
+    }
 
 }
 
