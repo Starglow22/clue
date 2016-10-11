@@ -89,19 +89,17 @@ class MenuScene: SKScene {
                 let nextScene = BoardScene(fileNamed: "BoardScene")
                 nextScene?.size = self.size
                 nextScene?.scaleMode = .AspectFill
-
+                nextScene?.setUpTiles()
             
                 let gameObj = initialize(nextScene!)
                 gameObj.boardScene = nextScene!
+                nextScene?.game = gameObj
                 
                 let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
                 
                 
                 self.view?.presentScene(nextScene!, transition: reveal)
                 
-                nextScene?.game = gameObj
-                
-                nextScene?.setUpTiles()
                 
                 for player in gameObj.players
                 {
@@ -145,16 +143,10 @@ class MenuScene: SKScene {
         let nextScene = BoardScene(fileNamed: "BoardScene")
         
         let gameObj = initialize(nextScene!)
-        let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
-        
-        nextScene?.size = self.size
-        nextScene?.scaleMode = .AspectFill
-        self.view?.presentScene(nextScene!, transition: reveal)
-        
-        nextScene?.game = gameObj
-        nextScene?.setUpTiles()
         for player in gameObj.players
         {
+            player.sprite = nextScene?.childNodeWithName("BoardBackground")!.childNodeWithName(player.character.name) as? SKSpriteNode
+            
             switch player.character.name
             {
             case "Miss Scarlett":
@@ -171,6 +163,16 @@ class MenuScene: SKScene {
                 player.position = nextScene?.board["white start"]
             }
         }
+        
+        let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+        
+        nextScene?.size = self.size
+        nextScene?.scaleMode = .AspectFill
+        self.view?.presentScene(nextScene!, transition: reveal)
+        
+        nextScene?.game = gameObj
+        nextScene?.setUpTiles()
+        
         
         gameObj.boardScene = nextScene!
 
@@ -359,6 +361,30 @@ class MenuScene: SKScene {
  
         game.currentPlayer = game.players[Int(arc4random_uniform(UInt32(game.players.count)))]
         
+        
+        //assigng start positions at all players
+        for p in Game.getGame().players{
+            p.sprite = scene.childNodeWithName(p.character.name) as? SKSpriteNode
+            
+            switch p.character.name {
+            case "Miss Scarlett":
+                p.position = scene.board["scarlett start"]!
+            case "Prof. Plum":
+                p.position = scene.board["plum start"]!
+            case "Mrs Peacock":
+                p.position = scene.board["peacock start"]!
+            case "Mr Green":
+                p.position = scene.board["green start"]!
+            case "Col. Mustard":
+                p.position = scene.board["mustard start"]!
+            case "Mrs White":
+                p.position = scene.board["white start"]!
+                
+            default: break
+                
+            }
+        }
+        
         if(game.currentPlayer is HumanPlayer)
         {
             game.state = State.startOfTurn
@@ -367,6 +393,7 @@ class MenuScene: SKScene {
             game.currentPlayer.play()
         }
         
+
         return game
     }
     

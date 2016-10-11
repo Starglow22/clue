@@ -24,10 +24,10 @@ class EasyAIPlayer: Player {
     
     override init(c: Card) {
         charInfo = ["Miss Scarlett": nil, "Prof. Plum": nil, "Mrs Peacock": nil, "Mr Green": nil, "Col. Mustard": nil, "Mrs White": nil]
-         
-         weaponInfo = ["Candlestick": nil, "Knife": nil, "Lead Pipe": nil, "Revolver": nil, "Rope": nil, "Wrench": nil]
-         
-         roomInfo = ["Kitchen": nil, "Ballroom": nil, "Conservatory": nil, "Dining room": nil, "Billard": nil, "Library": nil, "Lounge": nil, "Hall": nil, "Study": nil]
+        
+        weaponInfo = ["Candlestick": nil, "Knife": nil, "Lead Pipe": nil, "Revolver": nil, "Rope": nil, "Wrench": nil]
+        
+        roomInfo = ["Kitchen": nil, "Ballroom": nil, "Conservatory": nil, "Dining room": nil, "Billard": nil, "Library": nil, "Lounge": nil, "Hall": nil, "Study": nil]
         
         shown = ["Miss Scarlett": [], "Prof. Plum": [], "Mrs Peacock": [], "Mr Green": [], "Col. Mustard": [], "Mrs White": []]
         
@@ -43,11 +43,9 @@ class EasyAIPlayer: Player {
                 roomInfo[x.name] = self
             }
         }
-        
-        
     }
     
-
+    
     
     override func reply(t: Trio, p:Player) -> Card?
     {
@@ -104,7 +102,7 @@ class EasyAIPlayer: Player {
             target = Game.getGame().boardScene.board[(roomSoln?.name)!]! //roomSoln.
         }
         
-        let pathToDestination = position!.shortestPathTo(target, pathSoFar: [Position]())
+        let pathToDestination = position!.shortestPathTo(target, pathSoFar: [Position](), queue: [Position]())
         for i in 1...pathToDestination.count
         {
             if(options.contains(pathToDestination[pathToDestination.count-i]))
@@ -129,8 +127,8 @@ class EasyAIPlayer: Player {
     
     override func selectPersonWeapon() -> Trio
     {
-        let char : String
-        let weapon: String
+        var char : String? = nil
+        var weapon: String? = nil
         
         for s in charInfo
         {
@@ -150,9 +148,13 @@ class EasyAIPlayer: Player {
             }
         }
         
-        
-        return Trio(person: Game.getGame().roomScene?.people. , weapon: (Game.getGame().roomScene?.weapons![0])!,
-                    location: self.position!.room!)
+        if(char == nil && weapon == nil)
+        {
+            return Trio(person: charSoln!, weapon: weaponSoln!, location: self.position!.room!)
+        }else{
+            
+            return Trio(person: Card.getCardWithName(char!)! , weapon: Card.getCardWithName(weapon!)!, location: self.position!.room!)
+        }
     }
     
     
@@ -160,6 +162,6 @@ class EasyAIPlayer: Player {
     {
         //UI display answer
     }
-
-
+    
+    
 }

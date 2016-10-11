@@ -72,7 +72,7 @@ class Player: NSObject{
     //animation - move sprite node in 2 moves x and y, largest first, set new position
     func moveToken(newPos: Position)
     {
-        // move to new position
+        
         let newX = newPos.sprite.position.x
         let newY = newPos.sprite.position.y
         
@@ -81,11 +81,13 @@ class Player: NSObject{
         
         if (abs(oldX-newX) > abs(oldY - newY))
         {
-            sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: oldY), duration: 0.5))
-            sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 0.5))
+            sprite?.runAction(SKAction.group([SKAction.moveTo(CGPoint(x: newX, y: oldY), duration: 1.5), SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5)]))
+            //sprite?.runAction()
+            //sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5))
         }else{
-            sprite?.runAction(SKAction.moveTo(CGPoint(x: oldX, y: newY), duration: 0.5))
-            sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 0.5))
+            sprite?.runAction(SKAction.group([SKAction.moveTo(CGPoint(x: oldX, y: newY), duration: 1.5), SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5)]))
+            //sprite?.runAction(SKAction.moveTo(CGPoint(x: oldX, y: newY), duration: 1.5))
+            //sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5))
         }
         
         position = newPos

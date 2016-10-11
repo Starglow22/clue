@@ -9,6 +9,8 @@
 import SpriteKit
 
 class Card : NSObject {
+    static var list = [Card]()
+    
     var type: Type
     var imageName: String
     var name: String
@@ -17,11 +19,20 @@ class Card : NSObject {
         name = n;
         type = t;
         imageName = file;
+        
+        super.init()
+        Card.list.append(self)
     }
     
-    static func getCardWithName(name:String)
+    static func getCardWithName(name:String) -> Card?
     {
-        
+        for c in list{
+            if(c.name == name)
+            {
+                return c
+            }
+        }
+        return nil
     }
     
 }

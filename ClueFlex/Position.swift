@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class Position: Equatable {
+class Position : Equatable{
     var isRoom : Bool
     var room: Card?
     var adjacent: [Position]
@@ -65,10 +65,22 @@ class Position: Equatable {
             return self
         }else{
             var newQueue = queue + self.adjacent
-            return newQueue.removeLast().closestRoom(newQueue)
+            return newQueue.removeFirst().closestRoom(newQueue)
         }
     }
     
+    //breadth first search
+    func shortestPathTo(room: Position, pathSoFar: [Position], queue: [Position]) -> [Position]
+    {
+        if(self.isRoom)
+        {
+            return pathSoFar
+        }else{
+            var newQueue = queue + self.adjacent
+            return newQueue.removeFirst().shortestPathTo(room, pathSoFar: pathSoFar+[self], queue: newQueue)
+        }
+    }
+    /*
     //dfs
     // first item is current position, last item is adjacent to room
     func shortestPathTo(room: Position, pathSoFar: [Position]) -> [Position]
@@ -89,6 +101,7 @@ class Position: Equatable {
             return shortestPath!
         }
     }
+*/
 
 }
 

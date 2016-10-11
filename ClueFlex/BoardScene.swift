@@ -58,10 +58,7 @@ class BoardScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        if(game == nil)
-        {
-            firstDisplay()
-        }
+        firstDisplay()
         
         if(game?.state == State.startOfTurn)
         {
@@ -118,7 +115,6 @@ class BoardScene: SKScene {
             {
                 dieRoll = rollDie();
                 game?.state = State.waitingForMoveDestination
-                self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.hide())
                 
                 textDisplay.text = "Select your destination"
             }
@@ -132,7 +128,8 @@ class BoardScene: SKScene {
             if (selection != nil && possibleDestinations.contains(selection!))
             {
                 game?.currentPlayer.moveToken(selection!)
-                textDisplay.runAction(SKAction.hide())
+                self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.hide())
+                //textDisplay.runAction(SKAction.hide())
                 if (selection!.isRoom)
                 {
                     switchToRoomView()
@@ -230,8 +227,11 @@ class BoardScene: SKScene {
         board["mustard start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Mustard start") as! SKSpriteNode)
         board["plum start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Plum start") as! SKSpriteNode)
         connectTiles()
-    }
-    
+        
+        
+        
+        }
+ 
     func connectTiles()
     {
         board["study"]?.adjacent = [board["tile19"]!, board["kitchen"]!]
