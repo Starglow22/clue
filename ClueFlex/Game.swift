@@ -41,7 +41,7 @@ class Game: NSObject {
         solution = s
         state = State.waitingForTurn
         boardScene = scene
-        noteCard = NoteCard(sprite: boardScene.childNodeWithName("NoteCard") as! SKSpriteNode)
+        noteCard = NoteCard(sprite: boardScene.childNode(withName: "NoteCard") as! SKSpriteNode)
         humanPlayer = human
         
         super.init()

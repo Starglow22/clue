@@ -15,7 +15,7 @@ class MenuScene: SKScene {
     var difficulty = 0
     var characterName = ""
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         /* Setup your scene here */
         
         for child in self.children
@@ -23,7 +23,7 @@ class MenuScene: SKScene {
             child.alpha = 0.0;
         }
         
-        self.childNodeWithName("Start")?.runAction(SKAction.hide())
+        self.childNode(withName: "Start")?.run(SKAction.hide())
         
         
         fadePlayerIcons()
@@ -31,11 +31,11 @@ class MenuScene: SKScene {
         
     }
     
-    override func mouseDown(theEvent: NSEvent) {
+    override func mouseDown(with theEvent: NSEvent) {
         /* Called when a mouse click occurs */
         
-        let location = theEvent.locationInNode(self)
-        let node = self.nodeAtPoint(location)
+        let location = theEvent.location(in: self)
+        let node = self.atPoint(location)
         if(lastClicked != node)
         {
             switch node.name {
@@ -88,14 +88,15 @@ class MenuScene: SKScene {
             case "Start"?:
                 let nextScene = BoardScene(fileNamed: "BoardScene")
                 nextScene?.size = self.size
-                nextScene?.scaleMode = .AspectFill
+                nextScene?.scaleMode = .aspectFill
                 nextScene?.setUpTiles()
             
-                let gameObj = initialize(nextScene!)
+                let gameObj = initialize(scene: nextScene!)
                 gameObj.boardScene = nextScene!
                 nextScene?.game = gameObj
+                nextScene?.setUpTiles()
                 
-                let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+                let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
                 
                 
                 self.view?.presentScene(nextScene!, transition: reveal)
@@ -120,6 +121,11 @@ class MenuScene: SKScene {
                     }
                 }
                 
+                if(!(gameObj.currentPlayer is HumanPlayer))
+                {
+                    gameObj.currentPlayer.play()
+                }
+                
     
             default: break
                 // do nothing
@@ -128,24 +134,24 @@ class MenuScene: SKScene {
         }
         lastClicked = node
         
-        if(numPlayers != 0 && difficulty != 0 && characterName != "" && self.childNodeWithName("Start")?.hidden == true)
+        if(numPlayers != 0 && difficulty != 0 && characterName != "" && self.childNode(withName: "Start")?.isHidden == true)
         {
-            self.childNodeWithName("Start")?.runAction(SKAction.unhide())
+            self.childNode(withName: "Start")?.run(SKAction.unhide())
         }
         
     }
     
-    func moveToBoardScene(){
+    /*func moveToBoardScene(){
         numPlayers = 2
         difficulty = 8
         characterName = "Mrs White"
         
         let nextScene = BoardScene(fileNamed: "BoardScene")
         
-        let gameObj = initialize(nextScene!)
+        let gameObj = initialize(scene: nextScene!)
         for player in gameObj.players
         {
-            player.sprite = nextScene?.childNodeWithName("BoardBackground")!.childNodeWithName(player.character.name) as? SKSpriteNode
+            player.sprite = nextScene?.childNode(withName: "BoardBackground")!.childNode(withName: player.character.name) as? SKSpriteNode
             
             switch player.character.name
             {
@@ -164,10 +170,10 @@ class MenuScene: SKScene {
             }
         }
         
-        let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+        let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
         
         nextScene?.size = self.size
-        nextScene?.scaleMode = .AspectFill
+        nextScene?.scaleMode = .aspectFill
         self.view?.presentScene(nextScene!, transition: reveal)
         
         nextScene?.game = gameObj
@@ -178,12 +184,12 @@ class MenuScene: SKScene {
 
         
     }
+    */
     
-    
-    func selectCharacter(node: SKNode)
+    func selectCharacter(_ node: SKNode)
     {
         resizeCharacterIcons()
-        node.runAction(SKAction.scaleTo(1.4, duration: 0.1))
+        node.run(SKAction.scale(to: 1.4, duration: 0.1))
     }
     
     func resetNumbers()
@@ -199,10 +205,10 @@ class MenuScene: SKScene {
         }
     }
     
-    func selectNode(node: SKNode)
+    func selectNode(_ node: SKNode)
     {
         fadePlayerIcons()
-        node.runAction(SKAction.colorizeWithColor(NSColor.redColor(), colorBlendFactor: 0.5, duration: 0.1))
+        node.run(SKAction.colorize(with: NSColor.red, colorBlendFactor: 0.5, duration: 0.1))
     }
     
     func fadePlayerIcons()
@@ -211,7 +217,7 @@ class MenuScene: SKScene {
         {
             if(node.name?.hasPrefix("P") == true)
             {
-                node.runAction(SKAction.colorizeWithColor(NSColor.clearColor(), colorBlendFactor: 0.5, duration: 0.1))
+                node.run(SKAction.colorize(with: NSColor.clear, colorBlendFactor: 0.5, duration: 0.1))
             }
             
         }
@@ -223,7 +229,7 @@ class MenuScene: SKScene {
         {
             if(node.name?.hasPrefix("C") == true)
             {
-                node.runAction(SKAction.scaleTo(1.0, duration: 0.1))
+                node.run(SKAction.scale(to: 1.0, duration: 0.1))
             }
             
         }
@@ -231,29 +237,29 @@ class MenuScene: SKScene {
     
     func initialize(scene: BoardScene) -> Game
     {
-        let p1 = Card(n: "Miss Scarlett", t: Type.CHARACTER, file: "scarlett.jpg")
-        let p2 = Card(n: "Prof. Plum", t: Type.CHARACTER, file: "plum.jpg")
-        let p3 = Card(n: "Mrs Peacock", t: Type.CHARACTER, file: "peacock.jpg")
-        let p4 = Card(n: "Mr Green", t: Type.CHARACTER, file: "green.jpg")
-        let p5 = Card(n: "Col. Mustard", t: Type.CHARACTER, file: "mustard.jpg")
-        let p6 = Card(n: "Mrs White", t: Type.CHARACTER, file: "white.jpg")
+        let p1 = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett.jpg")
+        let p2 = Card(n: "Prof. Plum", t: Type.character, file: "plum.jpg")
+        let p3 = Card(n: "Mrs Peacock", t: Type.character, file: "peacock.jpg")
+        let p4 = Card(n: "Mr Green", t: Type.character, file: "green.jpg")
+        let p5 = Card(n: "Col. Mustard", t: Type.character, file: "mustard.jpg")
+        let p6 = Card(n: "Mrs White", t: Type.character, file: "white.jpg")
         
-        let w1 = Card(n: "Candlestick", t: Type.WEAPON, file: "candlestick.jpg")
-        let w2 = Card(n: "Knife", t: Type.WEAPON, file: "knife.jpg")
-        let w3 = Card(n: "Lead Pipe", t: Type.WEAPON, file: "leadpipe.jpg")
-        let w4 = Card(n: "Revolver", t: Type.WEAPON, file: "revolver.jpg")
-        let w5 = Card(n: "Rope", t: Type.WEAPON, file: "rope.jpg")
-        let w6 = Card(n: "Wrench", t: Type.WEAPON, file: "wrench.jpg")
+        let w1 = Card(n: "Candlestick", t: Type.weapon, file: "candlestick.jpg")
+        let w2 = Card(n: "Knife", t: Type.weapon, file: "knife.jpg")
+        let w3 = Card(n: "Lead Pipe", t: Type.weapon, file: "leadpipe.jpg")
+        let w4 = Card(n: "Revolver", t: Type.weapon, file: "revolver.jpg")
+        let w5 = Card(n: "Rope", t: Type.weapon, file: "rope.jpg")
+        let w6 = Card(n: "Wrench", t: Type.weapon, file: "wrench.jpg")
         
-        let r1 = Card(n: "Kitchen", t: Type.LOCATION, file: "kitchen.jpg")
-        let r2 = Card(n: "Ballroom", t: Type.LOCATION, file: "ballroom.jpg")
-        let r3 = Card(n: "Conservatory", t: Type.LOCATION, file: "conservatory.jpg")
-        let r4 = Card(n: "Dining room", t: Type.LOCATION, file: "dining.jpg")
-        let r5 = Card(n: "Billard", t: Type.LOCATION, file: "billard.jpg")
-        let r6 = Card(n: "Library", t: Type.LOCATION, file: "library.jpg")
-        let r7 = Card(n: "Lounge", t: Type.LOCATION, file: "lounge.jpg")
-        let r8 = Card(n: "Hall", t: Type.LOCATION, file: "hall.jpg")
-        let r9 = Card(n: "Study", t: Type.LOCATION, file: "study.jpg")
+        let r1 = Card(n: "Kitchen", t: Type.location, file: "kitchen.jpg")
+        let r2 = Card(n: "Ballroom", t: Type.location, file: "ballroom.jpg")
+        let r3 = Card(n: "Conservatory", t: Type.location, file: "conservatory.jpg")
+        let r4 = Card(n: "Dining room", t: Type.location, file: "dining.jpg")
+        let r5 = Card(n: "Billard", t: Type.location, file: "billard.jpg")
+        let r6 = Card(n: "Library", t: Type.location, file: "library.jpg")
+        let r7 = Card(n: "Lounge", t: Type.location, file: "lounge.jpg")
+        let r8 = Card(n: "Hall", t: Type.location, file: "hall.jpg")
+        let r9 = Card(n: "Study", t: Type.location, file: "study.jpg")
         
         let people = [p1, p2, p3, p4, p5, p6]
         let weapons = [w1, w2, w3, w4, w5, w6]
@@ -269,20 +275,20 @@ class MenuScene: SKScene {
         
         //take solution cards out of deck
         var cards = people + weapons + rooms
-        cards.removeAtIndex(cards.indexOf(chosenP)!)
-        cards.removeAtIndex(cards.indexOf(chosenW)!)
-        cards.removeAtIndex(cards.indexOf(chosenR)!)
+        cards.remove(at: cards.index(of: chosenP)!)
+        cards.remove(at: cards.index(of: chosenW)!)
+        cards.remove(at: cards.index(of: chosenR)!)
         
         var availableChars = people+[]
         
         var players = [Player]()
         
         //initialize players with a character card attached
-        players.append(HumanPlayer(c: availableChars[availableChars.indexOf({$0.name == characterName})!]))
-        availableChars.removeAtIndex(availableChars.indexOf({$0.name == characterName})!)
+        players.append(HumanPlayer(c: availableChars[availableChars.index(where: {$0.name == characterName})!]))
+        availableChars.remove(at: availableChars.index(where: {$0.name == characterName})!)
         
         let numHard = (difficulty + 10%numPlayers) / Int(ceil(10.0 / Double(numPlayers)))
-        let numTrick = (difficulty + 10%numPlayers) % Int(ceil(10.0 / Double(numPlayers)))
+        let numTrick = (difficulty + 10%numPlayers)-1 % Int(ceil(10.0 / Double(numPlayers)))
         let numEasy = numPlayers - numHard - numTrick
         
         var AIPlayers = [Player]()
@@ -294,7 +300,7 @@ class MenuScene: SKScene {
                 
                 //instantiate and remove token from options
                 AIPlayers.append(HardAIPlayer(c: availableChars[Int(i)]))
-                availableChars.removeAtIndex(Int(i))
+                availableChars.remove(at: Int(i))
                 
             }
         }
@@ -307,7 +313,7 @@ class MenuScene: SKScene {
                 
                 //instantiate and remove token from options
                 AIPlayers.append(TricksterAIPlayer(c: availableChars[Int(i)]))
-                availableChars.removeAtIndex(Int(i))
+                availableChars.remove(at: Int(i))
                 
             }
         }
@@ -318,7 +324,7 @@ class MenuScene: SKScene {
                 
                 //instantiate and remove token from options
                 AIPlayers.append(EasyAIPlayer(c: availableChars[Int(i)]))
-                availableChars.removeAtIndex(Int(i))
+                availableChars.remove(at: Int(i))
                 
             }
         }
@@ -329,7 +335,7 @@ class MenuScene: SKScene {
             
             //instantiate and remove token from options
             players.append(AIPlayers[Int(i)])
-            AIPlayers.removeAtIndex(Int(i))
+            AIPlayers.remove(at: Int(i))
             
         }
         
@@ -339,7 +345,7 @@ class MenuScene: SKScene {
                 if(cards.count>0)
                 {
                     let x = arc4random_uniform(UInt32(cards.count))
-                    players[i].hand.append(cards.removeAtIndex(Int(x)))
+                    players[i].hand.append(cards.remove(at: Int(x)))
                 }
             }
         }
@@ -351,7 +357,7 @@ class MenuScene: SKScene {
         //init roomscene for game
         let roomScene = RoomScene(fileNamed: "RoomScene")
         roomScene?.size = self.size
-        roomScene?.scaleMode = .AspectFill
+        roomScene?.scaleMode = .aspectFill
         
         
         roomScene?.people = people
@@ -364,7 +370,7 @@ class MenuScene: SKScene {
         
         //assigng start positions at all players
         for p in Game.getGame().players{
-            p.sprite = scene.childNodeWithName(p.character.name) as? SKSpriteNode
+            p.sprite = (scene.childNode(withName: "BoardBackground")!.childNode(withName: p.character.name) as! SKSpriteNode)
             
             switch p.character.name {
             case "Miss Scarlett":
@@ -390,15 +396,13 @@ class MenuScene: SKScene {
             game.state = State.startOfTurn
         }else{
             game.state = State.waitingForTurn
-            game.currentPlayer.play()
         }
-        
 
         return game
     }
     
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
         
         

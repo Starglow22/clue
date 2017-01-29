@@ -9,19 +9,19 @@
 import SpriteKit
 
 class StartScene: SKScene {
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         /* Setup your scene here */
         
     }
     
-    override func mouseDown(theEvent: NSEvent) {
+    override func mouseDown(with theEvent: NSEvent) {
         /* Called when a mouse click occurs */
         
-        let location = theEvent.locationInNode(self)
-        let node = self.nodeAtPoint(location)
+        let location = theEvent.location(in: self)
+        let node = self.atPoint(location)
         if(node.name == "Start")
         {
-            let reveal = SKTransition.doorsOpenHorizontalWithDuration(0.5)
+            let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
             let nextScene = MenuScene(fileNamed: "MenuScene")
             
             
@@ -30,13 +30,13 @@ class StartScene: SKScene {
             
             
             nextScene?.size = self.size
-            nextScene?.scaleMode = .AspectFill
+            nextScene?.scaleMode = .aspectFill
             self.view?.presentScene(nextScene!, transition: reveal)
             
         }
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
 }

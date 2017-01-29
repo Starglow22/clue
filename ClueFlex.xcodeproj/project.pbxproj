@@ -22,6 +22,7 @@
 		337787CB1D35F2C300825C34 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CA1D35F2C300825C34 /* Player.swift */; };
 		337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CC1D35F3A000825C34 /* HumanPlayer.swift */; };
 		337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */; };
+		338469441DACA4E50056E605 /* EditText.sks in Resources */ = {isa = PBXBuildFile; fileRef = 338469431DACA4E50056E605 /* EditText.sks */; };
 		33B183AB1D3DCE180062274F /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AA1D3DCE180062274F /* Position.swift */; };
 		33B183AF1D3DF1C50062274F /* RoomScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AE1D3DF1C50062274F /* RoomScene.swift */; };
 		33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D28CEC1D336464001FB8C7 /* AppDelegate.swift */; };
@@ -49,6 +50,7 @@
 		337787CA1D35F2C300825C34 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		337787CC1D35F3A000825C34 /* HumanPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanPlayer.swift; sourceTree = "<group>"; };
 		337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EasyAIPlayer.swift; sourceTree = "<group>"; };
+		338469431DACA4E50056E605 /* EditText.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EditText.sks; sourceTree = "<group>"; };
 		33B183AA1D3DCE180062274F /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		33B183AE1D3DF1C50062274F /* RoomScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomScene.swift; sourceTree = "<group>"; };
 		33D28CE91D336464001FB8C7 /* ClueFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClueFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 				33D28CF41D336464001FB8C7 /* MainMenu.xib */,
 				33D28CF71D336464001FB8C7 /* Info.plist */,
 				337787C71D35F17400825C34 /* Model */,
+				338469431DACA4E50056E605 /* EditText.sks */,
 			);
 			path = ClueFlex;
 			sourceTree = "<group>";
@@ -156,11 +159,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Gina Bolognesi";
 				TargetAttributes = {
 					33D28CE81D336464001FB8C7 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -193,6 +197,7 @@
 				33D28CF11D336464001FB8C7 /* StartScene.sks in Resources */,
 				33D28CF61D336464001FB8C7 /* MainMenu.xib in Resources */,
 				33D28CFE1D3365F5001FB8C7 /* MenuScene.sks in Resources */,
+				338469441DACA4E50056E605 /* EditText.sks in Resources */,
 				3359C97D1D5AE4F300DECB9D /* RoomScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,8 +257,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -297,8 +304,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -317,6 +326,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -329,6 +339,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gina.ClueFlex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -341,6 +352,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = gina.ClueFlex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

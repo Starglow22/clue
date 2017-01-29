@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class Position : Equatable{
+class Position{
     var isRoom : Bool
     var room: Card?
     var adjacent: [Position]
@@ -24,7 +24,7 @@ class Position : Equatable{
         self.room = room;
         self.adjacent = []
         
-        if(node.name!.containsString("start"))
+        if(node.name!.contains("start"))
         {
             isOccupied = true
         }else{
@@ -34,77 +34,167 @@ class Position : Equatable{
     }
     
     
-    func reachablePositions(moves: Int) -> [Position]
+    func reachablePositions(_ moves: Int, _ firstCall: Bool) -> [Position]
     {
-        if(self.room != nil)
-        {
-            return [self]
-        }else if(moves == 0){
-            if(!isOccupied)
-            {
-                return [self]
-            }else{
-                return [Position]()
-            }
+        if(!firstCall && (self.isRoom || moves == 0)){
+
+            return [Position]()
             
         }else{
             var neighbors = [Position]()
             for p in self.adjacent
             {
-                neighbors += p.reachablePositions(moves-1)
+                if(!p.isOccupied)
+                {
+                    neighbors.append(p)
+                }
+                
+                for pos in p.reachablePositions(moves-1, false){ // avoid duplicates
+                    if(!neighbors.contains(pos))
+                    {
+                        neighbors.append(pos);
+                    }
+                }
+                
             }
             return neighbors
         }
     }
     
     //breadth first search
-    func closestRoom(queue: [Position]) -> Position
+    func closestRoom() -> Position//_ queue: [Position], visited: [Position]) -> Position
     {
-        if(self.isRoom)
+        var queue = self.adjacent;
+        var visited = [self];
+        var pos: Position;
+        repeat{
+            pos = queue.removeFirst();
+            visited.append(pos);
+            
+            for p in pos.adjacent{
+                if(!queue.contains(p) && !visited.contains(p))
+                {
+                    queue.append(p);
+                }
+            }
+            
+        }while(!pos.isRoom)
+        
+        return pos;
+        
+        
+/*        if(self.isRoom)
         {
             return self
         }else{
-            var newQueue = queue + self.adjacent
-            return newQueue.removeFirst().closestRoom(newQueue)
-        }
+            var newQueue = queue
+                for pos in self.adjacent
+                {
+                    if(!newQueue.contains(pos) && !visited.contains(pos))
+                    {
+                        newQueue.append(pos);
+                    }
+            
+                }
+            return newQueue.removeFirst().closestRoom(newQueue, visited: visited+[self])
+        }*/
     }
     
     //breadth first search
-    func shortestPathTo(room: Position, pathSoFar: [Position], queue: [Position]) -> [Position]
+    func closestRoomFrom(selection: [String]) -> Position //unknown.length > 1, string are names of rooms
     {
-        if(self.isRoom)
-        {
-            return pathSoFar
-        }else{
-            var newQueue = queue + self.adjacent
-            return newQueue.removeFirst().shortestPathTo(room, pathSoFar: pathSoFar+[self], queue: newQueue)
-        }
-    }
-    /*
-    //dfs
-    // first item is current position, last item is adjacent to room
-    func shortestPathTo(room: Position, pathSoFar: [Position]) -> [Position]
-    {
-        if(self == room)
-        {
-            return pathSoFar
-        }else{
-            var shortestPath:[Position]? = nil
-            for p in self.adjacent
-            {
-                let result = p.shortestPathTo(room, pathSoFar: pathSoFar + [self])
-                if(shortestPath == nil || shortestPath!.count > result.count)
+        var queue = self.adjacent;
+        var visited = [self];
+        var pos: Position;
+        repeat{
+            pos = queue.removeFirst();
+            visited.append(pos);
+            
+            for p in pos.adjacent{
+                if(!queue.contains(p) && !visited.contains(p))
                 {
-                    shortestPath = result
+                    queue.append(p);
                 }
             }
-            return shortestPath!
-        }
+            
+        }while(!(pos.isRoom && selection.contains((pos.room?.name)!)))
+        
+        return pos;
     }
-*/
+    
+    //breadth first search
+    func shortestPathTo(_ room: Position) -> [Position]?
+    {
+        var vis  = [Position]()
+         var prev = Dictionary<Position, Position>()
+        
+        
+            var directions = [Position]();
+            var q = [Position]();
+            var current = self;
+            q.append(current);
+            vis.append(current)
+            while(!q.isEmpty){
+                current = q.removeFirst();
+                if (current == room){
+                    break;
+                }else{
+                    for node in current.adjacent{
+                        
+                        if(!vis.contains(node)){
+                            q.append(node);
+                            vis.append(node)
+                            prev[node] = current;
+                        }
+                    }
+                }
+            }
+
+        
+        var node = room
+        while(node != self)
+        {
+            directions.append(node)
+            node = prev[node]!
+        }
+    return directions.reversed()
+        
+        /*
+         if(self == room)
+         {
+         return pathSoFar + [self]
+         }else if (self.isRoom){
+         return nil;
+         }else{
+         var newQueue = queue;
+         
+         for pos in self.adjacent
+         {
+         if(!newQueue.contains(pos) && !pathSoFar.contains(pos))
+         {
+         newQueue.append(pos);
+         }
+         
+         }
+         
+         var result : [Position]?;
+         while(result == nil && !newQueue.isEmpty)
+         {
+         result = newQueue.removeFirst().shortestPathTo(room, pathSoFar: pathSoFar+[self], queue: newQueue)
+         }
+         return result
+         }
+         */
+    }
 
 }
 
-func ==(lhs: Position, rhs: Position) -> Bool {
+extension Position:Hashable{
+var hashValue: Int {
+    return sprite.hashValue;
+}
+
+static func ==(lhs: Position, rhs: Position) -> Bool {
     return lhs.sprite == rhs.sprite && lhs.adjacent == rhs.adjacent && lhs.room == rhs.room && rhs.isRoom == rhs.isRoom
+}
 }

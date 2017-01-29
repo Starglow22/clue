@@ -24,7 +24,7 @@ class Card : NSObject {
         Card.list.append(self)
     }
     
-    static func getCardWithName(name:String) -> Card?
+    static func getCardWithName(_ name:String) -> Card?
     {
         for c in list{
             if(c.name == name)
@@ -43,7 +43,7 @@ class Card : NSObject {
 
 
 enum Type{
-    case CHARACTER
-    case WEAPON
-    case LOCATION
+    case character
+    case weapon
+    case location
 }

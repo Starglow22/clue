@@ -21,70 +21,66 @@ class BoardScene: SKScene {
     func firstDisplay()
     {
         game = Game.getGame()
-        playerNameDisplay = self.childNodeWithName("PlayersList")!
+        playerNameDisplay = self.childNode(withName: "PlayersList")!
         
-        if(game?.currentPlayer is HumanPlayer)
+        let i = game!.players.index(of: game!.currentPlayer)!
+        
+        for x in 1...game!.players.count
         {
-            (playerNameDisplay?.childNodeWithName("P1") as! SKLabelNode).text = "You"
-        }else{
-            (playerNameDisplay?.childNodeWithName("P1") as! SKLabelNode).text = game?.currentPlayer.character.name
-        }
-        
-        
-        let i = game!.players.indexOf(game!.currentPlayer)!
-        
-        for x in 2...game!.players.count
-        {
-            if(game?.players[(i+x)%game!.players.count] is HumanPlayer)
+            if(game?.players[(i+x-1)%game!.players.count] is HumanPlayer)
             {
-                (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text = "You"
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = "You (" +
+                    (game?.players[(i+x-1)%game!.players.count].character.name)! + ")"
             }else{
-                (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text = game?.players[(i+x)%game!.players.count].character.name
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = game?.players[(i+x-1)%game!.players.count].character.name
             }
         }
         
-        for x in game!.players.count...6
+        if(game!.players.count != 6)
         {
-            (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text = ""
+            for x in game!.players.count...6
+            {
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
+            }
         }
         highlightCurrentPlayer()
         
         
         for p in game!.players
         {
-            p.sprite = self.childNodeWithName(p.character.name) as? SKSpriteNode
+            p.sprite = self.childNode(withName: p.character.name) as? SKSpriteNode
         }
     }
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         /* Setup your scene here */
         firstDisplay()
         
         if(game?.state == State.startOfTurn)
         {
-            (self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode).text = "Your turn!"
+            (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = "Your turn!"
         }else{
-            (self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode).text = (game?.currentPlayer.character.name)!+"'s turn"
+            (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = (game?.currentPlayer.character.name)!+"'s turn"
         }
         
         
-        self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.hide())
+        self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
         
-        (self.childNodeWithName("CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
+        (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
         
     }
     
-    override func keyDown(theEvent: NSEvent) {
+    override func keyDown(with theEvent: NSEvent) {
         game?.noteCard.handleKey(theEvent)
     }
     
-    override func mouseDown(theEvent: NSEvent) {
+    override func mouseDown(with theEvent: NSEvent) {
         /* Called when a mouse click occurs */
         
-        let textDisplay = self.childNodeWithName("UICONTROLS")?.childNodeWithName("TextDisplay") as! SKLabelNode
+        let textDisplay = self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode
         
-        let location = theEvent.locationInNode(self)
-        let node = self.nodeAtPoint(location)
+        let location = theEvent.location(in: self)
+        let node = self.atPoint(location)
         
         // allow notecard to be interacted with regardless of state
         if(node.name == "NoteCard")
@@ -107,28 +103,35 @@ class BoardScene: SKScene {
         case State.startOfTurn:
             //any click moves to next stage
             textDisplay.text = "Please roll the die"
-            self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.unhide())
+            self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.unhide())
             game?.state = State.waitingForDieRoll
             
         case State.waitingForDieRoll:
             if(node.name == "Die")
             {
-                dieRoll = rollDie();
+                dieRoll = rollDie(roll: nil);
                 game?.state = State.waitingForMoveDestination
                 
                 textDisplay.text = "Select your destination"
             }
             
         case State.waitingForMoveDestination:
-            let selection = board[node.name!.lowercaseString]
+            let selection = board[node.name!.lowercased()]
             //nil if not a position
             
-            let possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!))
+            let possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!, true))
             
             if (selection != nil && possibleDestinations.contains(selection!))
             {
-                game?.currentPlayer.moveToken(selection!)
-                self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die")?.runAction(SKAction.hide())
+                let pathToDestination = game!.currentPlayer.position!.shortestPathTo(selection!)!
+                
+                if(pathToDestination.count <= dieRoll!)
+                {
+                    game?.currentPlayer.moveToken(newPos: selection!, p: Array(pathToDestination))
+                }else{
+                    game?.currentPlayer.moveToken(newPos: selection!, p: Array(pathToDestination.dropLast(pathToDestination.count-dieRoll!)))
+                }
+                self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
                 //textDisplay.runAction(SKAction.hide())
                 if (selection!.isRoom)
                 {
@@ -150,18 +153,27 @@ class BoardScene: SKScene {
         }
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
     
     //including animation
-    func rollDie() -> Int
+    func rollDie(roll: Int?) -> Int
     {
-        let roll = arc4random_uniform(6) + 1
-        let node  = self.childNodeWithName("UICONTROLS")?.childNodeWithName("Die") as! SKSpriteNode
-        node.runAction(SKAction.rotateByAngle(CGFloat(M_PI * 16), duration: 1.5))
-        node.runAction(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll)")))
-        return Int(roll);
+        if(roll == nil)
+        {
+            let roll2 = arc4random_uniform(6) + 1
+            let node  = self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die") as! SKSpriteNode
+            node.run(SKAction.rotate(byAngle: CGFloat(M_PI * 16), duration: 1.5))
+            node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll2)")))
+            return Int(roll2);
+        }else{
+            let node  = self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die") as! SKSpriteNode
+            node.run(SKAction.rotate(byAngle: CGFloat(M_PI * 16), duration: 1.5))
+            node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll)")))
+            return Int(roll!);
+        }
+        
         
     }
     
@@ -169,12 +181,12 @@ class BoardScene: SKScene {
     {
         for x in 1...game!.players.count
         {
-            if((playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text == game?.currentPlayer.character.name
-                || (game?.currentPlayer is HumanPlayer && (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).text == "You"))
+            if((playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text == game?.currentPlayer.character.name
+                || (game?.currentPlayer is HumanPlayer && ((playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text?.contains("You"))!))
             {
-                (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).fontSize = 36
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).fontSize = 36
             }else{
-                (playerNameDisplay?.childNodeWithName("P\(x)") as! SKLabelNode).fontSize = 24
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).fontSize = 24
             }
         }
     }
@@ -185,18 +197,18 @@ class BoardScene: SKScene {
         dieRoll = 0
         //possibleDestinations = []
         
-        let reveal = SKTransition.pushWithDirection(SKTransitionDirection.Left, duration: 0.5)
+        let reveal = SKTransition.push(with: SKTransitionDirection.left, duration: 0.5)
         var nextScene = game?.roomScene
         if(nextScene == nil){
             nextScene = RoomScene(fileNamed: "RoomScene")
             game?.roomScene = nextScene
         }
         nextScene?.size = self.size
-        nextScene?.scaleMode = .AspectFill
+        nextScene?.scaleMode = .aspectFill
         
         //bring noteCard with you so that it stays the same - can't belong to 2 scenes
-        let noteCard = self.childNodeWithName("NoteCard")
-        self.removeChildrenInArray([self.childNodeWithName("NoteCard")!])
+        let noteCard = self.childNode(withName: "NoteCard")
+        self.removeChildren(in: [self.childNode(withName: "NoteCard")!])
         nextScene?.addChild(noteCard!)
         
         self.view?.presentScene(nextScene!, transition: reveal)
@@ -204,34 +216,34 @@ class BoardScene: SKScene {
     
     func setUpTiles()
     {
-        let root = self.childNodeWithName("BoardBackground")
+        let root = self.childNode(withName: "BoardBackground")
         for i in 1...182
         {
-            board["tile\(i)"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Tile\(i)") as! SKSpriteNode)
+            board["tile\(i)"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Tile\(i)") as! SKSpriteNode)
         }
         
-        board["study"] = Position(isRoom: true, room: game?.roomCards![8], node: root?.childNodeWithName("Study") as! SKSpriteNode)
-        board["hall"] = Position(isRoom: true, room: game?.roomCards![7], node: root?.childNodeWithName("Hall") as! SKSpriteNode)
-        board["lounge"] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNodeWithName("Lounge") as! SKSpriteNode)
-        board["library"] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNodeWithName("Library") as! SKSpriteNode)
-        board["billard"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNodeWithName("Billard") as! SKSpriteNode)
-        board["dining"] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNodeWithName("Dining Room") as! SKSpriteNode)
-        board["conservatory"] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNodeWithName("Conservatory") as! SKSpriteNode)
-        board["ballroom"] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNodeWithName("Ballroom") as! SKSpriteNode)
-        board["kitchen"] = Position(isRoom: true, room: game?.roomCards![0], node: root?.childNodeWithName("Kitchen") as! SKSpriteNode)
+        board["study"] = Position(isRoom: true, room: game?.roomCards![8], node: root?.childNode(withName: "Study") as! SKSpriteNode)
+        board["hall"] = Position(isRoom: true, room: game?.roomCards![7], node: root?.childNode(withName: "Hall") as! SKSpriteNode)
+        board["lounge"] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNode(withName: "Lounge") as! SKSpriteNode)
+        board["library"] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNode(withName: "Library") as! SKSpriteNode)
+        board["billard"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard") as! SKSpriteNode)
+        board["dining"] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining Room") as! SKSpriteNode)
+        board["conservatory"] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNode(withName: "Conservatory") as! SKSpriteNode)
+        board["ballroom"] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNode(withName: "Ballroom") as! SKSpriteNode)
+        board["kitchen"] = Position(isRoom: true, room: game?.roomCards![0], node: root?.childNode(withName: "Kitchen") as! SKSpriteNode)
         
-        board["scarlett start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Scarlett start") as! SKSpriteNode)
-        board["green start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Green start") as! SKSpriteNode)
-        board["peacock start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Peacock start") as! SKSpriteNode)
-        board["white start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("White start") as! SKSpriteNode)
-        board["mustard start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Mustard start") as! SKSpriteNode)
-        board["plum start"] = Position(isRoom: false, room: nil, node: root?.childNodeWithName("Plum start") as! SKSpriteNode)
+        board["scarlett start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Scarlett start") as! SKSpriteNode)
+        board["green start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Green start") as! SKSpriteNode)
+        board["peacock start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Peacock start") as! SKSpriteNode)
+        board["white start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "White start") as! SKSpriteNode)
+        board["mustard start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Mustard start") as! SKSpriteNode)
+        board["plum start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Plum start") as! SKSpriteNode)
         connectTiles()
         
         
         
-        }
- 
+    }
+    
     func connectTiles()
     {
         board["study"]?.adjacent = [board["tile19"]!, board["kitchen"]!]
@@ -315,8 +327,8 @@ class BoardScene: SKScene {
         board["tile56"]?.adjacent = [board["tile55"]!, board["tile57"]!, board["tile67"]!, board["tile40"]!]
         board["tile57"]?.adjacent = [board["tile56"]!, board["tile58"]!, board["tile68"]!, board["tile41"]!]
         board["tile58"]?.adjacent = [board["tile57"]!, board["tile59"]!, board["tile69"]!, board["tile42"]!]
-        board["tile59"]?.adjacent = [board["tile49"]!, board["tile51"]!]
-        board["tile60"]?.adjacent = [board["tile59"]!, board["tile70"]!, board["tile43"]!, board["mustard start"]!]
+        board["tile59"]?.adjacent = [board["tile43"]!, board["tile58"]!, board["tile60"]!, board["tile70"]!]
+        board["tile60"]?.adjacent = [board["tile59"]!, board["tile71"]!, board["tile44"]!, board["mustard start"]!]
         
         board["tile61"]?.adjacent = [board["tile72"]!, board["tile62"]!, board["tile45"]!]
         board["tile62"]?.adjacent = [board["tile61"]!, board["tile73"]!, board["tile46"]!]

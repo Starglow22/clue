@@ -10,7 +10,7 @@ import Cocoa
 
 class HumanPlayer: Player {
     
-    override func reply(t: Trio, p:Player) -> Card?
+    override func reply(_ t: Trio, p:Player) -> Card?
     {
         Game.getGame().state = State.waitingForAnswer
         Game.getGame().roomScene?.question = t

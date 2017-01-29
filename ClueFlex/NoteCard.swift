@@ -9,8 +9,8 @@
 import SpriteKit
 
 class NoteCard: NSObject {
-    static let DEFAULT_COLOR = NSColor.whiteColor()
-    static let HIGHLIGHT_COLOR = NSColor.redColor()
+    static let DEFAULT_COLOR = NSColor.white
+    static let HIGHLIGHT_COLOR = NSColor.red
     
     var rootSprite: SKSpriteNode
     
@@ -28,14 +28,14 @@ class NoteCard: NSObject {
         up = !up
         if(up)
         {
-            rootSprite.runAction(SKAction.moveToY(CGFloat(340), duration: 0.4))
+            rootSprite.run(SKAction.moveTo(y: CGFloat(340), duration: 0.4))
         }else{
-            rootSprite.runAction(SKAction.moveToY(CGFloat(-310), duration: 0.4))
+            rootSprite.run(SKAction.moveTo(y: CGFloat(-310), duration: 0.4))
             clearSelected()
         }
     }
     
-    func selectBox(node: SKLabelNode)
+    func selectBox(_ node: SKLabelNode)
     {
         if(node.name == "1" || node.name == "2" || node.name == "3" || node.name == "4")
         {
@@ -50,7 +50,7 @@ class NoteCard: NSObject {
         selected = nil
     }
     
-    func handleKey(event: NSEvent)
+    func handleKey(_ event: NSEvent)
     {
         if(selected != nil && event.characters != "" && event.characters != " ") // is vallid key
         {

@@ -30,7 +30,7 @@ class Player: NSObject{
     }
     
     
-    func reply(t: Trio, p:Player) -> Card?
+    func reply(_ t: Trio, p:Player) -> Card?
     {
         
         return nil
@@ -39,59 +39,143 @@ class Player: NSObject{
     func play()
     {
         let roll = rollDie()
-        move(roll)
-        if(isInRoom())
-        {
-            Game.getGame().moveToRoomView()
-            chooseSuspectOrAccuse()
-            let question = selectPersonWeapon()
-            let answer = ask(question)
-            
-            //nil only if waiting for human input
-            if(answer != nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.move(num: roll)
+            if(self.isInRoom())
             {
-                takeNotes(answer!)
-                Game.getGame().moveToBoardView()
-                passTurn()
+                Game.getGame().moveToRoomView()
+                self.chooseSuspectOrAccuse()
+                let question = self.selectPersonWeapon()
+                let answer = self.ask(question)
+                
+                //nil only if waiting for human input
+                if(answer != nil)
+                {
+                    self.takeNotes(answer!, question: question)
+                    Game.getGame().moveToBoardView()
+                    self.passTurn()
+                }
+                
+            }else{
+                DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(roll)) {
+                    self.passTurn()
+                }
             }
-            
         }
         
     }
     
     func rollDie() -> Int
     {
-        return Int(arc4random_uniform(UInt32(6))+1);
+        let roll = Int(arc4random_uniform(UInt32(6))+1);
+        if(!(self is HumanPlayer))
+        {
+            self.playRollAnimation(die: roll);
+        }
+        return roll
     }
+    
+    func playRollAnimation(die: Int)
+    {
+        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+        let textDisplay = root.childNode(withName: "TextDisplay") as! SKLabelNode
+        
+        textDisplay.text = self.character.name + "'s turn!"
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            root.childNode(withName: "Die"+die.description)?.run(SKAction.unhide())
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            Game.getGame().boardScene.rollDie(roll: die); // return random int if not provided with one
+            textDisplay.text = self.character.name + " rolled " +  die.description;
+            
+        }
+        
+    }
+
     
     func move(num: Int)
     {
         
     }
     
+    /*
     //animation - move sprite node in 2 moves x and y, largest first, set new position
     func moveToken(newPos: Position)
     {
+        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+        root.childNode(withName: "Die")?.run(SKAction.hide())
+        
+        if(sprite == nil)
+        {
+            sprite = (Game.getGame().boardScene.childNode(withName: "BoardBackground")!.childNode(withName: character.name) as! SKSpriteNode)
+        }
+        
         
         let newX = newPos.sprite.position.x
         let newY = newPos.sprite.position.y
         
-        let oldX = sprite!.position.x
-        let oldY = sprite!.position.y
+        let oldX = position!.sprite.position.x
+        let oldY = position!.sprite.position.y
         
         if (abs(oldX-newX) > abs(oldY - newY))
         {
-            sprite?.runAction(SKAction.group([SKAction.moveTo(CGPoint(x: newX, y: oldY), duration: 1.5), SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5)]))
-            //sprite?.runAction()
-            //sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5))
+            //sprite?.run(SKAction.group([SKAction.move(to: CGPoint(x: newX, y: oldY), duration: 1.5), SKAction.move(to: CGPoint(x: newX, y: newY), duration: 1.5)]))
+            
+            sprite?.run(SKAction.move(to: CGPoint(x: newX, y: oldY), duration: 1.0))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            self.sprite?.run(SKAction.move(to: CGPoint(x: newX, y: newY), duration: 1.0))
+            }
+
         }else{
-            sprite?.runAction(SKAction.group([SKAction.moveTo(CGPoint(x: oldX, y: newY), duration: 1.5), SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5)]))
-            //sprite?.runAction(SKAction.moveTo(CGPoint(x: oldX, y: newY), duration: 1.5))
-            //sprite?.runAction(SKAction.moveTo(CGPoint(x: newX, y: newY), duration: 1.5))
+            //sprite?.run(SKAction.group([SKAction.move(to: CGPoint(x: oldX, y: newY), duration: 1.5), SKAction.move(to: CGPoint(x: newX, y: newY), duration: 1.5)]))
+            sprite?.run(SKAction.move(to: CGPoint(x: oldX, y: newY), duration: 1.0))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.sprite?.run(SKAction.move(to: CGPoint(x: newX, y: newY), duration: 1.0))
+            }
         }
         
+        position?.isOccupied = false;
         position = newPos
+        newPos.isOccupied = true;
+        
     }
+    */
+    
+    //animation - move through path
+    func moveToken(newPos: Position, p: [Position]?)
+    {
+        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+        root.childNode(withName: "Die")?.run(SKAction.hide())
+        
+        position?.isOccupied = false;
+        position = newPos
+        newPos.isOccupied = true;
+        
+        if(sprite == nil)
+        {
+            sprite = (Game.getGame().boardScene.childNode(withName: "BoardBackground")!.childNode(withName: character.name) as! SKSpriteNode)
+        }
+        
+        var path = p;
+        
+        if(path == nil)
+        {
+            path = self.position?.shortestPathTo(newPos)
+        }
+        
+        var i = 0.0;
+        while(!(path?.isEmpty)!){
+            let top = path?.removeFirst()
+            DispatchQueue.main.asyncAfter(deadline: .now() + i*1) {
+                self.sprite?.run(SKAction.move(to: top!.sprite.position, duration: 1.0))
+            }
+            i += 1;
+        }
+        
+    }
+
     
     func isInRoom() -> Bool
     {
@@ -109,12 +193,13 @@ class Player: NSObject{
         return Trio(person: Game.getGame().players[0].character , weapon: (Game.getGame().roomScene?.weapons![0])!, location: self.position!.room!)
     }
     
-    func ask(question: Trio) -> Answer?
+    //returns nil if no one has anything
+    func ask(_ question: Trio) -> Answer?
     {
         let players = Game.getGame().players
-        let me = players.indexOf(self)
+        let me = players.index(of: self)
         let numPlayers = players.count
-        counter = me! + 1;
+        counter = (me! + 1) % numPlayers;
         
         var answer: Card?
         var responder: Player?
@@ -123,7 +208,7 @@ class Player: NSObject{
         {
             if(players[counter] is HumanPlayer)
             {
-                players[counter].reply(question, p: self)
+                players[counter].reply(question, p: self) // changes state
                 return nil
             }
             answer = players[counter].reply(question, p: self)
@@ -136,15 +221,15 @@ class Player: NSObject{
             counter = counter + 1
             counter = counter % numPlayers
         }
-        
+
         return Answer(card: answer, person: responder)
     }
     
     
-    func resumeAsk(question: Trio, humanAns: Card?)
+    func resumeAsk(_ question: Trio, humanAns: Card?)
     {
         let players = Game.getGame().players
-        let me = players.indexOf(self)
+        let me = players.index(of: self)
         let numPlayers = players.count
         
         var answer = humanAns
@@ -173,14 +258,14 @@ class Player: NSObject{
             result = Answer(card: answer, person: responder)
         }
         
-        takeNotes(result)
+        takeNotes(result, question: question)
         Game.getGame().moveToBoardView()
         passTurn()
     }
     
     
     
-    func takeNotes(answer: Answer)
+    func takeNotes(_ answer: Answer, question: Trio)
     {
         
     }
@@ -188,19 +273,24 @@ class Player: NSObject{
     
     func passTurn()
     {
-        Game.getGame().currentPlayer = Game.getGame().players[(Game.getGame().players.indexOf(self)!+1) % Game.getGame().players.count]
+        Game.getGame().currentPlayer = Game.getGame().players[(Game.getGame().players.index(of: self)!+1) % Game.getGame().players.count]
         Game.getGame().updatePList()
         
+        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+        let textDisplay = root.childNode(withName: "TextDisplay") as! SKLabelNode
         
         if(Game.getGame().currentPlayer is HumanPlayer)
         {
             Game.getGame().state = State.startOfTurn
+            textDisplay.text = "Your turn!"
+            
         }else{
             Game.getGame().state = State.waitingForTurn
             
             Game.getGame().currentPlayer.play()
+            textDisplay.text = Game.getGame().currentPlayer.character.name + "'s turn!"
         }
-        (Game.getGame().boardScene.childNodeWithName("CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (Game.getGame().currentPlayer.character.imageName))
+        (Game.getGame().boardScene.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (Game.getGame().currentPlayer.character.imageName))
     }
     
     

@@ -38,7 +38,7 @@ class HardAIPlayer: EasyAIPlayer {
     }
     
     
-    override func takeNotes(answer: Answer)
+    override func takeNotes(_ answer: Answer, question: Trio)
     {
         //UI display answer
     }

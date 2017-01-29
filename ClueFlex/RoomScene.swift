@@ -23,35 +23,35 @@ class RoomScene: SKScene {
     var answer: Answer?
     var question: Trio?
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         /* Setup your scene here */
         game = Game.getGame()
         
         if(hand == nil)
         {
-            hand = Hand(sprite: self.childNodeWithName("Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!)
+            hand = Hand(sprite: self.childNode(withName: "Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!)
         }
         
-        self.childNodeWithName("Mode")?.runAction(SKAction.unhide())
-        self.childNodeWithName("Characters")?.runAction(SKAction.hide())
-        self.childNodeWithName("Weapons")?.runAction(SKAction.hide())
-        self.childNodeWithName("Done")?.runAction(SKAction.hide())
-        self.childNodeWithName("Result")?.runAction(SKAction.hide())
-        self.childNodeWithName("Return")?.runAction(SKAction.hide())
-        self.childNodeWithName("Answer")?.runAction(SKAction.hide())
+        self.childNode(withName: "Mode")?.run(SKAction.unhide())
+        self.childNode(withName: "Characters")?.run(SKAction.hide())
+        self.childNode(withName: "Weapons")?.run(SKAction.hide())
+        self.childNode(withName: "Done")?.run(SKAction.hide())
+        self.childNode(withName: "Result")?.run(SKAction.hide())
+        self.childNode(withName: "Return")?.run(SKAction.hide())
+        self.childNode(withName: "Answer")?.run(SKAction.hide())
         
-        (self.childNodeWithName("CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
+        (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
         
-        for i in 0...self.childNodeWithName("Characters")!.children.count
+        for i in 0...self.childNode(withName: "Characters")!.children.count-1
         {
-            let node = (self.childNodeWithName("Characters")?.children)![i]
+            let node = (self.childNode(withName: "Characters")?.children)![i]
             let sprite = node as! SKSpriteNode
             sprite.texture = SKTexture(imageNamed: people![i].imageName)
         }
         
-        for i in 0...self.childNodeWithName("Weapons")!.children.count
+        for i in 0...self.childNode(withName: "Weapons")!.children.count-1
         {
-            let node = (self.childNodeWithName("Weapons")?.children)![i]
+            let node = (self.childNode(withName: "Weapons")?.children)![i]
             let sprite = node as! SKSpriteNode
             sprite.texture = SKTexture(imageNamed: people![i].imageName)
         }
@@ -66,24 +66,24 @@ class RoomScene: SKScene {
             
         }else if(game?.state == State.waitingForAnswer){
             hand?.clicked()
-            self.childNodeWithName("Mode")?.runAction(SKAction.hide())
-            self.childNodeWithName("Answer")?.runAction(SKAction.unhide())
+            self.childNode(withName: "Mode")?.run(SKAction.hide())
+            self.childNode(withName: "Answer")?.run(SKAction.unhide())
             
-            (self.childNodeWithName("Answer")?.childNodeWithName("Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
+            (self.childNode(withName: "Answer")?.childNode(withName: "Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
             
-            (self.childNodeWithName("Answer")?.childNodeWithName("Person") as! SKLabelNode).text = question?.person.name
-            (self.childNodeWithName("Answer")?.childNodeWithName("Weapon") as! SKLabelNode).text = question?.weapon.name
-            (self.childNodeWithName("Answer")?.childNodeWithName("Location") as! SKLabelNode).text = question?.location.name
+            (self.childNode(withName: "Answer")?.childNode(withName: "Person") as! SKLabelNode).text = question?.person.name
+            (self.childNode(withName: "Answer")?.childNode(withName: "Weapon") as! SKLabelNode).text = question?.weapon.name
+            (self.childNode(withName: "Answer")?.childNode(withName: "Location") as! SKLabelNode).text = question?.location.name
         }
         
         // TODO: set background to image of correct room
     }
     
-    override func mouseDown(theEvent: NSEvent) {
+    override func mouseDown(with theEvent: NSEvent) {
         /* Called when a mouse click occurs */
         
-        let location = theEvent.locationInNode(self)
-        let node = self.nodeAtPoint(location)
+        let location = theEvent.location(in: self)
+        let node = self.atPoint(location)
         
         // allow notecard to be interacted with regardless of state
         if(node.name == "NoteCard")
@@ -108,34 +108,34 @@ class RoomScene: SKScene {
             {
                 suspect = true
                 game?.currentPlayer.suspect = true
-                self.childNodeWithName("Mode")?.runAction(SKAction.hide())
-                self.childNodeWithName("Characters")?.runAction(SKAction.unhide())
-                self.childNodeWithName("Weapons")?.runAction(SKAction.unhide())
+                self.childNode(withName: "Mode")?.run(SKAction.hide())
+                self.childNode(withName: "Characters")?.run(SKAction.unhide())
+                self.childNode(withName: "Weapons")?.run(SKAction.unhide())
                 game?.state = State.waitingForQuestion
             }else if (node.name == "ACCUSE"){
                 suspect = false
                 game?.currentPlayer.suspect = false
-                self.childNodeWithName("Mode")?.runAction(SKAction.hide())
-                self.childNodeWithName("Characters")?.runAction(SKAction.unhide())
-                self.childNodeWithName("Weapons")?.runAction(SKAction.unhide())
+                self.childNode(withName: "Mode")?.run(SKAction.hide())
+                self.childNode(withName: "Characters")?.run(SKAction.unhide())
+                self.childNode(withName: "Weapons")?.run(SKAction.unhide())
                 game?.state = State.waitingForQuestion
             }
             
             
         case State.waitingForQuestion:
-            if(node.parent == self.childNodeWithName("Characters"))
+            if(node.parent == self.childNode(withName: "Characters"))
             {
-             let i = Int((node.name?.substringFromIndex((node.name?.endIndex.predecessor())!))!)
+             let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)
                 person = people![i!]
                 
-            }else if (node.parent == self.childNodeWithName("Weapons")){
-                let i = Int((node.name?.substringFromIndex((node.name?.endIndex.predecessor())!))!)
+            }else if (node.parent == self.childNode(withName: "Weapons")){
+                let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)
                 weapon = weapons![i!]
             }
             
             if(weapon != nil && person != nil)
             {
-                self.childNodeWithName("Done")?.runAction(SKAction.unhide())
+                self.childNode(withName: "Done")?.run(SKAction.unhide())
             }
             
             if(node.name == "Done")
@@ -145,16 +145,16 @@ class RoomScene: SKScene {
                 
                 if(answer?.card == nil)
                 {
-                    (self.childNodeWithName("Result")?.childNodeWithName("Image") as! SKSpriteNode).texture = SKTexture(imageNamed: "NoAnswer")
-                    (self.childNodeWithName("Result")?.childNodeWithName("Text") as! SKLabelNode).text = "No one had anything!"
+                    (self.childNode(withName: "Result")?.childNode(withName: "Image") as! SKSpriteNode).texture = SKTexture(imageNamed: "NoAnswer")
+                    (self.childNode(withName: "Result")?.childNode(withName: "Text") as! SKLabelNode).text = "No one had anything!"
                 }else{
-                    (self.childNodeWithName("Result")?.childNodeWithName("Image") as! SKSpriteNode).texture = SKTexture(imageNamed: (answer!.card?.imageName)!)
-                    (self.childNodeWithName("Result")?.childNodeWithName("Text") as! SKLabelNode).text = (answer?.person?.character.name)!+"showed you "+(answer?.card?.name)!
+                    (self.childNode(withName: "Result")?.childNode(withName: "Image") as! SKSpriteNode).texture = SKTexture(imageNamed: (answer!.card?.imageName)!)
+                    (self.childNode(withName: "Result")?.childNode(withName: "Text") as! SKLabelNode).text = (answer?.person?.character.name)!+"showed you "+(answer?.card?.name)!
                 }
-                self.childNodeWithName("Result")?.runAction(SKAction.unhide())
+                self.childNode(withName: "Result")?.run(SKAction.unhide())
                 
                 game?.state = State.waitingForDoneWithNoteTaking
-                self.childNodeWithName("Return")?.runAction(SKAction.unhide())
+                self.childNode(withName: "Return")?.run(SKAction.unhide())
             }
             
         case State.waitingForDoneWithNoteTaking:
@@ -178,7 +178,7 @@ class RoomScene: SKScene {
             {
                 if(hand!.cards.contains(question!.person) || hand!.cards.contains(question!.weapon) || hand!.cards.contains(question!.location))
                 {
-                    (self.childNodeWithName("Ask")?.childNodeWithName("None")?.childNodeWithName("None") as! SKLabelNode).text = "Are you sure?"
+                    (self.childNode(withName: "Ask")?.childNode(withName: "None")?.childNode(withName: "None") as! SKLabelNode).text = "Are you sure?"
                 }else{
                     game?.currentPlayer.resumeAsk(question!, humanAns: nil)
                 }
@@ -188,20 +188,20 @@ class RoomScene: SKScene {
         }
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
     
     func switchToBoardView()
     {
-        let reveal = SKTransition.pushWithDirection(SKTransitionDirection.Right, duration: 0.5)
+        let reveal = SKTransition.push(with: SKTransitionDirection.right, duration: 0.5)
         let nextScene = game?.boardScene
         nextScene?.size = self.size
-        nextScene?.scaleMode = .AspectFill
+        nextScene?.scaleMode = .aspectFill
         
         //bring noteCard with you so that it stays the same - can't belong to 2 scenes
-        let noteCard = self.childNodeWithName("NoteCard")
-        self.removeChildrenInArray([self.childNodeWithName("NoteCard")!])
+        let noteCard = self.childNode(withName: "NoteCard")
+        self.removeChildren(in: [self.childNode(withName: "NoteCard")!])
         nextScene?.addChild(noteCard!)
         
         self.view?.presentScene(nextScene!, transition: reveal)

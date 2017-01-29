@@ -14,7 +14,7 @@ struct Trio: Equatable{
     var weapon: Card
     var location: Card
     
-    func contains(c: Card) -> Bool
+    func contains(_ c: Card) -> Bool
     {
         return c == person || c == weapon || c==location
     }

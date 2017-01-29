@@ -7,6 +7,26 @@
 //
 
 import SpriteKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class Hand: NSObject {
     
@@ -26,10 +46,10 @@ class Hand: NSObject {
         var x = 0;
         for card in rootSprite.children
         {
-            let i = Int((card.name?.substringFromIndex((card.name?.endIndex.predecessor())!))!)
+            let i = Int((card.name?.substring(from: (card.name?.characters.index(before: (card.name?.endIndex)!))!))!)
             if(i > self.cards.count)
             {
-                card.runAction(SKAction.hide())
+                card.run(SKAction.hide())
             }else{
                 let sprite = card as! SKSpriteNode
                 sprite.texture = SKTexture(imageNamed: cards[x].imageName)
@@ -44,16 +64,16 @@ class Hand: NSObject {
         up = !up
         if(up)
         {
-            rootSprite.runAction(SKAction.moveToY(CGFloat(175), duration: 0.2))
+            rootSprite.run(SKAction.moveTo(y: CGFloat(175), duration: 0.2))
         }else{
-            rootSprite.runAction(SKAction.moveToY(CGFloat(-120), duration: 0.2))
+            rootSprite.run(SKAction.moveTo(y: CGFloat(-120), duration: 0.2))
         }
     }
     
-    func getCard(node: SKNode) -> Card
+    func getCard(_ node: SKNode) -> Card
     {
     
-        let i = Int((node.name?.substringFromIndex((node.name?.endIndex.predecessor())!))!)
+        let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)
         return cards[i!]
     }
 }
