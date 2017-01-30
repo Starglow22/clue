@@ -36,13 +36,11 @@ class BoardScene: SKScene {
             }
         }
         
-        if(game!.players.count != 6)
+        for x in game!.players.count+1...6
         {
-            for x in game!.players.count...6
-            {
-                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
-            }
+            (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
         }
+        
         highlightCurrentPlayer()
         
         

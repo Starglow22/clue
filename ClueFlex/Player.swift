@@ -41,28 +41,26 @@ class Player: NSObject{
         let roll = rollDie()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.move(num: roll)
-            if(self.isInRoom())
-            {
-                Game.getGame().moveToRoomView()
-                self.chooseSuspectOrAccuse()
-                let question = self.selectPersonWeapon()
-                let answer = self.ask(question)
-                
-                //nil only if waiting for human input
-                if(answer != nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(roll)) {
+                if(self.isInRoom())
                 {
-                    self.takeNotes(answer!, question: question)
-                    Game.getGame().moveToBoardView()
-                    self.passTurn()
-                }
-                
-            }else{
-                DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(roll)) {
+                    Game.getGame().moveToRoomView()
+                    self.chooseSuspectOrAccuse()
+                    let question = self.selectPersonWeapon()
+                    let answer = self.ask(question)
+                    
+                    //nil only if waiting for human input
+                    if(answer != nil)
+                    {
+                        self.takeNotes(answer!, question: question)
+                        Game.getGame().moveToBoardView()
+                        self.passTurn()
+                    }
+                }else{
                     self.passTurn()
                 }
             }
         }
-        
     }
     
     func rollDie() -> Int

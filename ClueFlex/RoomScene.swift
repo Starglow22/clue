@@ -188,6 +188,10 @@ class RoomScene: SKScene {
         }
     }
     
+    override func keyDown(with theEvent: NSEvent) {
+        game?.noteCard.handleKey(theEvent)
+    }
+    
     override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
