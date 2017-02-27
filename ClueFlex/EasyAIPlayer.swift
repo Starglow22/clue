@@ -87,11 +87,29 @@ class EasyAIPlayer: Player {
         }
         
         shown[p.character.name]?.append(response)
+        
+        
+        var flag = false
+        let display = (Game.getGame().roomScene?.childNode(withName: "Result"))!
+        display.run(SKAction.unhide())
+        
+        (display.childNode(withName: "Text") as! SKLabelNode).text =  response.name + " showed something to " + Game.getGame().currentPlayer.character.name
+        //TODO: display on Result child
+        DispatchQueue.init(label: "display").asyncAfter(deadline: .now() + 2) {
+        //DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            flag = true
+        }
+        
+        while(!flag)
+        {
+            //wait for async to return
+        }
+        display.run(SKAction.hide())
         return response
     }
     
     
-    override func move(num: Int)
+    override func move(num: Int) -> Int
     {
         let target: Position
         if(suspect)
@@ -125,6 +143,8 @@ class EasyAIPlayer: Player {
             moveToken(newPos: pathToDestination[num-1], p: Array(pathToDestination.dropLast(pathToDestination.count-num)));
             //not using all moves (eg entering room) causes -ve index
         }
+        
+        return pathToDestination.count
         
     }
     
@@ -192,7 +212,32 @@ class EasyAIPlayer: Player {
                 weapon = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
             }
             
-            return Trio(person: Card.getCardWithName(char!)! , weapon: Card.getCardWithName(weapon!)!, location: self.position!.room!)
+            var guess: Trio?
+            let suspect = Card.getCardWithName(char!)!
+            let weapon = Card.getCardWithName(weapon!)!
+            
+            let display = Game.getGame().roomScene!.childNode(withName: "QuestionPanel")!
+            
+            display.run(SKAction.unhide())
+            
+            (display.childNode(withName: "Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
+            
+            (display.childNode(withName: "Person") as! SKLabelNode).text = suspect.name
+            (display.childNode(withName: "Weapon") as! SKLabelNode).text = weapon.name
+            (display.childNode(withName: "Location") as! SKLabelNode).text = self.position!.room!.name
+            
+            //TODO: display on QuestionPanel child
+            //DispatchQueue.init(label: "display").asyncAfter(deadline: .now() + 2) {
+                guess = Trio(person: suspect, weapon: weapon, location: self.position!.room!)
+            //}
+            
+            while(guess == nil)
+            {
+                // wait for merge - can't beleive there isn't a better system
+            }
+            Game.getGame().roomScene!.childNode(withName: "Return")!.run(SKAction.unhide())
+            Game.getGame().state = State.waitingForDoneWithNoteTaking
+            return guess!
         }
     }
     

@@ -341,7 +341,7 @@ class MenuScene: SKScene {
         
         //distribute cards between players
         while cards.count > 0{
-            for i in 1...players.count-1{
+            for i in 0...players.count-1{
                 if(cards.count>0)
                 {
                     let x = arc4random_uniform(UInt32(cards.count))

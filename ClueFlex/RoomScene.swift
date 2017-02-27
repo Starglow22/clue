@@ -30,15 +30,16 @@ class RoomScene: SKScene {
         if(hand == nil)
         {
             hand = Hand(sprite: self.childNode(withName: "Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!)
+            self.childNode(withName: "Hand")?.run(SKAction.move(to:CGPoint(x:0, y:175), duration: 0.5))
         }
         
-        self.childNode(withName: "Mode")?.run(SKAction.unhide())
+        self.childNode(withName: "Mode")?.run(SKAction.hide())
         self.childNode(withName: "Characters")?.run(SKAction.hide())
         self.childNode(withName: "Weapons")?.run(SKAction.hide())
         self.childNode(withName: "Done")?.run(SKAction.hide())
         self.childNode(withName: "Result")?.run(SKAction.hide())
         self.childNode(withName: "Return")?.run(SKAction.hide())
-        self.childNode(withName: "Answer")?.run(SKAction.hide())
+        self.childNode(withName: "QuestionPanel")?.run(SKAction.hide())
         
         (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
         
@@ -63,17 +64,18 @@ class RoomScene: SKScene {
         if(game?.state == State.waitingForSuspectOrAccuse)
         {
             question = nil
-            
+            self.childNode(withName: "Mode")?.run(SKAction.unhide())
         }else if(game?.state == State.waitingForAnswer){
             hand?.clicked()
-            self.childNode(withName: "Mode")?.run(SKAction.hide())
-            self.childNode(withName: "Answer")?.run(SKAction.unhide())
             
-            (self.childNode(withName: "Answer")?.childNode(withName: "Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
+            /*self.childNode(withName: "QuestionPanel")?.run(SKAction.unhide())
             
-            (self.childNode(withName: "Answer")?.childNode(withName: "Person") as! SKLabelNode).text = question?.person.name
-            (self.childNode(withName: "Answer")?.childNode(withName: "Weapon") as! SKLabelNode).text = question?.weapon.name
-            (self.childNode(withName: "Answer")?.childNode(withName: "Location") as! SKLabelNode).text = question?.location.name
+            (self.childNode(withName: "QuestionPanel")?.childNode(withName: "Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
+            
+            (self.childNode(withName: "QuestionPanel")?.childNode(withName: "Person") as! SKLabelNode).text = question?.person.name
+            (self.childNode(withName: "QuestionPanel")?.childNode(withName: "Weapon") as! SKLabelNode).text = question?.weapon.name
+            (self.childNode(withName: "QuestionPanel")?.childNode(withName: "Location") as! SKLabelNode).text = question?.location.name
+ */
         }
         
         // TODO: set background to image of correct room
@@ -96,7 +98,7 @@ class RoomScene: SKScene {
             game?.noteCard.selectBox(node as! SKLabelNode)
         }
         
-        if(node.name == "hand")
+        if(node.name == "Hand")
         {
             hand?.clicked()
         }

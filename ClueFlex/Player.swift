@@ -40,8 +40,8 @@ class Player: NSObject{
     {
         let roll = rollDie()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.move(num: roll)
-            DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(roll)) {
+            let distance  = self.move(num: roll)
+            DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(min(distance, roll))) {
                 if(self.isInRoom())
                 {
                     Game.getGame().moveToRoomView()
@@ -53,7 +53,7 @@ class Player: NSObject{
                     if(answer != nil)
                     {
                         self.takeNotes(answer!, question: question)
-                        Game.getGame().moveToBoardView()
+                        //Game.getGame().moveToBoardView()
                         self.passTurn()
                     }
                 }else{
@@ -93,9 +93,9 @@ class Player: NSObject{
     }
 
     
-    func move(num: Int)
+    func move(num: Int) -> Int
     {
-        
+        return 0
     }
     
     /*
@@ -257,7 +257,8 @@ class Player: NSObject{
         }
         
         takeNotes(result, question: question)
-        Game.getGame().moveToBoardView()
+        //Game.getGame().moveToBoardView()
+        //display "return to board view" button instead
         passTurn()
     }
     

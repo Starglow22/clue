@@ -131,14 +131,17 @@ class BoardScene: SKScene {
                 }
                 self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
                 //textDisplay.runAction(SKAction.hide())
-                if (selection!.isRoom)
-                {
-                    switchToRoomView()
-                    game?.state = State.waitingForSuspectOrAccuse
-                }else{
-                    game?.currentPlayer.passTurn()
-                    //pass turn
-                    textDisplay.text = (game?.currentPlayer.character.name)! + "'s turn"
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(dieRoll!)) {
+                    if (selection!.isRoom)
+                    {
+                        self.game?.state = State.waitingForSuspectOrAccuse
+                        self.switchToRoomView()
+                    }else{
+                        self.game?.currentPlayer.passTurn()
+                        //pass turn
+                        textDisplay.text = (self.game?.currentPlayer.character.name)! + "'s turn"
+                    }
                 }
             }else{
                 textDisplay.text = "Thats is not a valid move, sorry"

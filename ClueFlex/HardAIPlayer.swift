@@ -16,9 +16,9 @@ class HardAIPlayer: EasyAIPlayer {
         super.init(c: c)
     }
     
-    override func move(num: Int)
+    override func move(num: Int) -> Int
     {
-        
+        return 0
     }
     
     override func isInRoom() -> Bool

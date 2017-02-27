@@ -42,12 +42,12 @@ class Hand: NSObject {
         //1140 full width, card 150 - 900 just for cards, 30 for each small gap * 5 + 2 big gaps (45 each)
         rootSprite.size.width = CGFloat(60 + 180*self.cards.count) //90 + (150*self.cards.count) + 30*(self.cards.count - 1)
         
-        
+        rootSprite.position = CGPoint(x:0, y:175)
         var x = 0;
         for card in rootSprite.children
         {
-            let i = Int((card.name?.substring(from: (card.name?.characters.index(before: (card.name?.endIndex)!))!))!)
-            if(i > self.cards.count)
+            //let i = Int((card.name?.substring(from: (card.name?.characters.index(before: (card.name?.endIndex)!))!))!)
+            if(x >= self.cards.count)
             {
                 card.run(SKAction.hide())
             }else{
