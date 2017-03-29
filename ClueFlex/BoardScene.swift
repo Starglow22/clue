@@ -241,8 +241,6 @@ class BoardScene: SKScene {
         board["plum start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Plum start") as! SKSpriteNode)
         connectTiles()
         
-        
-        
     }
     
     func connectTiles()
@@ -483,10 +481,7 @@ class BoardScene: SKScene {
         board["tile127"]?.adjacent += [board["ballroom"]!]
         board["tile163"]?.adjacent += [board["ballroom"]!]
         board["tile146"]?.adjacent += [board["kitchen"]!]
-        
-        //116,175
-        
-    }
     
+    }
     
 }

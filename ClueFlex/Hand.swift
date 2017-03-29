@@ -43,9 +43,9 @@ class Hand: NSObject {
         rootSprite.size.width = CGFloat(60 + 180*self.cards.count) //90 + (150*self.cards.count) + 30*(self.cards.count - 1)
         
         rootSprite.position = CGPoint(x:0, y:175)
-        var x = 0;
-        for card in rootSprite.children
+        for x in 0...rootSprite.children.count-1
         {
+            let card = rootSprite.childNode(withName: "Card "+(x+1).description)!
             //let i = Int((card.name?.substring(from: (card.name?.characters.index(before: (card.name?.endIndex)!))!))!)
             if(x >= self.cards.count)
             {
@@ -53,15 +53,19 @@ class Hand: NSObject {
             }else{
                 let sprite = card as! SKSpriteNode
                 sprite.texture = SKTexture(imageNamed: cards[x].imageName)
-                x += 1
-
             }
         }
     }
     
-    func clicked()
+    func clicked(value: Bool?)
     {
-        up = !up
+        if(value != nil)
+        {
+            up = value!
+        }else{
+            up = !up
+        }
+        
         if(up)
         {
             rootSprite.run(SKAction.moveTo(y: CGFloat(175), duration: 0.2))
@@ -72,8 +76,9 @@ class Hand: NSObject {
     
     func getCard(_ node: SKNode) -> Card
     {
-    
-        let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)
-        return cards[i!]
+        // Cards named "Card 1" etc so want last char
+        let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)! - 1
+        //let i = Int((node.name?.cString(using: String.Encoding.ascii)?[5])!.)
+        return cards[i]
     }
 }

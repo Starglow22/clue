@@ -75,36 +75,38 @@ class EasyAIPlayer: Player {
             }else if(shown[p.character.name]!.contains(t.weapon)){
                 response = t.weapon
             }else{
+                var availableCards = [Card]()
                 if(hand.contains(t.person))
                 {
-                    response = t.person;
+                    availableCards += [t.person];
                 }else if (hand.contains(t.weapon)){
-                    response = t.weapon
+                    availableCards += [t.weapon];
                 }else{
-                    response = t.location
+                    availableCards += [t.location];
                 }
+                
+                let i = (Int)(arc4random_uniform(UInt32(availableCards.count)))
+                response = availableCards[i];
             }
         }
         
         shown[p.character.name]?.append(response)
         
-        
-        var flag = false
         let display = (Game.getGame().roomScene?.childNode(withName: "Result"))!
         display.run(SKAction.unhide())
         
-        (display.childNode(withName: "Text") as! SKLabelNode).text =  response.name + " showed something to " + Game.getGame().currentPlayer.character.name
-        //TODO: display on Result child
-        DispatchQueue.init(label: "display").asyncAfter(deadline: .now() + 2) {
-        //DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            flag = true
-        }
+        (display.childNode(withName: "Text") as! SKLabelNode).text =  self.character.name + " showed something to " + Game.getGame().currentPlayer.character.name
         
-        while(!flag)
-        {
-            //wait for async to return
-        }
-        display.run(SKAction.hide())
+//        DispatchQueue.init(label: "display").asyncAfter(deadline: .now() + 2) {
+//        //DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            flag = true
+//        }
+//        
+//        while(!flag)
+//        {
+//            //wait for async to return
+//        }
+//        display.run(SKAction.hide())
         return response
     }
     
@@ -221,7 +223,7 @@ class EasyAIPlayer: Player {
             display.run(SKAction.unhide())
             
             (display.childNode(withName: "Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
-            
+            display.run(SKAction.resize(toWidth: (display.childNode(withName: "Ask")?.frame.width)!, duration: 0))
             (display.childNode(withName: "Person") as! SKLabelNode).text = suspect.name
             (display.childNode(withName: "Weapon") as! SKLabelNode).text = weapon.name
             (display.childNode(withName: "Location") as! SKLabelNode).text = self.position!.room!.name
@@ -231,10 +233,10 @@ class EasyAIPlayer: Player {
                 guess = Trio(person: suspect, weapon: weapon, location: self.position!.room!)
             //}
             
-            while(guess == nil)
-            {
-                // wait for merge - can't beleive there isn't a better system
-            }
+//            while(guess == nil)
+//            {
+//                // wait for merge - can't beleive there isn't a better system
+//            }
             Game.getGame().roomScene!.childNode(withName: "Return")!.run(SKAction.unhide())
             Game.getGame().state = State.waitingForDoneWithNoteTaking
             return guess!

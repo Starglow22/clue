@@ -44,6 +44,7 @@ class Player: NSObject{
             DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(min(distance, roll))) {
                 if(self.isInRoom())
                 {
+                    Game.getGame().state = State.waitingForDoneWithNoteTaking
                     Game.getGame().moveToRoomView()
                     self.chooseSuspectOrAccuse()
                     let question = self.selectPersonWeapon()
@@ -54,7 +55,7 @@ class Player: NSObject{
                     {
                         self.takeNotes(answer!, question: question)
                         //Game.getGame().moveToBoardView()
-                        self.passTurn()
+                        //self.passTurn()
                     }
                 }else{
                     self.passTurn()
@@ -258,8 +259,8 @@ class Player: NSObject{
         
         takeNotes(result, question: question)
         //Game.getGame().moveToBoardView()
-        //display "return to board view" button instead
-        passTurn()
+        //display "return to board view" button instead, pass turn when that is clicked
+        //passTurn()
     }
     
     

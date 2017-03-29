@@ -14,6 +14,7 @@ class HumanPlayer: Player {
     {
         Game.getGame().state = State.waitingForAnswer
         Game.getGame().roomScene?.question = t
+        Game.getGame().roomScene?.updateState();
         return nil
     }
     
