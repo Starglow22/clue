@@ -27,7 +27,7 @@ class HardAIPlayer: EasyAIPlayer {
         
     }
     
-    override func chooseSuspectOrAccuse()
+    override func chooseToSuspect()
     {
         
     }

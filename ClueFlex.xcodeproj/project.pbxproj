@@ -23,6 +23,7 @@
 		337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CC1D35F3A000825C34 /* HumanPlayer.swift */; };
 		337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */; };
 		338469441DACA4E50056E605 /* EditText.sks in Resources */ = {isa = PBXBuildFile; fileRef = 338469431DACA4E50056E605 /* EditText.sks */; };
+		338700C81E8A2EAD000E2208 /* testEasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338700B41E8A02CF000E2208 /* testEasyAIPlayer.swift */; };
 		33B183AB1D3DCE180062274F /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AA1D3DCE180062274F /* Position.swift */; };
 		33B183AF1D3DF1C50062274F /* RoomScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AE1D3DF1C50062274F /* RoomScene.swift */; };
 		33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D28CEC1D336464001FB8C7 /* AppDelegate.swift */; };
@@ -33,6 +34,16 @@
 		33D28CFE1D3365F5001FB8C7 /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 33D28CFD1D3365F5001FB8C7 /* MenuScene.sks */; };
 		33D28D001D336639001FB8C7 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D28CFF1D336639001FB8C7 /* MenuScene.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		338700C01E8A092B000E2208 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 33D28CE11D336464001FB8C7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 33D28CE81D336464001FB8C7;
+			remoteInfo = ClueFlex;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		332655881D5D2F2D0085BDD7 /* NoteCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NoteCard.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -51,6 +62,9 @@
 		337787CC1D35F3A000825C34 /* HumanPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanPlayer.swift; sourceTree = "<group>"; };
 		337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EasyAIPlayer.swift; sourceTree = "<group>"; };
 		338469431DACA4E50056E605 /* EditText.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EditText.sks; sourceTree = "<group>"; };
+		338700B41E8A02CF000E2208 /* testEasyAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = testEasyAIPlayer.swift; path = ../ClueFlex/Tests/testEasyAIPlayer.swift; sourceTree = "<group>"; };
+		338700BB1E8A092B000E2208 /* ClueFlexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClueFlexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		338700BF1E8A092B000E2208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		33B183AA1D3DCE180062274F /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		33B183AE1D3DF1C50062274F /* RoomScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomScene.swift; sourceTree = "<group>"; };
 		33D28CE91D336464001FB8C7 /* ClueFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClueFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +79,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		338700B81E8A092B000E2208 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		33D28CE61D336464001FB8C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -94,10 +115,20 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		338700BC1E8A092B000E2208 /* ClueFlexTests */ = {
+			isa = PBXGroup;
+			children = (
+				338700B41E8A02CF000E2208 /* testEasyAIPlayer.swift */,
+				338700BF1E8A092B000E2208 /* Info.plist */,
+			);
+			path = ClueFlexTests;
+			sourceTree = "<group>";
+		};
 		33D28CE01D336464001FB8C7 = {
 			isa = PBXGroup;
 			children = (
 				33D28CEB1D336464001FB8C7 /* ClueFlex */,
+				338700BC1E8A092B000E2208 /* ClueFlexTests */,
 				33D28CEA1D336464001FB8C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				33D28CE91D336464001FB8C7 /* ClueFlex.app */,
+				338700BB1E8A092B000E2208 /* ClueFlexTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,6 +167,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		338700BA1E8A092B000E2208 /* ClueFlexTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 338700C21E8A092B000E2208 /* Build configuration list for PBXNativeTarget "ClueFlexTests" */;
+			buildPhases = (
+				338700B71E8A092B000E2208 /* Sources */,
+				338700B81E8A092B000E2208 /* Frameworks */,
+				338700B91E8A092B000E2208 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				338700C11E8A092B000E2208 /* PBXTargetDependency */,
+			);
+			name = ClueFlexTests;
+			productName = ClueFlexTests;
+			productReference = 338700BB1E8A092B000E2208 /* ClueFlexTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		33D28CE81D336464001FB8C7 /* ClueFlex */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33D28CFA1D336464001FB8C7 /* Build configuration list for PBXNativeTarget "ClueFlex" */;
@@ -158,10 +208,15 @@
 		33D28CE11D336464001FB8C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Gina Bolognesi";
 				TargetAttributes = {
+					338700BA1E8A092B000E2208 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 33D28CE81D336464001FB8C7;
+					};
 					33D28CE81D336464001FB8C7 = {
 						CreatedOnToolsVersion = 7.3.1;
 						LastSwiftMigration = 0800;
@@ -182,11 +237,19 @@
 			projectRoot = "";
 			targets = (
 				33D28CE81D336464001FB8C7 /* ClueFlex */,
+				338700BA1E8A092B000E2208 /* ClueFlexTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		338700B91E8A092B000E2208 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		33D28CE71D336464001FB8C7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,6 +268,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		338700B71E8A092B000E2208 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				338700C81E8A2EAD000E2208 /* testEasyAIPlayer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		33D28CE51D336464001FB8C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -231,6 +302,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		338700C11E8A092B000E2208 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 33D28CE81D336464001FB8C7 /* ClueFlex */;
+			targetProxy = 338700C01E8A092B000E2208 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		33D28CF41D336464001FB8C7 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
@@ -243,6 +322,40 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		338700C31E8A092B000E2208 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = ClueFlexTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = gina.ClueFlexTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClueFlex.app/Contents/MacOS/ClueFlex";
+			};
+			name = Debug;
+		};
+		338700C41E8A092B000E2208 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ClueFlexTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = gina.ClueFlexTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClueFlex.app/Contents/MacOS/ClueFlex";
+			};
+			name = Release;
+		};
 		33D28CF81D336464001FB8C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -359,6 +472,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		338700C21E8A092B000E2208 /* Build configuration list for PBXNativeTarget "ClueFlexTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				338700C31E8A092B000E2208 /* Debug */,
+				338700C41E8A092B000E2208 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		33D28CE41D336464001FB8C7 /* Build configuration list for PBXProject "ClueFlex" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

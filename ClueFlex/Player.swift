@@ -46,7 +46,7 @@ class Player: NSObject{
                 {
                     Game.getGame().state = State.waitingForDoneWithNoteTaking
                     Game.getGame().moveToRoomView()
-                    self.chooseSuspectOrAccuse()
+                    self.chooseToSuspect()
                     let question = self.selectPersonWeapon()
                     let answer = self.ask(question)
                     
@@ -182,7 +182,7 @@ class Player: NSObject{
         
     }
     
-    func chooseSuspectOrAccuse()
+    func chooseToSuspect()
     {
         
     }

@@ -32,6 +32,10 @@ class EasyAIPlayer: Player {
         shown = ["Miss Scarlett": [], "Prof. Plum": [], "Mrs Peacock": [], "Mr Green": [], "Col. Mustard": [], "Mrs White": []]
         
         super.init(c: c)
+    }
+    
+    func markHandCards()
+    {
         for x in hand
         {
             if(x.type == Type.character)
@@ -44,8 +48,6 @@ class EasyAIPlayer: Player {
             }
         }
     }
-    
-    
     
     override func reply(_ t: Trio, p:Player) -> Card?
     {
@@ -150,7 +152,7 @@ class EasyAIPlayer: Player {
         
     }
     
-    override func chooseSuspectOrAccuse()
+    override func chooseToSuspect()
     {
         if(charSoln != nil && weaponSoln != nil && roomSoln != nil)
         {
@@ -162,15 +164,18 @@ class EasyAIPlayer: Player {
     
     override func selectPersonWeapon() -> Trio
     {
-        var char : String? = nil
-        var weapon: String? = nil
+        // lists of ones I don't yet know
+        var charOptions = [String]()
+        var weaponOptions = [String]()
+        
+        var charGuess : String
+        var weaponGuess : String
         
         for s in charInfo
         {
             if(s.value == nil)
             {
-                char = s.key
-                break
+                charOptions += [s.key]
             }
         }
         
@@ -178,18 +183,17 @@ class EasyAIPlayer: Player {
         {
             if(s.value == nil)
             {
-                weapon = s.key
-                break
+                weaponOptions += [s.key]
             }
         }
         
         // 3 cases: knows none, knows 1, knows 2 - separate case for knowing everything but room must be handled in choosing destination
         
-        if(char == nil && weapon == nil)
+        if(charSoln != nil && weaponSoln != nil)
         {
             return Trio(person: charSoln!, weapon: weaponSoln!, location: self.position!.room!)
         }else{
-            if(char == nil){ // knows character
+            if(charSoln != nil){ // knows character
                 // guess something random from what you hold in your hand and the one in the envelope
                 var options = [charSoln!];
                 for c in hand
@@ -199,9 +203,11 @@ class EasyAIPlayer: Player {
                         options.append(c);
                     }
                 }
-                char = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
+                charGuess = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
                 
-            }else if (weapon == nil){
+                weaponGuess = weaponOptions[(Int)(arc4random_uniform(UInt32(weaponOptions.count)))]
+                
+            }else if (weaponSoln != nil){
                 //mirror above
                 var options = [weaponSoln!];
                 for c in hand
@@ -211,12 +217,18 @@ class EasyAIPlayer: Player {
                         options.append(c);
                     }
                 }
-                weapon = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
+                weaponGuess = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
+                
+                charGuess = charOptions[(Int)(arc4random_uniform(UInt32(charOptions.count)))]
+            }else{
+                charGuess = charOptions[(Int)(arc4random_uniform(UInt32(charOptions.count)))]
+                
+                weaponGuess = weaponOptions[(Int)(arc4random_uniform(UInt32(weaponOptions.count)))]
             }
             
             var guess: Trio?
-            let suspect = Card.getCardWithName(char!)!
-            let weapon = Card.getCardWithName(weapon!)!
+            let suspect = Card.getCardWithName(charGuess)!
+            let weapon = Card.getCardWithName(weaponGuess)!
             
             let display = Game.getGame().roomScene!.childNode(withName: "QuestionPanel")!
             
@@ -320,17 +332,17 @@ class EasyAIPlayer: Player {
             }
         }
         
-        if(charSoln != nil && char != nil)
+        if(charSoln == nil && char != nil)
         {
             charSoln = Card.getCardWithName(char!)
         }
         
-        if(weaponSoln != nil && weapon != nil)
+        if(weaponSoln == nil && weapon != nil)
         {
             weaponSoln = Card.getCardWithName(weapon!)
         }
         
-        if(roomSoln != nil && room != nil)
+        if(roomSoln == nil && room != nil)
         {
             roomSoln = Card.getCardWithName(room!)
         }

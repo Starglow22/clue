@@ -350,6 +350,10 @@ class MenuScene: SKScene {
             }
         }
         
+        for p in 1...players.count-1{
+            (players[p] as! EasyAIPlayer).markHandCards()
+        }
+        
         let game = Game(players: players, s: solution, scene: scene, human:players[0] as! HumanPlayer)
         game.roomCards = rooms
         
