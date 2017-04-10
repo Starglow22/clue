@@ -91,16 +91,35 @@ class testEasyAIPlayer: XCTestCase {
         
         for _ in 0...5{
             let guess = player!.selectPersonWeapon()
-        
-        XCTAssert(guess.person == people![5] || guess.person == people![4], "Guessed a person known already " + guess.person.name)
-        XCTAssert(guess.weapon == weapons![5] || guess.weapon == weapons![4], "Guessed a weapon known already " + guess.weapon.name)
+            
+            XCTAssert(guess.person == people![5] || guess.person == people![4], "Guessed a person known already " + guess.person.name)
+            XCTAssert(guess.weapon == weapons![5] || guess.weapon == weapons![4], "Guessed a weapon known already " + guess.weapon.name)
         }
+    }
+    
+    func testAccuseInWrongRoom(){ // shouldn't accuse, should ask for combination of hand and solution cards
+        player!.charSoln = people![3]
+        player!.weaponSoln = weapons![3]
+        player!.roomSoln = rooms![3]
+        
+        player!.chooseToSuspect()
+        XCTAssertTrue(player!.suspect, "Accusing in wrong room")
+        let question = player!.selectPersonWeapon()
+        XCTAssert(people![0] == question.person || people![1] == question.person || people![3] == question.person, question.person.name)
+        XCTAssert(weapons![0] == question.weapon || weapons![1] == question.weapon || weapons![3] == question.weapon, question.weapon.name)
     }
     
     func testTakeNotes() {
         let trio = Trio(person: people![3], weapon: weapons![3], location: rooms![3])
         player?.takeNotes(Answer(card: people![3], person: mockPlayer!), question: trio)
         XCTAssert(player!.charInfo["Mr Green"]! == mockPlayer!, "Did not take correct note - person")
+        // does not take extraneous notes
+        for s in player!.charInfo
+        {
+            if(s.key != "Mr Green" && s.key != "Miss Scarlett" && s.key != "Prof. Plum"){
+                XCTAssert(s.value == nil, "Took other notes")
+            }
+        }
         
         player?.takeNotes(Answer(card: weapons![3], person: mockPlayer!), question: trio)
         XCTAssert(player!.weaponInfo["Revolver"]! == mockPlayer!, "Did not take correct note - weapon")
@@ -122,11 +141,10 @@ class testEasyAIPlayer: XCTestCase {
         XCTAssert(player!.charInfo["Mr Green"]! == nil, "Took wrong note - person")
         XCTAssert(player!.charSoln == people![3], "Did not note solution")
         
-    
-        XCTAssert(player!.weaponInfo["Revolver"]! == mockPlayer!, "Took wrong note - weapon")
+        XCTAssert(player!.weaponInfo["Revolver"]! == nil, "Took wrong note - weapon")
         XCTAssert(player!.weaponSoln == weapons![3], "Did not note solution")
         
-        XCTAssert(player!.roomInfo["Dining room"]! == mockPlayer!, "Did not take correct note - room")
+        XCTAssert(player!.roomInfo["Dining room"]! == nil, "Did not take correct note - room")
         XCTAssert(player!.roomSoln == rooms![3], "Did not note solution")
     }
     
@@ -137,7 +155,7 @@ class testEasyAIPlayer: XCTestCase {
         player!.weaponInfo["Lead Pipe"] = mockPlayer!
         player!.weaponInfo["Revolver"] = mockPlayer!
         player!.weaponInfo["Rope"] = mockPlayer!
-        //am in conservatory
+        
         player!.roomInfo["Dining room"] = mockPlayer!
         player!.roomInfo["Billard"] = mockPlayer!
         player!.roomInfo["Library"] = mockPlayer!
@@ -146,11 +164,14 @@ class testEasyAIPlayer: XCTestCase {
         
         player?.takeNotes(Answer(card: rooms![8], person: mockPlayer), question: Trio(person: people![2], weapon: weapons![3], location: rooms![8]))
         
+        XCTAssert(Game.getGame().boardScene.board["conservatory"]!.room == rooms![2])
+        XCTAssert(Game.getGame().boardScene.board["conservatory"]!.room!.name == rooms![2].name)
+        
         player!.chooseToSuspect()
         XCTAssertFalse(player!.suspect, "Did not choose to accuse")
         
         let accusal = player!.selectPersonWeapon()
-        XCTAssert(accusal.person == people![5] && accusal.weapon == weapons![5] && accusal.location == rooms![2], "Made wrong accusal")
+        XCTAssert(accusal.person == people![5] && accusal.weapon == weapons![5] && accusal.location == rooms![2], "Made wrong accusal " + accusal.location.name)
     }
     
     override func setUp() {

@@ -29,8 +29,7 @@ class RoomScene: SKScene {
         
         if(hand == nil)
         {
-            hand = Hand(sprite: self.childNode(withName: "Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!)
-//            self.childNode(withName: "Hand")?.run(SKAction.move(to:CGPoint(x:0, y:175), duration: 0))
+            hand = Hand(sprite: self.childNode(withName: "Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!, isBoard: false)
         }
         
         self.childNode(withName: "Mode")?.run(SKAction.hide())
@@ -105,8 +104,10 @@ class RoomScene: SKScene {
             hand?.clicked(value: true)
             self.childNode(withName: "Return")?.run(SKAction.hide())
             self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.unhide())
+            self.childNode(withName: "QuestionPanel")?.run(SKAction.unhide())
         }else if(game?.state == State.waitingForDoneWithNoteTaking){
             self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.hide())
+            self.childNode(withName: "Return")?.run(SKAction.unhide())
             hand?.clicked(value: false)
         }
     }
@@ -233,10 +234,10 @@ class RoomScene: SKScene {
     
     private func doAnswer()
     {
-        self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")!.run(SKAction.hide())
+        game!.state = State.waitingForDoneWithNoteTaking
+        updateState()
         self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")!.run(SKAction.hide())
         self.childNode(withName: "Return")?.run(SKAction.unhide())
-        game!.state = State.waitingForDoneWithNoteTaking
         let textDisplay = self.childNode(withName: "QuestionPanel")!.childNode(withName: "Ask") as! SKLabelNode
         textDisplay.text = textDisplay.text?.replacingOccurrences(of: "asks", with: "asked");
     }

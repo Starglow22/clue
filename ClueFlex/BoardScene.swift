@@ -10,6 +10,7 @@ import SpriteKit
 
 class BoardScene: SKScene {
     var game : Game?
+        var hand: Hand?
     
     var board : [String: Position] = [:]
     
@@ -20,6 +21,8 @@ class BoardScene: SKScene {
 	   
     func firstDisplay()
     {
+        hand = Hand(sprite: self.childNode(withName: "Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!, isBoard: true)
+        
         game = Game.getGame()
         playerNameDisplay = self.childNode(withName: "PlayersList")!
         
@@ -91,6 +94,10 @@ class BoardScene: SKScene {
             game?.noteCard.selectBox(node as! SKLabelNode)
         }
         
+        if(node.name == "Hand")
+        {
+            hand?.clicked(value: nil)
+        }
         
         switch game!.state
         {
@@ -117,22 +124,28 @@ class BoardScene: SKScene {
             let selection = board[node.name!.lowercased()]
             //nil if not a position
             
-            let possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!, true))
+            var possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!, true, lastRoomEntered: game!.currentPlayer.lastRoomEntered, turnsSinceEntered: game!.currentPlayer.turnsSinceEntered))
             
-            if (selection != nil && possibleDestinations.contains(selection!))
+            if(possibleDestinations.count == 0)
             {
-                let pathToDestination = game!.currentPlayer.position!.shortestPathTo(selection!)!
+                textDisplay.text = "No valid moves, sorry"
+                return;
+            }
+            
+            if (selection != nil && possibleDestinations.contains(selection!)) // 2 turns rule
                 
-                if(pathToDestination.count <= dieRoll!)
-                {
+            {
+                // Do not allow to change destination or do any action while animation
+                self.game?.state = State.waitingForTurn;
+                
+                let pathToDestination = game!.currentPlayer.position!.shortestPathTo(selection!, lastVisited: game!.currentPlayer.lastRoomEntered, numTurns: game!.currentPlayer.turnsSinceEntered)!
+                
                     game?.currentPlayer.moveToken(newPos: selection!, p: Array(pathToDestination))
-                }else{
-                    game?.currentPlayer.moveToken(newPos: selection!, p: Array(pathToDestination.dropLast(pathToDestination.count-dieRoll!)))
-                }
+                    
                 self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
                 //textDisplay.runAction(SKAction.hide())
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(dieRoll!)) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(pathToDestination.count) * Player.MOVE_DELAY) {
                     if (selection!.isRoom)
                     {
                         self.game?.state = State.waitingForSuspectOrAccuse
@@ -144,7 +157,7 @@ class BoardScene: SKScene {
                     }
                 }
             }else{
-                textDisplay.text = "Thats is not a valid move, sorry"
+                textDisplay.text = "That's not a valid move, sorry"
             }
             
             
@@ -165,13 +178,13 @@ class BoardScene: SKScene {
         {
             let roll2 = arc4random_uniform(6) + 1
             let node  = self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die") as! SKSpriteNode
-            node.run(SKAction.rotate(byAngle: CGFloat(M_PI * 16), duration: 1.5))
+            node.run(SKAction.rotate(byAngle: CGFloat(Double.pi * 16), duration: 1.5))
             node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll2)")))
             return Int(roll2);
         }else{
             let node  = self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die") as! SKSpriteNode
-            node.run(SKAction.rotate(byAngle: CGFloat(M_PI * 16), duration: 1.5))
-            node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll)")))
+            node.run(SKAction.rotate(byAngle: CGFloat(Double.pi * 16), duration: 1.5))
+            node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(String(describing: roll))")))
             return Int(roll!);
         }
         
@@ -228,7 +241,7 @@ class BoardScene: SKScene {
         board["lounge"] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNode(withName: "Lounge") as! SKSpriteNode)
         board["library"] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNode(withName: "Library") as! SKSpriteNode)
         board["billard"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard") as! SKSpriteNode)
-        board["dining"] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining Room") as! SKSpriteNode)
+        board["dining"] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining") as! SKSpriteNode)
         board["conservatory"] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNode(withName: "Conservatory") as! SKSpriteNode)
         board["ballroom"] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNode(withName: "Ballroom") as! SKSpriteNode)
         board["kitchen"] = Position(isRoom: true, room: game?.roomCards![0], node: root?.childNode(withName: "Kitchen") as! SKSpriteNode)

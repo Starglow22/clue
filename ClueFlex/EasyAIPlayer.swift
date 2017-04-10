@@ -99,24 +99,24 @@ class EasyAIPlayer: Player {
         
         (display.childNode(withName: "Text") as! SKLabelNode).text =  self.character.name + " showed something to " + Game.getGame().currentPlayer.character.name
         
-//        DispatchQueue.init(label: "display").asyncAfter(deadline: .now() + 2) {
-//        //DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//            flag = true
-//        }
-//        
-//        while(!flag)
-//        {
-//            //wait for async to return
-//        }
-//        display.run(SKAction.hide())
+        //        DispatchQueue.init(label: "display").asyncAfter(deadline: .now() + 2) {
+        //        //DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        //            flag = true
+        //        }
+        //
+        //        while(!flag)
+        //        {
+        //            //wait for async to return
+        //        }
+        //        display.run(SKAction.hide())
         return response
     }
     
     
     override func move(num: Int) -> Int
     {
-        let target: Position
-        if(suspect)
+        var target: Position
+        if(notReadyToAccuse())
         {
             //handle case where you know culprit and weapon but not room
             if(charSoln != nil && weaponSoln != nil)
@@ -129,32 +129,61 @@ class EasyAIPlayer: Player {
                         unknown.append(s.0)
                     }
                 }
+                if(turnsSinceEntered < 2 && lastRoomEntered != nil && unknown.contains((lastRoomEntered?.room?.name)!))
+                {
+                    unknown.remove(at: unknown.index(of: (lastRoomEntered?.room?.name)!)!)
+                }
+                
                 target = position!.closestRoomFrom(selection: unknown)
                 
             }else{
-                target = (position!.closestRoom())//[Position](), visited: [Position]()))!
+                target = (position!.closestRoom(lastVisited: lastRoomEntered, numTurns: turnsSinceEntered))
             }
         }else{
-            target = Game.getGame().boardScene.board[(roomSoln?.name)!]! //roomSoln.
+            target = Game.getGame().boardScene.board[(roomSoln?.name.lowercased())!]!
+            var tempPath = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)!
+            if(position?.room == roomSoln || tempPath.count < 2)
+            {
+                //just go somewhere near but don't take secret passages
+                target = position!.closestRoomFrom(selection: ["Ballroom", "Dining room", "Billard", "Library", "Hall"])
+            }else{
+                if(roomSoln == lastRoomEntered?.room && turnsSinceEntered < 2 && num >= tempPath.count){
+                    target = tempPath[tempPath.count - 1 - (2-turnsSinceEntered)]
+                }
+            }
         }
         
-        var pathToDestination = position!.shortestPathTo(target)!
+        var pathToDestination = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
         
-        if(pathToDestination.count <= num)
+        if(pathToDestination == nil)
         {
-            moveToken(newPos: pathToDestination[pathToDestination.count-1], p: Array(pathToDestination));
+            return 0; // no possible path
+        }
+        
+        if(pathToDestination!.count <= num)
+        {
+            moveToken(newPos: pathToDestination![pathToDestination!.count-1], p: Array(pathToDestination!));
         }else{
-            moveToken(newPos: pathToDestination[num-1], p: Array(pathToDestination.dropLast(pathToDestination.count-num)));
+            moveToken(newPos: pathToDestination![num-1], p: Array(pathToDestination!.dropLast(pathToDestination!.count-num)));
             //not using all moves (eg entering room) causes -ve index
         }
         
-        return pathToDestination.count
+        return pathToDestination!.count
         
+    }
+    
+    func notReadyToAccuse() -> Bool
+    {
+        if(charSoln != nil && weaponSoln != nil && roomSoln != nil)
+        {
+            return false;
+        }
+        return true
     }
     
     override func chooseToSuspect()
     {
-        if(charSoln != nil && weaponSoln != nil && roomSoln != nil)
+        if(charSoln != nil && weaponSoln != nil && roomSoln != nil && position?.room == roomSoln)
         {
             suspect = false;
         }else{
@@ -164,6 +193,11 @@ class EasyAIPlayer: Player {
     
     override func selectPersonWeapon() -> Trio
     {
+        if(charSoln != nil && weaponSoln != nil && roomSoln != nil && position?.room == roomSoln)
+        {
+            return Trio(person: charSoln!, weapon: weaponSoln!, location: roomSoln!)
+        }
+        
         // lists of ones I don't yet know
         var charOptions = [String]()
         var weaponOptions = [String]()
@@ -189,9 +223,29 @@ class EasyAIPlayer: Player {
         
         // 3 cases: knows none, knows 1, knows 2 - separate case for knowing everything but room must be handled in choosing destination
         
-        if(charSoln != nil && weaponSoln != nil)
+        if(charSoln != nil && weaponSoln != nil) // knows answer but is in wrong room or doesn't know room
         {
-            return Trio(person: charSoln!, weapon: weaponSoln!, location: self.position!.room!)
+            var options = [charSoln!];
+            for c in hand
+            {
+                if(c.type == Type.character)
+                {
+                    options.append(c);
+                }
+            }
+            charGuess = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
+            
+            options = [weaponSoln!];
+            for c in hand
+            {
+                if(c.type == Type.weapon)
+                {
+                    options.append(c);
+                }
+            }
+            weaponGuess = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
+
+            return Trio(person: Card.getCardWithName(charGuess)!, weapon: Card.getCardWithName(weaponGuess)!, location: self.position!.room!)
         }else{
             if(charSoln != nil){ // knows character
                 // guess something random from what you hold in your hand and the one in the envelope
@@ -242,13 +296,13 @@ class EasyAIPlayer: Player {
             
             //TODO: display on QuestionPanel child
             //DispatchQueue.init(label: "display").asyncAfter(deadline: .now() + 2) {
-                guess = Trio(person: suspect, weapon: weapon, location: self.position!.room!)
+            guess = Trio(person: suspect, weapon: weapon, location: self.position!.room!)
             //}
             
-//            while(guess == nil)
-//            {
-//                // wait for merge - can't beleive there isn't a better system
-//            }
+            //            while(guess == nil)
+            //            {
+            //                // wait for merge - can't beleive there isn't a better system
+            //            }
             Game.getGame().roomScene!.childNode(withName: "Return")!.run(SKAction.unhide())
             Game.getGame().state = State.waitingForDoneWithNoteTaking
             return guess!
@@ -271,7 +325,7 @@ class EasyAIPlayer: Player {
             if(!hand.contains(question.location)){
                 roomSoln = question.location
             }
-        
+            
         }else if (answer.card?.type == Type.character)
         {
             charInfo[(answer.card?.name)!] = answer.person
@@ -349,11 +403,11 @@ class EasyAIPlayer: Player {
         
         //UI display answer
         /*
-        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
-        let textDisplay = root.childNode(withName: "TextDisplay") as! SKLabelNode
-        textDisplay.text = self.character.name + " received a card from " + (answer.person?.character.name)!
- */
+         let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+         let textDisplay = root.childNode(withName: "TextDisplay") as! SKLabelNode
+         textDisplay.text = self.character.name + " received a card from " + (answer.person?.character.name)!
+         */
     }
     
-        
+    
 }

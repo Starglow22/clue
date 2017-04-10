@@ -8,7 +8,13 @@
 
 import SpriteKit
 
-class Card : NSObject {
+class Card : Equatable, Hashable {
+    /// The hash value.
+    ///
+    /// Hash values are not guaranteed to be equal across different executions of
+    /// your program. Do not save hash values to use during a future execution.
+    var hashValue: Int
+
     static var list = [Card]()
     
     var type: Type
@@ -19,8 +25,8 @@ class Card : NSObject {
         name = n;
         type = t;
         imageName = file;
+        hashValue = n.hashValue
         
-        super.init()
         Card.list.append(self)
     }
     
@@ -37,9 +43,10 @@ class Card : NSObject {
     
 }
 
- func ==(lhs: Card, rhs: Card) -> Bool {
+func ==(lhs: Card, rhs: Card) -> Bool {
     return lhs.name == rhs.name && lhs.type == rhs.type
 }
+
 
 
 enum Type{

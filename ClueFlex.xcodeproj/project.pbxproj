@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		332655891D5D2F2D0085BDD7 /* NoteCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332655881D5D2F2D0085BDD7 /* NoteCard.swift */; };
 		3326558B1D5EA3710085BDD7 /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3326558A1D5EA3710085BDD7 /* Hand.swift */; };
+		332AA6291E9365E600BE145B /* testPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332AA6281E9365E600BE145B /* testPosition.swift */; };
 		3347444A1D4D495A00DD21A0 /* HardAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334744491D4D495A00DD21A0 /* HardAIPlayer.swift */; };
 		3347444C1D4D498D00DD21A0 /* TricksterAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */; };
 		3347444E1D4D503A00DD21A0 /* UIStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444D1D4D503A00DD21A0 /* UIStates.swift */; };
@@ -48,6 +49,7 @@
 /* Begin PBXFileReference section */
 		332655881D5D2F2D0085BDD7 /* NoteCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NoteCard.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3326558A1D5EA3710085BDD7 /* Hand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
+		332AA6281E9365E600BE145B /* testPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testPosition.swift; sourceTree = "<group>"; };
 		334744491D4D495A00DD21A0 /* HardAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HardAIPlayer.swift; sourceTree = "<group>"; };
 		3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TricksterAIPlayer.swift; sourceTree = "<group>"; };
 		3347444D1D4D503A00DD21A0 /* UIStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStates.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				338700B41E8A02CF000E2208 /* testEasyAIPlayer.swift */,
 				338700BF1E8A092B000E2208 /* Info.plist */,
+				332AA6281E9365E600BE145B /* testPosition.swift */,
 			);
 			path = ClueFlexTests;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				332AA6291E9365E600BE145B /* testPosition.swift in Sources */,
 				338700C81E8A2EAD000E2208 /* testEasyAIPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -479,6 +483,7 @@
 				338700C41E8A092B000E2208 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		33D28CE41D336464001FB8C7 /* Build configuration list for PBXProject "ClueFlex" */ = {
 			isa = XCConfigurationList;

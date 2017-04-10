@@ -33,11 +33,13 @@ class Hand: NSObject {
     var rootSprite: SKSpriteNode
     var up: Bool
     let cards: [Card]
+    var isBoard : Bool
     
-    init(sprite: SKSpriteNode, cards: [Card]) {
+    init(sprite: SKSpriteNode, cards: [Card], isBoard: Bool) {
         rootSprite = sprite
         up = false
         self.cards = cards
+        self.isBoard = isBoard
         
         //1140 full width, card 150 - 900 just for cards, 30 for each small gap * 5 + 2 big gaps (45 each)
         rootSprite.size.width = CGFloat(60 + 180*self.cards.count) //90 + (150*self.cards.count) + 30*(self.cards.count - 1)
@@ -55,6 +57,12 @@ class Hand: NSObject {
                 sprite.texture = SKTexture(imageNamed: cards[x].imageName)
             }
         }
+        
+        if(isBoard)
+        {
+            up = false
+            rootSprite.run(SKAction.moveTo(y: CGFloat(-150), duration: 0))
+        }
     }
     
     func clicked(value: Bool?)
@@ -70,7 +78,12 @@ class Hand: NSObject {
         {
             rootSprite.run(SKAction.moveTo(y: CGFloat(175), duration: 0.2))
         }else{
+            if(isBoard)
+            {
+                rootSprite.run(SKAction.moveTo(y: CGFloat(-150), duration: 0.2))
+            }else{
             rootSprite.run(SKAction.moveTo(y: CGFloat(-120), duration: 0.2))
+            }
         }
     }
     

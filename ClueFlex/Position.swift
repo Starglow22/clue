@@ -34,7 +34,7 @@ class Position{
     }
     
     
-    func reachablePositions(_ moves: Int, _ firstCall: Bool) -> [Position]
+    func reachablePositions(_ moves: Int, _ firstCall: Bool, lastRoomEntered: Position?, turnsSinceEntered : Int) -> [Position]
     {
         if(!firstCall && (self.isRoom || moves == 0)){
 
@@ -44,25 +44,24 @@ class Position{
             var neighbors = [Position]()
             for p in self.adjacent
             {
-                if(!p.isOccupied)
+                if((!p.isOccupied || p.isRoom) && !(p == lastRoomEntered && turnsSinceEntered < 2))
                 {
                     neighbors.append(p)
-                }
-                
-                for pos in p.reachablePositions(moves-1, false){ // avoid duplicates
-                    if(!neighbors.contains(pos))
-                    {
-                        neighbors.append(pos);
+                    
+                    for pos in p.reachablePositions(moves-1, false, lastRoomEntered: lastRoomEntered, turnsSinceEntered: turnsSinceEntered){ // avoid duplicates
+                        if(!neighbors.contains(pos))
+                        {
+                            neighbors.append(pos);
+                        }
                     }
                 }
-                
             }
             return neighbors
         }
     }
     
     //breadth first search
-    func closestRoom() -> Position//_ queue: [Position], visited: [Position]) -> Position
+    func closestRoom(lastVisited: Position?, numTurns : Int) -> Position //_ queue: [Position], visited: [Position]) -> Position
     {
         var queue = self.adjacent;
         var visited = [self];
@@ -72,32 +71,15 @@ class Position{
             visited.append(pos);
             
             for p in pos.adjacent{
-                if(!queue.contains(p) && !visited.contains(p))
+                if(!queue.contains(p) && !visited.contains(p) && !(pos.isRoom && p.isRoom) && !(pos == lastVisited && numTurns < 2))
                 {
                     queue.append(p);
                 }
             }
             
-        }while(!pos.isRoom)
+        }while(!pos.isRoom || (pos == lastVisited && numTurns < 2))
         
         return pos;
-        
-        
-/*        if(self.isRoom)
-        {
-            return self
-        }else{
-            var newQueue = queue
-                for pos in self.adjacent
-                {
-                    if(!newQueue.contains(pos) && !visited.contains(pos))
-                    {
-                        newQueue.append(pos);
-                    }
-            
-                }
-            return newQueue.removeFirst().closestRoom(newQueue, visited: visited+[self])
-        }*/
     }
     
     //breadth first search
@@ -111,7 +93,7 @@ class Position{
             visited.append(pos);
             
             for p in pos.adjacent{
-                if(!queue.contains(p) && !visited.contains(p))
+                if(!queue.contains(p) && !visited.contains(p) && !(p.isRoom && pos.isRoom && pos != self))
                 {
                     queue.append(p);
                 }
@@ -123,7 +105,7 @@ class Position{
     }
     
     //breadth first search
-    func shortestPathTo(_ room: Position) -> [Position]?
+    func shortestPathTo(_ room: Position, lastVisited: Position?, numTurns : Int) -> [Position]?
     {
         var vis  = [Position]()
          var prev = Dictionary<Position, Position>()
@@ -140,8 +122,7 @@ class Position{
                     break;
                 }else{
                     for node in current.adjacent{
-                        
-                        if(!vis.contains(node)){
+                        if(node == room || (!vis.contains(node) && (!node.isOccupied || node.isRoom) && !(node == self && node.isRoom && current.isRoom)  && !(node == lastVisited && numTurns < 2))){
                             q.append(node);
                             vis.append(node)
                             prev[node] = current;
@@ -152,12 +133,29 @@ class Position{
 
         
         var node = room
+        var endPoint : Position?
         while(node != self)
         {
             directions.append(node)
+            if(prev[node] == nil)
+            {
+                return nil // no path found
+            }
+            
             node = prev[node]!
+            
+            if(node.isRoom && node != self) // end path at intermediate room if applicable
+            {
+                endPoint = node;
+            }
         }
-    return directions.reversed()
+        
+        if(endPoint == nil)
+        {
+            return directions.reversed()
+        }else{ // truncate at room
+            return directions.dropFirst(directions.count - directions.index(of: endPoint!)!).reversed()
+        }
         
         /*
          if(self == room)

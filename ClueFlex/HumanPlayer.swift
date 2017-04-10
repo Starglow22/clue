@@ -13,12 +13,9 @@ class HumanPlayer: Player {
     override func reply(_ t: Trio, p:Player) -> Card?
     {
         Game.getGame().state = State.waitingForAnswer
-        Game.getGame().roomScene?.question = t
-        Game.getGame().roomScene?.updateState();
+        Game.getGame().roomScene!.question = t
+        Game.getGame().roomScene!.updateState();
         return nil
     }
-    
-    
-    
 
 }

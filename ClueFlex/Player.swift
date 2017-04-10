@@ -10,6 +10,8 @@ import SpriteKit
 
 class Player: NSObject{
     
+    static let MOVE_DELAY = 1.0
+    
     var hand: [Card]
     var position: Position?
     var character: Card
@@ -20,6 +22,9 @@ class Player: NSObject{
     
     var counter: Int
     
+    var lastRoomEntered : Position?
+    var turnsSinceEntered : Int
+    
     init(c:Card)
     {
         character = c;
@@ -27,6 +32,8 @@ class Player: NSObject{
         
         suspect = true
         counter = 0
+        
+        turnsSinceEntered = 0
     }
     
     
@@ -145,6 +152,15 @@ class Player: NSObject{
     //animation - move through path
     func moveToken(newPos: Position, p: [Position]?)
     {
+        
+        if(position!.isRoom)
+        {
+            lastRoomEntered = position
+            turnsSinceEntered = 0
+        }else{
+            turnsSinceEntered += 1
+        }
+        
         let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
         root.childNode(withName: "Die")?.run(SKAction.hide())
         
@@ -161,14 +177,14 @@ class Player: NSObject{
         
         if(path == nil)
         {
-            path = self.position?.shortestPathTo(newPos)
+            path = self.position?.shortestPathTo(newPos, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
         }
         
         var i = 0.0;
         while(!(path?.isEmpty)!){
             let top = path?.removeFirst()
-            DispatchQueue.main.asyncAfter(deadline: .now() + i*1) {
-                self.sprite?.run(SKAction.move(to: top!.sprite.position, duration: 1.0))
+            DispatchQueue.main.asyncAfter(deadline: .now() + i*Player.MOVE_DELAY) {
+                self.sprite?.run(SKAction.move(to: top!.sprite.position, duration: Player.MOVE_DELAY))
             }
             i += 1;
         }
@@ -205,9 +221,14 @@ class Player: NSObject{
         
         while(answer == nil && counter != me)
         {
+            
             if(players[counter] is HumanPlayer)
             {
                 players[counter].reply(question, p: self) // changes state
+                
+                counter = counter + 1
+                counter = counter % numPlayers
+                
                 return nil
             }
             answer = players[counter].reply(question, p: self)
