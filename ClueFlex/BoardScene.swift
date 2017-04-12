@@ -129,7 +129,13 @@ class BoardScene: SKScene {
             if(possibleDestinations.count == 0)
             {
                 textDisplay.text = "No valid moves, sorry"
+                self.game?.currentPlayer.passTurn()
                 return;
+            }
+            
+            if(possibleDestinations.contains(game!.currentPlayer.position!))
+            {
+                possibleDestinations.remove(at: possibleDestinations.index(of: game!.currentPlayer.position!)!)
             }
             
             if (selection != nil && possibleDestinations.contains(selection!)) // 2 turns rule
