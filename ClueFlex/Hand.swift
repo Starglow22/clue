@@ -91,7 +91,6 @@ class Hand: NSObject {
     {
         // Cards named "Card 1" etc so want last char
         let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)! - 1
-        //let i = Int((node.name?.cString(using: String.Encoding.ascii)?[5])!.)
         return cards[i]
     }
 }

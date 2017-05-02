@@ -10,14 +10,13 @@ import SpriteKit
 
 class BoardScene: SKScene {
     var game : Game?
-        var hand: Hand?
+    var hand: Hand?
     
     var board : [String: Position] = [:]
     
     var playerNameDisplay :SKNode?
     
     var dieRoll: Int?
-    //var possibleDestinations: [Position] = []
 	   
     func firstDisplay()
     {
@@ -26,28 +25,27 @@ class BoardScene: SKScene {
         game = Game.getGame()
         playerNameDisplay = self.childNode(withName: "PlayersList")!
         
-        let i = game!.players.index(of: game!.currentPlayer)!
+        let i = game!.allPlayers.index(of: game!.currentPlayer)!
         
-        for x in 1...game!.players.count
+        for x in 1...game!.allPlayers.count
         {
-            if(game?.players[(i+x-1)%game!.players.count] is HumanPlayer)
+            if(game?.allPlayers[(i+x-1)%game!.allPlayers.count] is HumanPlayer)
             {
                 (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = "You (" +
-                    (game?.players[(i+x-1)%game!.players.count].character.name)! + ")"
+                    (game?.allPlayers[(i+x-1)%game!.allPlayers.count].character.name)! + ")"
             }else{
-                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = game?.players[(i+x-1)%game!.players.count].character.name
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = game?.allPlayers[(i+x-1)%game!.allPlayers.count].character.name
             }
         }
         
-        for x in game!.players.count+1...6
+        for x in game!.allPlayers.count+1...6
         {
             (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
         }
         
         highlightCurrentPlayer()
         
-        
-        for p in game!.players
+        for p in game!.allPlayers
         {
             p.sprite = self.childNode(withName: p.character.name) as? SKSpriteNode
         }
@@ -64,11 +62,9 @@ class BoardScene: SKScene {
             (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = (game?.currentPlayer.character.name)!+"'s turn"
         }
         
-        
         self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
         
         (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
-        
     }
     
     override func keyDown(with theEvent: NSEvent) {
@@ -146,8 +142,8 @@ class BoardScene: SKScene {
                 
                 let pathToDestination = game!.currentPlayer.position!.shortestPathTo(selection!, lastVisited: game!.currentPlayer.lastRoomEntered, numTurns: game!.currentPlayer.turnsSinceEntered)!
                 
-                    game?.currentPlayer.moveToken(newPos: selection!, p: Array(pathToDestination))
-                    
+                game?.currentPlayer.moveToken(newPos: selection!, p: Array(pathToDestination))
+                
                 self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
                 //textDisplay.runAction(SKAction.hide())
                 
@@ -158,7 +154,6 @@ class BoardScene: SKScene {
                         self.switchToRoomView()
                     }else{
                         self.game?.currentPlayer.passTurn()
-                        //pass turn
                         textDisplay.text = (self.game?.currentPlayer.character.name)! + "'s turn"
                     }
                 }
@@ -199,13 +194,17 @@ class BoardScene: SKScene {
     
     func highlightCurrentPlayer()
     {
-        for x in 1...game!.players.count
+        for x in 1...game!.allPlayers.count
         {
             if((playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text == game?.currentPlayer.character.name
                 || (game?.currentPlayer is HumanPlayer && ((playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text?.contains("You"))!))
             {
                 (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).fontSize = 36
-            }else{
+            }else if (!((playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text?.contains("You"))! && !game!.remainingPlayers.contains(game!.allPlayers[game!.allPlayers.index(where: { (player) -> Bool in
+                player.character.name == (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text!
+            })!])){
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).fontSize = 12
+            }else {
                 (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).fontSize = 24
             }
         }
@@ -500,7 +499,7 @@ class BoardScene: SKScene {
         board["tile127"]?.adjacent += [board["ballroom"]!]
         board["tile163"]?.adjacent += [board["ballroom"]!]
         board["tile146"]?.adjacent += [board["kitchen"]!]
-    
+        
     }
     
 }

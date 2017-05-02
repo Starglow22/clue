@@ -17,11 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var skView: SKView!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        /* Pick a size for the scene */
 
-    
-        
-        
         if let scene = StartScene(fileNamed:"StartScene") {
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .aspectFill

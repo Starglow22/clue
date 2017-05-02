@@ -18,10 +18,10 @@ class TricksterAIPlayer: EasyAIPlayer {
     }
 
     
-    override func selectPersonWeapon() -> Trio
-    {
-        return Trio(person: Game.getGame().players[0].character , weapon: (Game.getGame().roomScene?.weapons![0])!, location: self.position!.room!)
-    }
+//    override func selectPersonWeapon() -> Trio
+//    {
+//        return Trio(person: Game.getGame().allPlayers[0].character , weapon: (Game.getGame().roomScene?.weapons![0])!, location: self.position!.room!)
+//    }
     
 
 

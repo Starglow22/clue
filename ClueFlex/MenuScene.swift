@@ -25,7 +25,6 @@ class MenuScene: SKScene {
         
         self.childNode(withName: "Start")?.run(SKAction.hide())
         
-        
         fadePlayerIcons()
         resizeCharacterIcons()
         
@@ -98,11 +97,10 @@ class MenuScene: SKScene {
                 
                 let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
                 
-                
                 self.view?.presentScene(nextScene!, transition: reveal)
                 
                 
-                for player in gameObj.players
+                for player in gameObj.allPlayers
                 {
                     switch player.character.name
                     {
@@ -140,51 +138,6 @@ class MenuScene: SKScene {
         }
         
     }
-    
-    /*func moveToBoardScene(){
-        numPlayers = 2
-        difficulty = 8
-        characterName = "Mrs White"
-        
-        let nextScene = BoardScene(fileNamed: "BoardScene")
-        
-        let gameObj = initialize(scene: nextScene!)
-        for player in gameObj.players
-        {
-            player.sprite = nextScene?.childNode(withName: "BoardBackground")!.childNode(withName: player.character.name) as? SKSpriteNode
-            
-            switch player.character.name
-            {
-            case "Miss Scarlett":
-                player.position = nextScene?.board["scarlett start"]
-            case "Prof. Plum":
-                player.position = nextScene?.board["plum start"]
-            case "Mrs Peacock":
-                player.position = nextScene?.board["peacock start"]
-            case "Mr Green":
-                player.position = nextScene?.board["green start"]
-            case "Col. Mustard":
-                player.position = nextScene?.board["mustard start"]
-            default:
-                player.position = nextScene?.board["white start"]
-            }
-        }
-        
-        let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
-        
-        nextScene?.size = self.size
-        nextScene?.scaleMode = .aspectFill
-        self.view?.presentScene(nextScene!, transition: reveal)
-        
-        nextScene?.game = gameObj
-        nextScene?.setUpTiles()
-        
-        
-        gameObj.boardScene = nextScene!
-
-        
-    }
-    */
     
     func selectCharacter(_ node: SKNode)
     {
@@ -369,11 +322,11 @@ class MenuScene: SKScene {
         roomScene?.rooms = rooms
         game.roomScene = roomScene
  
-        game.currentPlayer = game.players[Int(arc4random_uniform(UInt32(game.players.count)))]
+        game.currentPlayer = game.allPlayers[Int(arc4random_uniform(UInt32(game.allPlayers.count)))]
         
         
         //assigng start positions at all players
-        for p in Game.getGame().players{
+        for p in Game.getGame().allPlayers{
             p.sprite = (scene.childNode(withName: "BoardBackground")!.childNode(withName: p.character.name) as! SKSpriteNode)
             
             switch p.character.name {
@@ -405,10 +358,8 @@ class MenuScene: SKScene {
         return game
     }
     
-    
     override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
-        
         
     }
 }

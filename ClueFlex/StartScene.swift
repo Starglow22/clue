@@ -24,15 +24,9 @@ class StartScene: SKScene {
             let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
             let nextScene = MenuScene(fileNamed: "MenuScene")
             
-            
-            //for testing purposes
-            //nextScene?.moveToBoardScene()
-            
-            
             nextScene?.size = self.size
             nextScene?.scaleMode = .aspectFill
             self.view?.presentScene(nextScene!, transition: reveal)
-            
         }
     }
     

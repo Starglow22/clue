@@ -122,31 +122,35 @@ class Position{
                     break;
                 }else{
                     for node in current.adjacent{
-                        if(node == room || (!vis.contains(node) && (!node.isOccupied || node.isRoom) && !(node == self && node.isRoom && current.isRoom)  && !(node == lastVisited && numTurns < 2))){
+                        if(node == room || (!vis.contains(node) && (!node.isOccupied || node.isRoom)
+                            && !(node == self && node.isRoom && current.isRoom)  && !(node == lastVisited && numTurns < 2))){
                             q.append(node);
                             vis.append(node)
-                            prev[node] = current;
+                            if(prev[node] == nil)
+                            {
+                                prev[node] = current;
+                            }
                         }
                     }
                 }
             }
 
         
-        var node = room
+        var backtrackNode = room
         var endPoint : Position?
-        while(node != self)
+        while(backtrackNode != self)
         {
-            directions.append(node)
-            if(prev[node] == nil)
+            directions.append(backtrackNode)
+            if(prev[backtrackNode] == nil)
             {
                 return nil // no path found
             }
             
-            node = prev[node]!
+            backtrackNode = prev[backtrackNode]!
             
-            if(node.isRoom && node != self) // end path at intermediate room if applicable
+            if(backtrackNode.isRoom && backtrackNode != self) // end path at intermediate room if applicable
             {
-                endPoint = node;
+                endPoint = backtrackNode;
             }
         }
         
@@ -154,37 +158,9 @@ class Position{
         {
             return directions.reversed()
         }else{ // truncate at room
-            return directions.dropFirst(directions.count - directions.index(of: endPoint!)!).reversed()
+            return directions.dropFirst(directions.index(of: endPoint!)!).reversed()
         }
-        
-        /*
-         if(self == room)
-         {
-         return pathSoFar + [self]
-         }else if (self.isRoom){
-         return nil;
-         }else{
-         var newQueue = queue;
-         
-         for pos in self.adjacent
-         {
-         if(!newQueue.contains(pos) && !pathSoFar.contains(pos))
-         {
-         newQueue.append(pos);
-         }
-         
-         }
-         
-         var result : [Position]?;
-         while(result == nil && !newQueue.isEmpty)
-         {
-         result = newQueue.removeFirst().shortestPathTo(room, pathSoFar: pathSoFar+[self], queue: newQueue)
-         }
-         return result
-         }
-         */
     }
-
 }
 
 extension Position:Hashable{

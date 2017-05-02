@@ -43,6 +43,15 @@ class RoomScene: SKScene {
         self.childNode(withName: "Result")?.run(SKAction.moveTo(y: CGFloat(260), duration: 0))
         
         (self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.childNode(withName: "None") as! SKLabelNode).text = "I have none"
+        self.childNode(withName: "QuestionPanel")?.childNode(withName: "Accuse")?.run(SKAction.hide())
+        
+        (self.childNode(withName: "Result")?.childNode(withName: "Image") as! SKSpriteNode).texture = SKTexture(imageNamed: "cardBack")
+        
+        if(game?.state == State.waitingForDoneWithNoteTaking)
+        {
+            self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.hide())
+        }
+        
         
         (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
         
@@ -71,20 +80,20 @@ class RoomScene: SKScene {
         game = Game.getGame()
         let playerNameDisplay = self.childNode(withName: "PlayersList")!
         
-        let i = game!.players.index(of: game!.currentPlayer)!
+        let i = game!.allPlayers.index(of: game!.currentPlayer)!
         
-        for x in 1...game!.players.count
+        for x in 1...game!.allPlayers.count
         {
-            if(game?.players[(i+x-1)%game!.players.count] is HumanPlayer)
+            if(game?.allPlayers[(i+x-1)%game!.allPlayers.count] is HumanPlayer)
             {
                 (playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text = "You (" +
-                    (game?.players[(i+x-1)%game!.players.count].character.name)! + ")"
+                    (game?.allPlayers[(i+x-1)%game!.allPlayers.count].character.name)! + ")"
             }else{
-                (playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text = game?.players[(i+x-1)%game!.players.count].character.name
+                (playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text = game?.allPlayers[(i+x-1)%game!.allPlayers.count].character.name
             }
         }
         
-        for x in game!.players.count+1...6
+        for x in game!.allPlayers.count+1...6
         {
             (playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
         }
@@ -106,7 +115,6 @@ class RoomScene: SKScene {
             self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.unhide())
             self.childNode(withName: "QuestionPanel")?.run(SKAction.unhide())
         }else if(game?.state == State.waitingForDoneWithNoteTaking){
-            self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.hide())
             self.childNode(withName: "Return")?.run(SKAction.unhide())
             hand?.clicked(value: false)
         }
@@ -182,6 +190,12 @@ class RoomScene: SKScene {
                 
                 let question = Trio(person: person!, weapon: weapon!, location: (game?.currentPlayer.position?.room)! )
                 answer = game?.currentPlayer.ask(question)
+                
+                if(!suspect!)
+                {
+                    game?.accuse(guess: question)
+                    return;
+                }
                 
                 if(answer?.card == nil)
                 {
@@ -270,7 +284,7 @@ class RoomScene: SKScene {
         
         let playerNameDisplay = self.childNode(withName: "PlayersList")!
         
-        for x in 1...game!.players.count
+        for x in 1...game!.allPlayers.count
         {
             if((playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text == game?.currentPlayer.character.name
                 || (game?.currentPlayer is HumanPlayer && ((playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text?.contains("You"))!))
