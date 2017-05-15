@@ -9,6 +9,7 @@
 import SpriteKit
 
 class MenuScene: SKScene {
+    let help = Help()
     var lastClicked: SKNode?
     
     var numPlayers = 0
@@ -17,10 +18,14 @@ class MenuScene: SKScene {
     
     override func didMove(to view: SKView) {
         /* Setup your scene here */
+        help.hide(self)
         
         for child in self.children
         {
-            child.alpha = 0.0;
+            if(child.name != "Help")
+            {
+                child.alpha = 0.0;
+            }
         }
         
         self.childNode(withName: "Start")?.run(SKAction.hide())
@@ -35,6 +40,14 @@ class MenuScene: SKScene {
         
         let location = theEvent.location(in: self)
         let node = self.atPoint(location)
+        
+        if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+            help.clicked(self)
+        }else if(help.displayed)
+        {
+            help.hide(self)
+        }
+        
         if(lastClicked != node)
         {
             switch node.name {
@@ -89,7 +102,7 @@ class MenuScene: SKScene {
                 nextScene?.size = self.size
                 nextScene?.scaleMode = .aspectFill
                 nextScene?.setUpTiles()
-            
+                
                 let gameObj = initialize(scene: nextScene!)
                 gameObj.boardScene = nextScene!
                 nextScene?.game = gameObj
@@ -124,7 +137,7 @@ class MenuScene: SKScene {
                     gameObj.currentPlayer.play()
                 }
                 
-    
+                
             default: break
                 // do nothing
             }
@@ -240,8 +253,10 @@ class MenuScene: SKScene {
         players.append(HumanPlayer(c: availableChars[availableChars.index(where: {$0.name == characterName})!]))
         availableChars.remove(at: availableChars.index(where: {$0.name == characterName})!)
         
-        let numHard = (difficulty + 10%numPlayers) / Int(ceil(10.0 / Double(numPlayers)))
-        let numTrick = (difficulty + 10%numPlayers)-1 % Int(ceil(10.0 / Double(numPlayers)))
+        //        let numHard = (difficulty + 10%numPlayers) / Int(floor(10.0 / Double(numPlayers)))
+        //        let numTrick = (difficulty + 10%numPlayers)-1 % Int(floor(10.0 / Double(numPlayers)))
+        let numHard = Int(floor(Double(difficulty * numPlayers)/10.0))
+        let numTrick = (Double(difficulty * numPlayers)/10.0).truncatingRemainder(dividingBy: 1.0) > 0.5 ? 1 : 0
         let numEasy = numPlayers - numHard - numTrick
         
         var AIPlayers = [Player]()
@@ -321,7 +336,7 @@ class MenuScene: SKScene {
         roomScene?.weapons = weapons
         roomScene?.rooms = rooms
         game.roomScene = roomScene
- 
+        
         game.currentPlayer = game.allPlayers[Int(arc4random_uniform(UInt32(game.allPlayers.count)))]
         
         
@@ -354,7 +369,7 @@ class MenuScene: SKScene {
         }else{
             game.state = State.waitingForTurn
         }
-
+        
         return game
     }
     

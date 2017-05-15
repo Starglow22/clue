@@ -9,6 +9,8 @@
 import SpriteKit
 
 class BoardScene: SKScene {
+    let help = Help()
+    
     var game : Game?
     var hand: Hand?
     
@@ -38,9 +40,12 @@ class BoardScene: SKScene {
             }
         }
         
-        for x in game!.allPlayers.count+1...6
+        if(game!.allPlayers.count < 6)
         {
-            (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
+            for x in game!.allPlayers.count+1...6
+            {
+                (playerNameDisplay?.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
+            }
         }
         
         highlightCurrentPlayer()
@@ -54,6 +59,7 @@ class BoardScene: SKScene {
     override func didMove(to view: SKView) {
         /* Setup your scene here */
         firstDisplay()
+        help.hide(self)
         
         if(game?.state == State.startOfTurn)
         {
@@ -95,6 +101,13 @@ class BoardScene: SKScene {
             hand?.clicked(value: nil)
         }
         
+        if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+            help.clicked(self)
+        }else if(help.displayed)
+        {
+            help.hide(self)
+        }
+        
         switch game!.state
         {
         case State.waitingForTurn:
@@ -117,7 +130,7 @@ class BoardScene: SKScene {
             }
             
         case State.waitingForMoveDestination:
-            let selection = board[node.name!.lowercased()]
+            let selection = board[node.name?.lowercased() == nil ? "" : node.name!.lowercased()]
             //nil if not a position
             
             var possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!, true, lastRoomEntered: game!.currentPlayer.lastRoomEntered, turnsSinceEntered: game!.currentPlayer.turnsSinceEntered))
@@ -185,7 +198,7 @@ class BoardScene: SKScene {
         }else{
             let node  = self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die") as! SKSpriteNode
             node.run(SKAction.rotate(byAngle: CGFloat(Double.pi * 16), duration: 1.5))
-            node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(String(describing: roll))")))
+            node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll!)")))
             return Int(roll!);
         }
         
@@ -339,7 +352,7 @@ class BoardScene: SKScene {
         board["tile51"]?.adjacent = [board["tile50"]!, board["tile52"]!]
         board["tile52"]?.adjacent = [board["tile51"]!, board["tile53"]!, board["tile63"]!]
         board["tile53"]?.adjacent = [board["tile52"]!, board["tile54"]!, board["tile64"]!, board["tile37"]!]
-        board["tile54"]?.adjacent = [board["tile54"]!, board["tile55"]!, board["tile65"]!, board["tile38"]!]
+        board["tile54"]?.adjacent = [board["tile53"]!, board["tile55"]!, board["tile65"]!, board["tile38"]!]
         board["tile55"]?.adjacent = [board["tile54"]!, board["tile56"]!, board["tile66"]!, board["tile39"]!]
         board["tile56"]?.adjacent = [board["tile55"]!, board["tile57"]!, board["tile67"]!, board["tile40"]!]
         board["tile57"]?.adjacent = [board["tile56"]!, board["tile58"]!, board["tile68"]!, board["tile41"]!]

@@ -252,6 +252,15 @@ class Player: NSObject{
             result = Answer(card: answer, person: responder)
         }
         
+        if(answer == nil)
+        {
+            let display = (Game.getGame().roomScene?.childNode(withName: "Result"))!
+            display.run(SKAction.unhide())
+            
+            (display.childNode(withName: "Image") as! SKSpriteNode).texture = SKTexture(imageNamed: "NoAnswer")
+            (display.childNode(withName: "Text") as! SKLabelNode).text = "No one had anything!"
+        }
+        
         takeNotes(result, question: question)
     }
     

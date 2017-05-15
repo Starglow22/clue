@@ -9,6 +9,8 @@
 import SpriteKit
 
 class RoomScene: SKScene {
+    let help = Help()
+    
     var game : Game?
     var hand: Hand?
     
@@ -26,6 +28,7 @@ class RoomScene: SKScene {
     override func didMove(to view: SKView) {
         /* Setup your scene here */
         game = Game.getGame()
+        help.hide(self)
         
         if(hand == nil)
         {
@@ -93,14 +96,18 @@ class RoomScene: SKScene {
             }
         }
         
-        for x in game!.allPlayers.count+1...6
-        {
-            (playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
+        if(game!.allPlayers.count < 6){
+            for x in game!.allPlayers.count+1...6
+            {
+                (playerNameDisplay.childNode(withName: "P\(x)") as! SKLabelNode).text = ""
+            }
         }
         
         highlightCurrentPlayer()
         
-        // TODO: set background to image of correct room
+        //set background to image of correct room
+        let room = game?.currentPlayer.position?.room?.imageName
+        (game?.roomScene?.childNode(withName: "Background") as! SKSpriteNode).texture = SKTexture(imageNamed: "\(room!)-room")
     }
     
     public func updateState(){
@@ -142,6 +149,12 @@ class RoomScene: SKScene {
             hand?.clicked(value: nil)
         }
         
+        if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+            help.clicked(self)
+        }else if(help.displayed)
+        {
+            help.hide(self)
+        }
         
         switch game!.state {
         case State.waitingForSuspectOrAccuse:
@@ -166,7 +179,7 @@ class RoomScene: SKScene {
         case State.waitingForQuestion:
             if(node.parent == self.childNode(withName: "Characters"))
             {
-             let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)! - 1
+                let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)! - 1
                 person = people![i]
                 
             }else if (node.parent == self.childNode(withName: "Weapons")){
@@ -209,6 +222,7 @@ class RoomScene: SKScene {
                 
                 game?.state = State.waitingForDoneWithNoteTaking
                 self.childNode(withName: "Return")?.run(SKAction.unhide())
+                game?.noteCard.set(true)
             }
             
             resizeCardIcons();
@@ -228,6 +242,7 @@ class RoomScene: SKScene {
                 {
                     doAnswer()
                     game?.currentPlayer.resumeAsk(question!, humanAns: hand?.getCard(node))
+                    (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Ask") as! SKLabelNode).text = "You showed \(hand!.getCard(node).name) to \(game!.currentPlayer.character.name)"
                 }
             }
             
@@ -254,6 +269,7 @@ class RoomScene: SKScene {
         self.childNode(withName: "Return")?.run(SKAction.unhide())
         let textDisplay = self.childNode(withName: "QuestionPanel")!.childNode(withName: "Ask") as! SKLabelNode
         textDisplay.text = textDisplay.text?.replacingOccurrences(of: "asks", with: "asked");
+        game?.noteCard.set(true)
     }
     
     override func keyDown(with theEvent: NSEvent) {
@@ -278,7 +294,7 @@ class RoomScene: SKScene {
         
         self.view?.presentScene(nextScene!, transition: reveal)
     }
-
+    
     func highlightCurrentPlayer()
     {
         
@@ -299,6 +315,7 @@ class RoomScene: SKScene {
     
     func resizeCardIcons()
     {
+        let SCALE = 1.2
         for i in 0...self.childNode(withName: "Characters")!.children.count-1
         {
             let node = (self.childNode(withName: "Characters")?.childNode(withName: "C"+(i+1).description))!
@@ -306,7 +323,7 @@ class RoomScene: SKScene {
             {
                 node.run(SKAction.resize(toWidth: CGFloat(90), height: CGFloat(110), duration: 0.1))
             } else {
-                node.run(SKAction.resize(toWidth: CGFloat(100), height: CGFloat(120), duration: 0.1))
+                node.run(SKAction.resize(toWidth: CGFloat(90*SCALE), height: CGFloat(110*SCALE), duration: 0.1))
             }
             
         }
@@ -318,10 +335,9 @@ class RoomScene: SKScene {
             {
                 node.run(SKAction.resize(toWidth: CGFloat(90), height: CGFloat(110), duration: 0.1))
             } else {
-                node.run(SKAction.resize(toWidth: CGFloat(100), height: CGFloat(120), duration: 0.1))
+                node.run(SKAction.resize(toWidth: CGFloat(90*SCALE), height: CGFloat(110*SCALE), duration: 0.1))
             }
-            
         }
     }
-
+    
 }

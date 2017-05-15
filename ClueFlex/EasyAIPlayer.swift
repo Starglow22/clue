@@ -150,15 +150,6 @@ class EasyAIPlayer: Player {
             return 0; // no possible path
         }
         
-        // truncate at room
-//        for i in 1...pathToDestination!.count-2
-//        {
-//            if(pathToDestination![i].isRoom)
-//            {
-//                pathToDestination = Array(pathToDestination!.dropLast(pathToDestination!.count - i))
-//            }
-//        }
-        
         if(pathToDestination!.count <= num)
         {
             moveToken(newPos: pathToDestination![pathToDestination!.count-1], p: Array(pathToDestination!));
@@ -284,8 +275,6 @@ class EasyAIPlayer: Player {
             let weapon = Card.getCardWithName(weaponGuess)!
         
             guess = Trio(person: suspect, weapon: weapon, location: self.position!.room!)
-            
-//            Game.getGame().roomScene!.childNode(withName: "Return")!.run(SKAction.unhide())
             
             return guess!
         }

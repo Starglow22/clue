@@ -63,6 +63,17 @@ class Game: NSObject {
         Game.instance = self;
     }
     
+    func restart(_ scene: SKScene)
+    {
+        Game.instance = nil
+        let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
+        let nextScene = MenuScene(fileNamed: "MenuScene")
+        
+        nextScene?.size = scene.size
+        nextScene?.scaleMode = .aspectFill
+        scene.view?.presentScene(nextScene!, transition: reveal)
+    }
+    
     func accuse(guess: Trio)
     {
         let result = guess == solution

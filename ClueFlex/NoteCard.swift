@@ -11,6 +11,8 @@ import SpriteKit
 class NoteCard: NSObject {
     static let DEFAULT_COLOR = NSColor.white
     static let HIGHLIGHT_COLOR = NSColor.red
+    static let DOWN = CGFloat(-295)
+    static let UP = CGFloat(340)
     
     var rootSprite: SKSpriteNode
     
@@ -21,6 +23,8 @@ class NoteCard: NSObject {
     init(sprite: SKSpriteNode) {
         rootSprite = sprite
         up = false
+        rootSprite.run(SKAction.moveTo(y: NoteCard.DOWN, duration: 0.4))
+        rootSprite.texture = SKTexture(imageNamed: "notecard-up-texture")
     }
     
     func clicked()
@@ -28,9 +32,25 @@ class NoteCard: NSObject {
         up = !up
         if(up)
         {
-            rootSprite.run(SKAction.moveTo(y: CGFloat(340), duration: 0.4))
+            rootSprite.run(SKAction.moveTo(y: NoteCard.UP, duration: 0.4))
+            rootSprite.texture = SKTexture(imageNamed: "notecard-down-texture")
         }else{
-            rootSprite.run(SKAction.moveTo(y: CGFloat(-310), duration: 0.4))
+            rootSprite.run(SKAction.moveTo(y: NoteCard.DOWN, duration: 0.4))
+            rootSprite.texture = SKTexture(imageNamed: "notecard-up-texture")
+            clearSelected()
+        }
+    }
+    
+    func set(_ value: Bool)
+    {
+        up = value
+        if(up)
+        {
+            rootSprite.run(SKAction.moveTo(y: NoteCard.UP, duration: 0.4))
+            rootSprite.texture = SKTexture(imageNamed: "notecard-down-texture")
+        }else{
+            rootSprite.run(SKAction.moveTo(y: NoteCard.DOWN, duration: 0.4))
+            rootSprite.texture = SKTexture(imageNamed: "notecard-up-texture")
             clearSelected()
         }
     }

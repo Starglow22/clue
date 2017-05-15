@@ -155,5 +155,13 @@ class testPosition: XCTestCase {
         let path = boardScene!.board["tile51"]?.shortestPathTo(boardScene!.board["hall"]!, lastVisited: nil, numTurns: 1) // right of right part of double door to hall
         XCTAssert(path! == [boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name), \(path![1].sprite.name), \(path![2].sprite.name)")
     }
+    
+    func testHallConnections() {
+        let options = boardScene!.board["tile54"]?.reachablePositions(5, true, lastRoomEntered: nil, turnsSinceEntered: 0)
+        XCTAssert(options!.contains(boardScene!.board["hall"]!))
+        
+        let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board["hall"]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
+        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name), \(path![1].sprite.name), \(path![2].sprite.name)")
+    }
 
 }

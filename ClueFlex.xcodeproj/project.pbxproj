@@ -20,13 +20,14 @@
 		3359C97B1D5AE4E400DECB9D /* BoardScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C97A1D5AE4E400DECB9D /* BoardScene.sks */; };
 		3359C97D1D5AE4F300DECB9D /* RoomScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C97C1D5AE4F300DECB9D /* RoomScene.sks */; };
 		3359C97F1D5AFBA300DECB9D /* BoardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359C97E1D5AFBA300DECB9D /* BoardScene.swift */; };
-		3359C9811D5B068700DECB9D /* Board.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C9801D5B068700DECB9D /* Board.sks */; };
 		337787C91D35F19A00825C34 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787C81D35F19A00825C34 /* Game.swift */; };
 		337787CB1D35F2C300825C34 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CA1D35F2C300825C34 /* Player.swift */; };
 		337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CC1D35F3A000825C34 /* HumanPlayer.swift */; };
 		337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */; };
+		3382462A1EC9430400DB9351 /* EndScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338246291EC9430400DB9351 /* EndScene.swift */; };
 		338469441DACA4E50056E605 /* EditText.sks in Resources */ = {isa = PBXBuildFile; fileRef = 338469431DACA4E50056E605 /* EditText.sks */; };
 		338700C81E8A2EAD000E2208 /* testEasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338700B41E8A02CF000E2208 /* testEasyAIPlayer.swift */; };
+		33A901D51EB82D2C00FE16C0 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A901D41EB82D2C00FE16C0 /* Help.swift */; };
 		33B183AB1D3DCE180062274F /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AA1D3DCE180062274F /* Position.swift */; };
 		33B183AF1D3DF1C50062274F /* RoomScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AE1D3DF1C50062274F /* RoomScene.swift */; };
 		33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D28CEC1D336464001FB8C7 /* AppDelegate.swift */; };
@@ -62,15 +63,16 @@
 		3359C97A1D5AE4E400DECB9D /* BoardScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BoardScene.sks; sourceTree = "<group>"; };
 		3359C97C1D5AE4F300DECB9D /* RoomScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = RoomScene.sks; sourceTree = "<group>"; };
 		3359C97E1D5AFBA300DECB9D /* BoardScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardScene.swift; sourceTree = "<group>"; };
-		3359C9801D5B068700DECB9D /* Board.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Board.sks; sourceTree = "<group>"; };
 		337787C81D35F19A00825C34 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		337787CA1D35F2C300825C34 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Player.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		337787CC1D35F3A000825C34 /* HumanPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanPlayer.swift; sourceTree = "<group>"; };
 		337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EasyAIPlayer.swift; sourceTree = "<group>"; };
+		338246291EC9430400DB9351 /* EndScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndScene.swift; sourceTree = "<group>"; };
 		338469431DACA4E50056E605 /* EditText.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EditText.sks; sourceTree = "<group>"; };
 		338700B41E8A02CF000E2208 /* testEasyAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = testEasyAIPlayer.swift; path = ../ClueFlex/Tests/testEasyAIPlayer.swift; sourceTree = "<group>"; };
 		338700BB1E8A092B000E2208 /* ClueFlexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClueFlexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		338700BF1E8A092B000E2208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		33A901D41EB82D2C00FE16C0 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		33B183AA1D3DCE180062274F /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		33B183AE1D3DF1C50062274F /* RoomScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RoomScene.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		33D28CE91D336464001FB8C7 /* ClueFlex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClueFlex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +119,7 @@
 				3347444D1D4D503A00DD21A0 /* UIStates.swift */,
 				332655881D5D2F2D0085BDD7 /* NoteCard.swift */,
 				3326558A1D5EA3710085BDD7 /* Hand.swift */,
+				33A901D41EB82D2C00FE16C0 /* Help.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -155,11 +158,11 @@
 			children = (
 				33D28CEC1D336464001FB8C7 /* AppDelegate.swift */,
 				33D28CEE1D336464001FB8C7 /* StartScene.swift */,
+				338246291EC9430400DB9351 /* EndScene.swift */,
 				33D28CFF1D336639001FB8C7 /* MenuScene.swift */,
 				3359C97E1D5AFBA300DECB9D /* BoardScene.swift */,
 				33B183AE1D3DF1C50062274F /* RoomScene.swift */,
 				33D28CF01D336464001FB8C7 /* StartScene.sks */,
-				3359C9801D5B068700DECB9D /* Board.sks */,
 				33D28CFD1D3365F5001FB8C7 /* MenuScene.sks */,
 				3359C97A1D5AE4E400DECB9D /* BoardScene.sks */,
 				3327F1F21E9DD0C4008CDF53 /* EndScene.sks */,
@@ -264,7 +267,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3327F1F31E9DD0C4008CDF53 /* EndScene.sks in Resources */,
-				3359C9811D5B068700DECB9D /* Board.sks in Resources */,
 				33D28CF31D336464001FB8C7 /* Assets.xcassets in Resources */,
 				3359C97B1D5AE4E400DECB9D /* BoardScene.sks in Resources */,
 				33D28CF11D336464001FB8C7 /* StartScene.sks in Resources */,
@@ -294,6 +296,8 @@
 			files = (
 				33D28D001D336639001FB8C7 /* MenuScene.swift in Sources */,
 				337787C91D35F19A00825C34 /* Game.swift in Sources */,
+				33A901D51EB82D2C00FE16C0 /* Help.swift in Sources */,
+				3382462A1EC9430400DB9351 /* EndScene.swift in Sources */,
 				337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */,
 				3359924F1D3D774200CDB2E1 /* Trio.swift in Sources */,
 				3326558B1D5EA3710085BDD7 /* Hand.swift in Sources */,

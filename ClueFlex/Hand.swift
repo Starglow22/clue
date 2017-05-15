@@ -29,6 +29,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 class Hand: NSObject {
+    static let DOWN_BOARD = CGFloat(-130)
+    static let DOWN_ROOM = -120
+    static let UP = 175
     
     var rootSprite: SKSpriteNode
     var up: Bool
@@ -37,18 +40,25 @@ class Hand: NSObject {
     
     init(sprite: SKSpriteNode, cards: [Card], isBoard: Bool) {
         rootSprite = sprite
+        
         up = false
         self.cards = cards
         self.isBoard = isBoard
         
         //1140 full width, card 150 - 900 just for cards, 30 for each small gap * 5 + 2 big gaps (45 each)
-        rootSprite.size.width = CGFloat(60 + 180*self.cards.count) //90 + (150*self.cards.count) + 30*(self.cards.count - 1)
+        rootSprite.size.width = CGFloat(60 + 180*self.cards.count)
+        //100 = full width = 1140
+        let ratio = rootSprite.size.width / 1140
+        rootSprite.childNode(withName: "Title")!.position = CGPoint(x:50*ratio, y:43)
+        rootSprite.childNode(withName: "Left arrow")!.position = CGPoint(x:5, y:43)
+        rootSprite.childNode(withName: "Right arrow")!.position = CGPoint(x:95*ratio, y:43)
+        rootSprite.childNode(withName: "Left arrow")!.run(SKAction.setTexture(SKTexture(imageNamed: "arrow-up")))
+        rootSprite.childNode(withName: "Right arrow")!.run(SKAction.setTexture(SKTexture(imageNamed: "arrow-up")))
         
-        rootSprite.position = CGPoint(x:0, y:175)
-        for x in 0...rootSprite.children.count-1
+        rootSprite.position = CGPoint(x:0, y:Hand.UP)
+        for x in 0...5
         {
-            let card = rootSprite.childNode(withName: "Card "+(x+1).description)!
-            //let i = Int((card.name?.substring(from: (card.name?.characters.index(before: (card.name?.endIndex)!))!))!)
+            let card = rootSprite.childNode(withName: "Card \(x+1)")!
             if(x >= self.cards.count)
             {
                 card.run(SKAction.hide())
@@ -61,7 +71,7 @@ class Hand: NSObject {
         if(isBoard)
         {
             up = false
-            rootSprite.run(SKAction.moveTo(y: CGFloat(-150), duration: 0))
+            rootSprite.run(SKAction.moveTo(y: Hand.DOWN_BOARD, duration: 0))
         }
     }
     
@@ -76,14 +86,18 @@ class Hand: NSObject {
         
         if(up)
         {
-            rootSprite.run(SKAction.moveTo(y: CGFloat(175), duration: 0.2))
+            rootSprite.run(SKAction.moveTo(y: CGFloat(Hand.UP), duration: 0.2))
+            rootSprite.childNode(withName: "Left arrow")?.run(SKAction.setTexture(SKTexture(imageNamed: "arrow-down")))
+            rootSprite.childNode(withName: "Right arrow")?.run(SKAction.setTexture(SKTexture(imageNamed: "arrow-down")))
         }else{
             if(isBoard)
             {
-                rootSprite.run(SKAction.moveTo(y: CGFloat(-150), duration: 0.2))
+                rootSprite.run(SKAction.moveTo(y: CGFloat(Hand.DOWN_BOARD), duration: 0.2))
             }else{
-            rootSprite.run(SKAction.moveTo(y: CGFloat(-120), duration: 0.2))
+            rootSprite.run(SKAction.moveTo(y: CGFloat(Hand.DOWN_ROOM), duration: 0.2))
             }
+            rootSprite.childNode(withName: "Left arrow")?.run(SKAction.setTexture(SKTexture(imageNamed: "arrow-up")))
+            rootSprite.childNode(withName: "Right arrow")?.run(SKAction.setTexture(SKTexture(imageNamed: "arrow-up")))
         }
     }
     
