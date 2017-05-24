@@ -26,7 +26,12 @@ class RoomScene: SKScene {
     var question: Trio?
     
     override func didMove(to view: SKView) {
-        /* Setup your scene here */
+        // For mouseover detection
+        let options = [NSTrackingAreaOptions.mouseMoved, NSTrackingAreaOptions.activeInKeyWindow] as NSTrackingAreaOptions
+        let trackingArea = NSTrackingArea(rect:view.frame,options:options,owner:self,userInfo:nil)
+        view.addTrackingArea(trackingArea)
+        
+        
         game = Game.getGame()
         help.hide(self)
         
@@ -110,6 +115,12 @@ class RoomScene: SKScene {
         (game?.roomScene?.childNode(withName: "Background") as! SKSpriteNode).texture = SKTexture(imageNamed: "\(room!)-room")
     }
     
+    override func willMove(from view: SKView) {
+        for trackingArea in view.trackingAreas {
+            view.removeTrackingArea(trackingArea)
+        }
+    }
+    
     public func updateState(){
         if(game?.state == State.waitingForSuspectOrAccuse)
         {
@@ -137,6 +148,7 @@ class RoomScene: SKScene {
         if(node.name == "NoteCard")
         {
             game?.noteCard.clicked()
+            return;
         }
         game?.noteCard.clearSelected()
         if(node.parent?.parent?.name == "NoteCard")
@@ -147,6 +159,7 @@ class RoomScene: SKScene {
         if(node.name == "Hand")
         {
             hand?.clicked(value: nil)
+            return;
         }
         
         if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
@@ -216,7 +229,7 @@ class RoomScene: SKScene {
                     (self.childNode(withName: "Result")?.childNode(withName: "Text") as! SKLabelNode).text = "No one had anything!"
                 }else{
                     (self.childNode(withName: "Result")?.childNode(withName: "Image") as! SKSpriteNode).texture = SKTexture(imageNamed: (answer!.card?.imageName)!)
-                    (self.childNode(withName: "Result")?.childNode(withName: "Text") as! SKLabelNode).text = (answer?.person?.character.name)!+" showed you "+(answer?.card?.name)!
+                    (self.childNode(withName: "Result")?.childNode(withName: "Text") as! SKLabelNode).text = "\(answer!.person!.character.name) proved \(answer!.card!.name) wasn't involved in the murder"
                 }
                 self.childNode(withName: "Result")?.run(SKAction.unhide())
                 
@@ -274,6 +287,21 @@ class RoomScene: SKScene {
     
     override func keyDown(with theEvent: NSEvent) {
         game?.noteCard.handleKey(theEvent)
+    }
+    
+    
+    override func mouseMoved(with event: NSEvent) {
+        let location = event.location(in: self)
+        let node = self.atPoint(location)
+        
+        if (node.name == "SUSPECT" || node.name == "ACCUSE") {
+            let text = node as! SKLabelNode
+            text.fontSize = 72
+        }else{
+            (self.childNode(withName: "//SUSPECT") as! SKLabelNode).fontSize = 64 // in whole hieracrhy
+            (self.childNode(withName: "//ACCUSE") as! SKLabelNode).fontSize = 64
+        }
+        
     }
     
     override func update(_ currentTime: TimeInterval) {

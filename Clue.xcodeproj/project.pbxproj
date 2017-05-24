@@ -22,7 +22,6 @@
 		3359C97F1D5AFBA300DECB9D /* BoardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359C97E1D5AFBA300DECB9D /* BoardScene.swift */; };
 		335CD8B21ED3553900CE7D54 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 338700BF1E8A092B000E2208 /* Info.plist */; };
 		335CD8B41ED3573800CE7D54 /* testEasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335CD8B31ED3573800CE7D54 /* testEasyAIPlayer.swift */; };
-		335CD8B51ED35BB100CE7D54 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 33D28CF71D336464001FB8C7 /* Info.plist */; };
 		337787C91D35F19A00825C34 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787C81D35F19A00825C34 /* Game.swift */; };
 		337787CB1D35F2C300825C34 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CA1D35F2C300825C34 /* Player.swift */; };
 		337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CC1D35F3A000825C34 /* HumanPlayer.swift */; };
@@ -266,7 +265,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				335CD8B51ED35BB100CE7D54 /* Info.plist in Resources */,
 				3327F1F31E9DD0C4008CDF53 /* EndScene.sks in Resources */,
 				33D28CF31D336464001FB8C7 /* Assets.xcassets in Resources */,
 				3359C97B1D5AE4E400DECB9D /* BoardScene.sks in Resources */,

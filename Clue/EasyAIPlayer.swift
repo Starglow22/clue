@@ -27,7 +27,7 @@ class EasyAIPlayer: Player {
         
         weaponInfo = ["Candlestick": nil, "Knife": nil, "Lead Pipe": nil, "Revolver": nil, "Rope": nil, "Wrench": nil]
         
-        roomInfo = ["Kitchen": nil, "Ballroom": nil, "Conservatory": nil, "Dining room": nil, "Billard": nil, "Library": nil, "Lounge": nil, "Hall": nil, "Study": nil]
+        roomInfo = ["Kitchen": nil, "Ballroom": nil, "Conservatory": nil, "Dining room": nil, "Billard Room": nil, "Library": nil, "Lounge": nil, "Hall": nil, "Study": nil]
         
         shown = ["Miss Scarlett": [], "Prof. Plum": [], "Mrs Peacock": [], "Mr Green": [], "Col. Mustard": [], "Mrs White": []]
         
@@ -97,7 +97,7 @@ class EasyAIPlayer: Player {
         let display = (Game.getGame().roomScene?.childNode(withName: "Result"))!
         display.run(SKAction.unhide())
         
-        (display.childNode(withName: "Text") as! SKLabelNode).text =  self.character.name + " showed something to " + Game.getGame().currentPlayer.character.name
+        (display.childNode(withName: "Text") as! SKLabelNode).text =  "\(self.character.name) showed something to \(Game.getGame().currentPlayer.character.name)"
         
         return response
     }
@@ -135,7 +135,7 @@ class EasyAIPlayer: Player {
             if(position?.room == roomSoln || tempPath.count < 2)
             {
                 //just go somewhere near but don't take secret passages
-                target = position!.closestRoomFrom(selection: ["Ballroom", "Dining room", "Billard", "Library", "Hall"])
+                target = position!.closestRoomFrom(selection: ["Ballroom", "Dining room", "Billard Room", "Library", "Hall"])
             }else{
                 if(roomSoln == lastRoomEntered?.room && turnsSinceEntered < 2 && num >= tempPath.count){
                     target = tempPath[tempPath.count - 1 - (2-turnsSinceEntered)]

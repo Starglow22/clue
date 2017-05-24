@@ -82,7 +82,7 @@ class Player: NSObject{
         
         display.run(SKAction.unhide())
         
-        (display.childNode(withName: "Ask") as! SKLabelNode).text = (Game.getGame().currentPlayer.character.name) + " asks for:"
+        (display.childNode(withName: "Ask") as! SKLabelNode).text = "\(Game.getGame().currentPlayer.character.name) suspects:"
         display.run(SKAction.resize(toWidth: (display.childNode(withName: "Ask")?.frame.width)!, duration: 0))
         (display.childNode(withName: "Person") as! SKLabelNode).text = question.person.name
         (display.childNode(withName: "Weapon") as! SKLabelNode).text = question.weapon.name

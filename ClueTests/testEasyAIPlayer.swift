@@ -156,7 +156,7 @@ class testEasyAIPlayer: XCTestCase {
         player!.weaponInfo["Rope"] = mockPlayer!
         
         player!.roomInfo["Dining room"] = mockPlayer!
-        player!.roomInfo["Billard"] = mockPlayer!
+        player!.roomInfo["Billard Room"] = mockPlayer!
         player!.roomInfo["Library"] = mockPlayer!
         player!.roomInfo["Lounge"] = mockPlayer!
         player!.roomInfo["Hall"] = mockPlayer!
@@ -209,7 +209,7 @@ class testEasyAIPlayer: XCTestCase {
         let r2 = Card(n: "Ballroom", t: Type.location, file: "ballroom")
         let r3 = Card(n: "Conservatory", t: Type.location, file: "conservatory")
         let r4 = Card(n: "Dining room", t: Type.location, file: "dining")
-        let r5 = Card(n: "Billard", t: Type.location, file: "billard")
+        let r5 = Card(n: "Billard Room", t: Type.location, file: "billard")
         let r6 = Card(n: "Library", t: Type.location, file: "library")
         let r7 = Card(n: "Lounge", t: Type.location, file: "lounge")
         let r8 = Card(n: "Hall", t: Type.location, file: "hall")

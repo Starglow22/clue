@@ -46,7 +46,7 @@ class Help {
             switch Game.getGame().state
             {
             case State.waitingForTurn:
-                text = "Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. Click on the bar marked “Notecard” to view and take notes on the information you have so far."
+                text = "Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. Click on the bar marked “Notepad” to view and take notes on the information you have so far."
                 break
             case State.startOfTurn, State.waitingForDieRoll:
                 text = "Click on the die to roll it."
@@ -63,13 +63,13 @@ class Help {
                 text = "Choose whether you want to suspect, i.e. guess and be shown a piece of evidence by another player, or accuse if you think you know the solution. Be careful, you only get one shot at accusing! Be aware that you do not get to select the room, you must be in the room where you believe the crime has taken place in order to accuse. Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder."
                 break
             case State.waitingForQuestion:
-                text = "Select a combination of a person and a weapon you would like to suspect in this room and ask more information about, or to accuse if you chose to do so. When asking a question the player after you will attempt to answer first, and if they cannot show you any evidence the question passes on in play order. Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. \n Click on the bar marked “Notecard” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write."
+                text = "Select a combination of a person and a weapon you would like to suspect in this room and ask more information about, or to accuse if you chose to do so. When asking a question the player after you will attempt to answer first, and if they cannot show you any evidence the question passes on in play order. Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. \n Click on the bar marked “Notepd” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write."
                 break
             case State.waitingForDoneWithNoteTaking:
                 text = "Click on the bar marked “Notecard” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write. Return to the board when you are ready to continue the game."
                 break
             case State.waitingForAnswer:
-                text  = "Another player is asking for information. If you have evidence that can prove their suspicion wrong, you must show one piece of evidence to them (click on the card). If you do not, the question will be passed on to the next player in turn order. Click on the bar marked “Notecard” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write."
+                text  = "Another player is asking for information. If you have evidence that can prove their suspicion wrong, you must show one piece of evidence to them (click on the card). If you do not, the question will be passed on to the next player in turn order. Click on the bar marked “Notepad” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write."
                 break
             default: break
             }

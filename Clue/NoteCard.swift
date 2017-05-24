@@ -60,19 +60,24 @@ class NoteCard: NSObject {
         if(node.name == "1" || node.name == "2" || node.name == "3" || node.name == "4")
         {
             selected = node
-            selected?.fontColor = NoteCard.HIGHLIGHT_COLOR
+            selected?.text = "_"
+            //selected?.fontColor = NoteCard.HIGHLIGHT_COLOR
         }
     }
     
     func clearSelected()
     {
-        selected?.fontColor = NoteCard.DEFAULT_COLOR
+        //selected?.fontColor = NoteCard.DEFAULT_COLOR
+        if(selected?.text == "_")
+        {
+            selected?.text = "O"
+        }
         selected = nil
     }
     
     func handleKey(_ event: NSEvent)
     {
-        if(selected != nil && event.characters != "" && event.characters != " ") // is vallid key
+        if(selected != nil && event.characters != "" && event.characters != " ") // is valid key
         {
             selected?.text = event.characters
         }

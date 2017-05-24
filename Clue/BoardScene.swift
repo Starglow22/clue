@@ -89,16 +89,19 @@ class BoardScene: SKScene {
         if(node.name == "NoteCard")
         {
             game?.noteCard.clicked()
+            return;
         }
         game?.noteCard.clearSelected()
         if(node.parent?.parent?.name == "NoteCard")
         {
             game?.noteCard.selectBox(node as! SKLabelNode)
+            return;
         }
         
         if(node.name == "Hand")
         {
             hand?.clicked(value: nil)
+            return;
         }
         
         if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
@@ -130,8 +133,26 @@ class BoardScene: SKScene {
             }
             
         case State.waitingForMoveDestination:
-            let selection = board[node.name?.lowercased() == nil ? "" : node.name!.lowercased()]
+            var selection = board[node.name?.lowercased() == nil ? "" : node.name!.lowercased()]
             //nil if not a position
+            
+            if(node.name != nil)
+            {
+                //Allow secret passage arrows to be clickable
+                if(node.name! == "To lounge")
+                {
+                    selection = board["lounge"]
+                }else if(node.name! == "To study")
+                {
+                    selection = board["study"]
+                }else if(node.name! == "To conservatory")
+                {
+                    selection = board["conservatory"]
+                }else if(node.name! == "To kitchen")
+                {
+                    selection = board["kitchen"]
+                }
+            }
             
             var possibleDestinations = (game!.currentPlayer.position!.reachablePositions(dieRoll!, true, lastRoomEntered: game!.currentPlayer.lastRoomEntered, turnsSinceEntered: game!.currentPlayer.turnsSinceEntered))
             
@@ -258,7 +279,7 @@ class BoardScene: SKScene {
         board["hall"] = Position(isRoom: true, room: game?.roomCards![7], node: root?.childNode(withName: "Hall") as! SKSpriteNode)
         board["lounge"] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNode(withName: "Lounge") as! SKSpriteNode)
         board["library"] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNode(withName: "Library") as! SKSpriteNode)
-        board["billard"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard") as! SKSpriteNode)
+        board["billard room"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard") as! SKSpriteNode)
         board["dining"] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining") as! SKSpriteNode)
         board["conservatory"] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNode(withName: "Conservatory") as! SKSpriteNode)
         board["ballroom"] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNode(withName: "Ballroom") as! SKSpriteNode)
@@ -280,7 +301,7 @@ class BoardScene: SKScene {
         board["hall"]?.adjacent = [board["tile21"]!, board["tile49"]!, board["tile50"]!]
         board["lounge"]?.adjacent = [board["tile39"]!, board["conservatory"]!]
         board["library"]?.adjacent = [board["tile61"]!, board["tile83"]!]
-        board["billard"]?.adjacent = [board["tile81"]!, board["tile106"]!]
+        board["billard room"]?.adjacent = [board["tile81"]!, board["tile106"]!]
         board["dining"]?.adjacent = [board["tile66"]!, board["tile95"]!]
         board["conservatory"]?.adjacent = [board["tile160"]!, board["lounge"]!]
         board["ballroom"]?.adjacent = [board["tile162"]!, board["tile122"]!, board["tile127"]!, board["tile163"]!]
@@ -502,8 +523,8 @@ class BoardScene: SKScene {
         board["tile39"]?.adjacent += [board["lounge"]!]
         board["tile61"]?.adjacent += [board["library"]!]
         board["tile83"]?.adjacent += [board["library"]!]
-        board["tile81"]?.adjacent += [board["billard"]!]
-        board["tile106"]?.adjacent += [board["billard"]!]
+        board["tile81"]?.adjacent += [board["billard room"]!]
+        board["tile106"]?.adjacent += [board["billard room"]!]
         board["tile66"]?.adjacent += [board["dining"]!]
         board["tile95"]?.adjacent += [board["dining"]!]
         board["tile160"]?.adjacent += [board["conservatory"]!]

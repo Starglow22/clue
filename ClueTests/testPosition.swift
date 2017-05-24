@@ -148,7 +148,7 @@ class testPosition: XCTestCase {
         
         player?.position = boardScene!.board["tile106"] // door of billard
         player?.move(num: 4)
-        XCTAssert(player?.position == boardScene?.board["billard"], "Returned: " + (player?.position?.sprite.name)!)
+        XCTAssert(player?.position == boardScene?.board["billard room"], "Returned: " + (player?.position?.sprite.name)!)
     }
     
     func testShortestPath() {
