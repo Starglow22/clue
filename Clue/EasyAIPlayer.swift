@@ -131,14 +131,17 @@ class EasyAIPlayer: Player {
             }
         }else{
             target = Game.getGame().boardScene.board[(roomSoln?.name.lowercased())!]!
-            var tempPath = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)!
-            if(position?.room == roomSoln || tempPath.count < 2)
+            var tempPath = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
+            if(tempPath == nil){
+                return 0; //no possible moves
+            }
+            if(position?.room == roomSoln || (lastRoomEntered == target && turnsSinceEntered < 2 && tempPath!.count < 2 && tempPath!.last == target))
             {
-                //just go somewhere near but don't take secret passages
+                //just go somewhere near but don't take secret passages (heuristic)
                 target = position!.closestRoomFrom(selection: ["Ballroom", "Dining room", "Billard Room", "Library", "Hall"])
             }else{
-                if(roomSoln == lastRoomEntered?.room && turnsSinceEntered < 2 && num >= tempPath.count){
-                    target = tempPath[tempPath.count - 1 - (2-turnsSinceEntered)]
+                if(roomSoln == lastRoomEntered?.room && turnsSinceEntered < 2 && num >= tempPath!.count){
+                    target = tempPath![tempPath!.count - 1 - (2-turnsSinceEntered)]
                 }
             }
         }

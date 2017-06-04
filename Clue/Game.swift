@@ -115,8 +115,11 @@ class Game: NSObject {
                 if(result)
                 {
                     (display.childNode(withName: "Result") as! SKLabelNode).text = "You won!"
+                    (endScene!.childNode(withName: "Bkg")! as! SKSpriteNode).color = SKColor.init(red: 0, green: 142, blue: 0, alpha: 1)
+                    
                 }else{
                     (display.childNode(withName: "Result") as! SKLabelNode).text = "Game over."
+                    (endScene!.childNode(withName: "Bkg")! as! SKSpriteNode).color = SKColor.init(red: 148, green: 17, blue: 0, alpha: 1)
                     
                     showAnswer(display)
                 }
@@ -125,7 +128,7 @@ class Game: NSObject {
                 display.run(SKAction.unhide())
                 (display.childNode(withName: "Result") as! SKLabelNode).text = "Game over. " + Game.getGame().currentPlayer.character.name + " won."
             }
-            
+            (endScene as! EndScene).setBackground()
         }else{
             (display.childNode(withName: "Accuse") as! SKLabelNode).text = "Unfortunately, it was wrong!"
             display.childNode(withName: "Accuse")?.run(SKAction.unhide())

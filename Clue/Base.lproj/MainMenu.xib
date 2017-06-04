@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -104,16 +105,16 @@
         <window title="Clue" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowCollectionBehavior key="collectionBehavior" fullScreenPrimary="YES"/>
-            <rect key="contentRect" x="0.0" y="0.0" width="1200" height="800"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
-            <value key="minSize" type="size" width="1200" height="800"/>
+            <rect key="contentRect" x="0.0" y="0.0" width="1200" height="780"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <value key="minSize" type="size" width="1200" height="780"/>
             <value key="maxSize" type="size" width="1200" height="800"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="1200" height="800"/>
+                <rect key="frame" x="0.0" y="0.0" width="1200" height="780"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="539" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="1200" height="800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1200" height="780"/>
                     </customView>
                 </subviews>
                 <constraints>
@@ -125,7 +126,7 @@
             </view>
             <point key="canvasLocation" x="429" y="554"/>
         </window>
-        <customObject id="494" customClass="AppDelegate" customModule="ClueFlex" customModuleProvider="target">
+        <customObject id="494" customClass="AppDelegate" customModule="Clue" customModuleProvider="target">
             <connections>
                 <outlet property="skView" destination="539" id="EbX-1x-5xd"/>
                 <outlet property="window" destination="371" id="xjS-dC-Y40"/>

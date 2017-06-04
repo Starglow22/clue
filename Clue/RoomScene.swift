@@ -31,9 +31,9 @@ class RoomScene: SKScene {
         let trackingArea = NSTrackingArea(rect:view.frame,options:options,owner:self,userInfo:nil)
         view.addTrackingArea(trackingArea)
         
-        
         game = Game.getGame()
         help.hide(self)
+        game!.noteCard.help.hide(self)
         
         if(hand == nil)
         {
@@ -49,6 +49,7 @@ class RoomScene: SKScene {
         self.childNode(withName: "QuestionPanel")?.run(SKAction.hide())
         
         self.childNode(withName: "Result")?.run(SKAction.moveTo(y: CGFloat(260), duration: 0))
+        self.childNode(withName: "QuestionPanel")?.run(SKAction.move(to: CGPoint(x: 415, y: 540), duration: 0))
         
         (self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.childNode(withName: "None") as! SKLabelNode).text = "I have none"
         self.childNode(withName: "QuestionPanel")?.childNode(withName: "Accuse")?.run(SKAction.hide())
@@ -162,11 +163,19 @@ class RoomScene: SKScene {
             return;
         }
         
-        if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+        if(self.childNode(withName: "Help")!.frame.contains(location) && node.name == "Help") { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
             help.clicked(self)
+            return
+        }else if (self.childNode(withName: ".//Notepad-Help")!.frame.contains(location) && node.name == "Notepad-Help"){
+            game!.noteCard.help.clicked(self)
+            return
         }else if(help.displayed)
         {
             help.hide(self)
+            return
+        }else if (game!.noteCard.help.displayed){
+            game!.noteCard.help.hide(self)
+            return
         }
         
         switch game!.state {
@@ -207,12 +216,19 @@ class RoomScene: SKScene {
             
             if(node.name == "Done")
             {
-                
                 self.childNode(withName: "Characters")?.run(SKAction.hide())
                 self.childNode(withName: "Weapons")?.run(SKAction.hide())
                 self.childNode(withName: "Done")?.run(SKAction.hide())
                 
                 self.childNode(withName: "Result")?.run(SKAction.moveTo(y: CGFloat(545), duration: 0))
+                
+                self.childNode(withName: "QuestionPanel")?.run(SKAction.move(to: CGPoint(x: 745, y:510), duration: 0)) //y:260
+                self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.hide())
+                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Ask") as! SKLabelNode).text = "You asked for:"
+                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Person") as! SKLabelNode).text = person!.name
+                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Weapon") as! SKLabelNode).text = weapon!.name
+                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Location") as! SKLabelNode).text = (game?.currentPlayer.position?.room)!.name
+                self.childNode(withName: "QuestionPanel")!.run(SKAction.unhide())
                 
                 let question = Trio(person: person!, weapon: weapon!, location: (game?.currentPlayer.position?.room)! )
                 answer = game?.currentPlayer.ask(question)

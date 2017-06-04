@@ -60,15 +60,16 @@ class BoardScene: SKScene {
         /* Setup your scene here */
         firstDisplay()
         help.hide(self)
+        game!.noteCard.help.hide(self)
         
-        if(game?.state == State.startOfTurn)
+        if(game?.state == State.waitingForDieRoll)
         {
-            (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = "Your turn!"
+            (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = "Your turn! Please roll the die"
+            self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.unhide())
         }else{
             (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = (game?.currentPlayer.character.name)!+"'s turn"
+            self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
         }
-        
-        self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
         
         (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
     }
@@ -84,6 +85,21 @@ class BoardScene: SKScene {
         
         let location = theEvent.location(in: self)
         let node = self.atPoint(location)
+        
+        if(self.childNode(withName: "Help")!.frame.contains(location) && node.name == "Help") { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+            help.clicked(self)
+            return
+        }else if (self.childNode(withName: ".//Notepad-Help")!.frame.contains(self.convert(location, to: self.childNode(withName: "NoteCard")!)) && node.name == "Notepad-Help"){
+            game!.noteCard.help.clicked(self)
+            return
+        }else if(help.displayed)
+        {
+            help.hide(self)
+            return
+        }else if (game!.noteCard.help.displayed){
+            game!.noteCard.help.hide(self)
+            return
+        }
         
         // allow notecard to be interacted with regardless of state
         if(node.name == "NoteCard")
@@ -104,24 +120,11 @@ class BoardScene: SKScene {
             return;
         }
         
-        if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
-            help.clicked(self)
-        }else if(help.displayed)
-        {
-            help.hide(self)
-        }
-        
         switch game!.state
         {
         case State.waitingForTurn:
             //allow notecard to be opened
             break;
-            
-        case State.startOfTurn:
-            //any click moves to next stage
-            textDisplay.text = "Please roll the die"
-            self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.unhide())
-            game?.state = State.waitingForDieRoll
             
         case State.waitingForDieRoll:
             if(node.name == "Die")
@@ -133,7 +136,7 @@ class BoardScene: SKScene {
             }
             
         case State.waitingForMoveDestination:
-            var selection = board[node.name?.lowercased() == nil ? "" : node.name!.lowercased()]
+            var selection = board[node.name?.lowercased() ?? ""]
             //nil if not a position
             
             if(node.name != nil)
@@ -279,7 +282,7 @@ class BoardScene: SKScene {
         board["hall"] = Position(isRoom: true, room: game?.roomCards![7], node: root?.childNode(withName: "Hall") as! SKSpriteNode)
         board["lounge"] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNode(withName: "Lounge") as! SKSpriteNode)
         board["library"] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNode(withName: "Library") as! SKSpriteNode)
-        board["billard room"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard") as! SKSpriteNode)
+        board["billard room"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard Room") as! SKSpriteNode)
         board["dining"] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining") as! SKSpriteNode)
         board["conservatory"] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNode(withName: "Conservatory") as! SKSpriteNode)
         board["ballroom"] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNode(withName: "Ballroom") as! SKSpriteNode)

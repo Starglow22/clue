@@ -365,10 +365,19 @@ class MenuScene: SKScene {
         
         if(game.currentPlayer is HumanPlayer)
         {
-            game.state = State.startOfTurn
+            game.state = State.waitingForDieRoll
         }else{
             game.state = State.waitingForTurn
         }
+        
+        let glow = scene.childNode(withName: ".//PlayerGlow")!
+        glow.parent!.removeChildren(in: [glow])
+        if(game.currentPlayer.sprite == nil)
+        {
+            game.currentPlayer.sprite = scene.childNode(withName: "BoardBackground")!.childNode(withName: game.currentPlayer.character.name) as? SKSpriteNode
+        }
+        game.currentPlayer.sprite!.addChild(glow)
+        glow.position = CGPoint(x: 0, y: 0)
         
         return game
     }

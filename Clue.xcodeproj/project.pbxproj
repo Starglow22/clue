@@ -20,13 +20,13 @@
 		3359C97B1D5AE4E400DECB9D /* BoardScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C97A1D5AE4E400DECB9D /* BoardScene.sks */; };
 		3359C97D1D5AE4F300DECB9D /* RoomScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3359C97C1D5AE4F300DECB9D /* RoomScene.sks */; };
 		3359C97F1D5AFBA300DECB9D /* BoardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3359C97E1D5AFBA300DECB9D /* BoardScene.swift */; };
-		335CD8B21ED3553900CE7D54 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 338700BF1E8A092B000E2208 /* Info.plist */; };
 		335CD8B41ED3573800CE7D54 /* testEasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335CD8B31ED3573800CE7D54 /* testEasyAIPlayer.swift */; };
 		337787C91D35F19A00825C34 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787C81D35F19A00825C34 /* Game.swift */; };
 		337787CB1D35F2C300825C34 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CA1D35F2C300825C34 /* Player.swift */; };
 		337787CD1D35F3A000825C34 /* HumanPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CC1D35F3A000825C34 /* HumanPlayer.swift */; };
 		337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337787CE1D35F3C800825C34 /* EasyAIPlayer.swift */; };
 		3382462A1EC9430400DB9351 /* EndScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338246291EC9430400DB9351 /* EndScene.swift */; };
+		33A5854B1EDB403E00DDB316 /* NotepadHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A5854A1EDB403E00DDB316 /* NotepadHelp.swift */; };
 		33A901D51EB82D2C00FE16C0 /* Help.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A901D41EB82D2C00FE16C0 /* Help.swift */; };
 		33B183AB1D3DCE180062274F /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AA1D3DCE180062274F /* Position.swift */; };
 		33B183AF1D3DF1C50062274F /* RoomScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B183AE1D3DF1C50062274F /* RoomScene.swift */; };
@@ -71,6 +71,7 @@
 		338246291EC9430400DB9351 /* EndScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndScene.swift; sourceTree = "<group>"; };
 		338700BB1E8A092B000E2208 /* ClueTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClueTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		338700BF1E8A092B000E2208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		33A5854A1EDB403E00DDB316 /* NotepadHelp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotepadHelp.swift; sourceTree = "<group>"; };
 		33A901D41EB82D2C00FE16C0 /* Help.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Help.swift; sourceTree = "<group>"; };
 		33B183AA1D3DCE180062274F /* Position.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		33B183AE1D3DF1C50062274F /* RoomScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RoomScene.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -119,6 +120,7 @@
 				332655881D5D2F2D0085BDD7 /* NoteCard.swift */,
 				3326558A1D5EA3710085BDD7 /* Hand.swift */,
 				33A901D41EB82D2C00FE16C0 /* Help.swift */,
+				33A5854A1EDB403E00DDB316 /* NotepadHelp.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -257,7 +259,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				335CD8B21ED3553900CE7D54 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +301,7 @@
 				3359924F1D3D774200CDB2E1 /* Trio.swift in Sources */,
 				3326558B1D5EA3710085BDD7 /* Hand.swift in Sources */,
 				33D28CEF1D336464001FB8C7 /* StartScene.swift in Sources */,
+				33A5854B1EDB403E00DDB316 /* NotepadHelp.swift in Sources */,
 				33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */,
 				337787CB1D35F2C300825C34 /* Player.swift in Sources */,
 				337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */,
@@ -343,7 +345,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = ClueFlexTests/Info.plist;
+				INFOPLIST_FILE = ClueTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = gina.ClueFlexTests;
@@ -360,7 +362,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = ClueFlexTests/Info.plist;
+				INFOPLIST_FILE = ClueTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = gina.ClueFlexTests;

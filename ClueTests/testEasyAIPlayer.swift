@@ -173,6 +173,46 @@ class testEasyAIPlayer: XCTestCase {
         XCTAssert(accusal.person == people![5] && accusal.weapon == weapons![5] && accusal.location == rooms![2], "Made wrong accusal " + accusal.location.name)
     }
     
+    func testDiningRoomToConservatoryToAccuse() {
+        player!.charSoln = people![1]
+        player!.weaponSoln = weapons![1]
+        player!.roomSoln = rooms![2]
+        
+        player?.position = Game.getGame().boardScene.board["dining"]
+        player?.lastRoomEntered = nil
+        
+        player?.move(num: 5)
+        
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["lounge"]!.room, (player?.position?.sprite.name)!)
+        
+        player!.chooseToSuspect()
+        XCTAssertTrue(player!.suspect, "Chose to accuse")
+        
+        player?.move(num: 5)
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["conservatory"]!.room, (player?.position?.sprite.name)!)
+    }
+    
+    func testDiningRoomToConservatoryToAccuseComingFromLounge() {
+        player!.charSoln = people![1]
+        player!.weaponSoln = weapons![1]
+        player!.roomSoln = rooms![2]
+        
+        player?.position = Game.getGame().boardScene.board["dining"]
+        player?.lastRoomEntered = Game.getGame().boardScene.board["lounge"]
+        player?.turnsSinceEntered = 1
+        
+        player?.move(num: 5)
+        player?.move(num: 4)
+        
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["ballroom"]!.room, (player?.position?.sprite.name)!)
+        
+        player!.chooseToSuspect()
+        XCTAssertTrue(player!.suspect, "Chose to accuse")
+        
+        player?.move(num: 5)
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["conservatory"]!.room, (player?.position?.sprite.name)!)
+    }
+    
     override func setUp() {
         super.setUp()
         

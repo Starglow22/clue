@@ -26,55 +26,58 @@ class Help {
     func hide(_ scene: SKScene)
     {
         scene.childNode(withName: "Help")?.childNode(withName: "Help-text")?.run(SKAction.hide())
-        scene.childNode(withName: "Help")?.childNode(withName: "Help-text")?.run(SKAction.hide())
         displayed = false
     }
     
-    func display(_ scene: SKScene)
+    func text(_ scene: SKScene) -> String
     {
-        displayed = true
-        var text = ""
-        
         if(scene is StartScene)
         {
-            text = "You were invited to a grand dinner party, but unfortunately your host was murdered! In the most cliché of situations, you and the other guests are stuck at the mansion due to a strong storm. For your own safety and to pass the time, you must now attempt to find the culprit, murder weapon and murder scene by suspecting combinations and seeing if any of your fellow guests can prove you wrong. Once you think you know the answer, accuse the culprit with the weapon in the correct room, but you only get one shot at accusing. You may click this button at any time during the game to get help with what you need to do at that moment."
+            return "You were invited to a grand dinner party, but unfortunately your host was murdered! In the most cliché of situations, you and the other guests are stuck at the mansion due to a strong storm. For your own safety and to pass the time, you must now attempt to find the culprit, murder weapon and murder scene by suspecting combinations and seeing if any of your fellow guests can prove you wrong. The culprit could be anyone, even you! Once you think you know the answer, accuse the culprit with the weapon in the correct room, but you only get one shot at accusing. You may click this button at any time during the game to get help with what you need to do at that moment."
         }else if(scene is MenuScene)
         {
-            text = "Choose how many computerized players you want to play against, how clever you want the opposition to be, and your character to start a game."
+            return "Choose how many computerized players you want to play against, how clever you want the opposition to be, and your character to start a game."
         }else if(scene is BoardScene)
         {
             switch Game.getGame().state
             {
             case State.waitingForTurn:
-                text = "Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. Click on the bar marked “Notepad” to view and take notes on the information you have so far."
-                break
-            case State.startOfTurn, State.waitingForDieRoll:
-                text = "Click on the die to roll it."
-                break
+                return "Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. Click on the bar marked “Notepad” to view and take notes on the information you have so far."
+                
+            case State.waitingForDieRoll:
+                return "Click on the die to roll it."
+                
             case State.waitingForMoveDestination:
-                text = "Select your destination. You cannot move diagonally or through tiles occupied by other players, though any number of people can be in a room at any time. You may not return to a room within 2 turns of entering it. Being a grand old mansion, there are also secret passages connecting the most distant rooms."
-                break
-            default: break
+                return "Select your destination. You cannot move diagonally or through tiles occupied by other players, though any number of people can be in a room at any time. You may not return to a room within 2 turns of entering it. Being a grand old mansion, there are also secret passages connecting the most distant rooms."
+                
+            default: return ""
             }
         }else{
             switch Game.getGame().state
             {
             case State.waitingForSuspectOrAccuse:
-                text = "Choose whether you want to suspect, i.e. guess and be shown a piece of evidence by another player, or accuse if you think you know the solution. Be careful, you only get one shot at accusing! Be aware that you do not get to select the room, you must be in the room where you believe the crime has taken place in order to accuse. Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder."
-                break
+                return "Choose whether you want to suspect, i.e. guess and be shown a piece of evidence by another player, or accuse if you think you know the solution. Be careful, you only get one shot at accusing! Be aware that you do not get to select the room, you must be in the room where you believe the crime has taken place in order to accuse. Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder."
+                
             case State.waitingForQuestion:
-                text = "Select a combination of a person and a weapon you would like to suspect in this room and ask more information about, or to accuse if you chose to do so. When asking a question the player after you will attempt to answer first, and if they cannot show you any evidence the question passes on in play order. Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. \n Click on the bar marked “Notepd” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write."
-                break
+                return "Select a combination of a person and a weapon you would like to suspect in this room and ask more information about, or to accuse if you chose to do so. When asking a question the player after you will attempt to answer first, and if they cannot show you any evidence the question passes on in play order. Click on the bar marked “Hand Cards” to view the people, weapons and locations you know aren’t involved in the murder. Remeber, all characters can be the murderer, even you!"
+                
             case State.waitingForDoneWithNoteTaking:
-                text = "Click on the bar marked “Notecard” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write. Return to the board when you are ready to continue the game."
-                break
+                return "Click on the bar marked “Notecard” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write. Return to the board when you are ready to continue the game."
+                
             case State.waitingForAnswer:
-                text  = "Another player is asking for information. If you have evidence that can prove their suspicion wrong, you must show one piece of evidence to them (click on the card). If you do not, the question will be passed on to the next player in turn order. Click on the bar marked “Notepad” to view and take notes on the information you have so far. Click on one of the spaces in the right columns then press a key to write."
-                break
-            default: break
+                return "Another player is asking for information. If you have evidence that can prove their suspicion wrong, you must show one piece of evidence to them (click on the card). If you do not, the question will be passed on to the next player in turn order."
+                
+            default: return ""
             }
             
         }
+
+    }
+    
+    func display(_ scene: SKScene)
+    {
+        displayed = true
+        let text = self.text(scene)
         
         addMultilineText(text: text, parent: scene.childNode(withName: "Help")!.childNode(withName: "Help-text")!)
         scene.childNode(withName: "Help")?.childNode(withName: "Help-text")?.run(SKAction.unhide())

@@ -20,6 +20,8 @@ class NoteCard: NSObject {
     
     var up: Bool
     
+    var help = NotepadHelp()
+    
     init(sprite: SKSpriteNode) {
         rootSprite = sprite
         up = false

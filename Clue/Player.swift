@@ -290,8 +290,9 @@ class Player: NSObject{
         
         if(Game.getGame().currentPlayer is HumanPlayer)
         {
-            Game.getGame().state = State.startOfTurn
+            Game.getGame().state = State.waitingForDieRoll
             textDisplay.text = "Your turn!"
+            Game.getGame().boardScene.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.unhide())
             
         }else{
             Game.getGame().state = State.waitingForTurn
@@ -299,6 +300,16 @@ class Player: NSObject{
             Game.getGame().currentPlayer.play()
             textDisplay.text = Game.getGame().currentPlayer.character.name + "'s turn!"
         }
+        
+        let glow = Game.getGame().boardScene.childNode(withName: ".//PlayerGlow")!
+        glow.parent!.removeChildren(in: [glow])
+        if(Game.getGame().currentPlayer.sprite == nil)
+        {
+        Game.getGame().currentPlayer.sprite = Game.getGame().boardScene.childNode(withName: "BoardBackground")!.childNode(withName: Game.getGame().currentPlayer.character.name) as? SKSpriteNode
+        }
+        Game.getGame().currentPlayer.sprite!.addChild(glow)
+        glow.position = CGPoint(x: 0, y: 0)
+        
         Game.getGame().boardScene.highlightCurrentPlayer()
         (Game.getGame().boardScene.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (Game.getGame().currentPlayer.character.imageName))
     }

@@ -95,10 +95,10 @@ class testPosition: XCTestCase {
         player?.roomSoln = Card(n: "Study", t: Type.character, file: "Study")
         player?.chooseToSuspect()
         player?.position = boardScene?.board["tile19"]
-        player?.lastRoomEntered = boardScene?.board["lounge"]
+        player?.lastRoomEntered = boardScene?.board["study"]
         player?.turnsSinceEntered = 1
         
-        player?.move(num: 7)
+        player?.move(num: 4)
         XCTAssert(player?.position == boardScene!.board["hall"], "Returned: " + (player?.position?.sprite.name)!)
     }
     
@@ -161,7 +161,27 @@ class testPosition: XCTestCase {
         XCTAssert(options!.contains(boardScene!.board["hall"]!))
         
         let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board["hall"]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
-        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name), \(path![1].sprite.name), \(path![2].sprite.name)")
+        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name ?? "nil"), \(path![1].sprite.name ?? "nil"), \(path![2].sprite.name ?? "nil")")
+    }
+    
+    func testBillardConnections() {
+        let options = boardScene!.board["tile119"]?.reachablePositions(5, true, lastRoomEntered: boardScene!.board["ballroom"]!, turnsSinceEntered: 2)
+        XCTAssert(options!.contains(boardScene!.board["billard room"]!))
+        
+//        let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board["hall"]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
+//        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name ?? "nil"), \(path![1].sprite.name ?? "nil"), \(path![2].sprite.name ?? "nil")")
+    }
+    
+    func testDiningNPE() {
+        let path = boardScene!.board["dining"]!.shortestPathTo(boardScene!.board["conservatory"]!, lastVisited: boardScene!.board["lounge"]!, numTurns: 0)
+        
+        XCTAssert(path != nil)
+    }
+    
+    func testDiningNPE2() {
+        let path = boardScene!.board["dining"]!.shortestPathTo(boardScene!.board["conservatory"]!, lastVisited: boardScene!.board["lounge"]!, numTurns: 1)
+        
+        XCTAssert(path != nil)
     }
 
 }

@@ -37,7 +37,7 @@ class Position{
     func reachablePositions(_ moves: Int, _ firstCall: Bool, lastRoomEntered: Position?, turnsSinceEntered : Int) -> [Position]
     {
         if(!firstCall && (self.isRoom || moves == 0)){
-
+            
             return [Position]()
             
         }else{
@@ -108,33 +108,33 @@ class Position{
     func shortestPathTo(_ room: Position, lastVisited: Position?, numTurns : Int) -> [Position]?
     {
         var vis  = [Position]()
-         var prev = Dictionary<Position, Position>()
+        var prev = Dictionary<Position, Position>()
         
         
-            var directions = [Position]();
-            var q = [Position]();
-            var current = self;
-            q.append(current);
-            vis.append(current)
-            while(!q.isEmpty){
-                current = q.removeFirst();
-                if (current == room){
-                    break;
-                }else{
-                    for node in current.adjacent{
-                        if(node == room || (!vis.contains(node) && (!node.isOccupied || node.isRoom)
-                            && !(node == self && node.isRoom && current.isRoom)  && !(node == lastVisited && numTurns < 2))){
-                            q.append(node);
-                            vis.append(node)
-                            if(prev[node] == nil)
-                            {
-                                prev[node] = current;
-                            }
+        var directions = [Position]();
+        var q = [Position]();
+        var current = self;
+        q.append(current);
+        vis.append(current)
+        while(!q.isEmpty){
+            current = q.removeFirst();
+            if (current == room){
+                break;
+            }else{
+                for node in current.adjacent{
+                    if(node == room || (!vis.contains(node) && (!node.isOccupied || node.isRoom)
+                        && !(node == self && node.isRoom && current.isRoom)  && !(node == lastVisited && numTurns < 2))){
+                        q.append(node);
+                        vis.append(node)
+                        if(prev[node] == nil)
+                        {
+                            prev[node] = current;
                         }
                     }
                 }
             }
-
+        }
+        
         
         var backtrackNode = room
         var endPoint : Position?
@@ -164,11 +164,11 @@ class Position{
 }
 
 extension Position:Hashable{
-var hashValue: Int {
-    return sprite.hashValue;
-}
-
-static func ==(lhs: Position, rhs: Position) -> Bool {
-    return lhs.sprite == rhs.sprite && lhs.adjacent == rhs.adjacent && lhs.room == rhs.room && rhs.isRoom == rhs.isRoom
-}
+    var hashValue: Int {
+        return sprite.hashValue;
+    }
+    
+    static func ==(lhs: Position, rhs: Position) -> Bool {
+        return lhs.sprite == rhs.sprite && lhs.adjacent == rhs.adjacent && lhs.room == rhs.room && rhs.isRoom == rhs.isRoom
+    }
 }
