@@ -12,6 +12,7 @@
 		3327F1F31E9DD0C4008CDF53 /* EndScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3327F1F21E9DD0C4008CDF53 /* EndScene.sks */; };
 		3327F1F51EA130EF008CDF53 /* testAccuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3327F1F41EA130EF008CDF53 /* testAccuse.swift */; };
 		332AA6291E9365E600BE145B /* testPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 332AA6281E9365E600BE145B /* testPosition.swift */; };
+		3338CEB11F1C4E2F002651FB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3338CEB01F1C4E2F002651FB /* Constants.swift */; };
 		3347444A1D4D495A00DD21A0 /* HardAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334744491D4D495A00DD21A0 /* HardAIPlayer.swift */; };
 		3347444C1D4D498D00DD21A0 /* TricksterAIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */; };
 		3347444E1D4D503A00DD21A0 /* UIStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3347444D1D4D503A00DD21A0 /* UIStates.swift */; };
@@ -55,6 +56,7 @@
 		3327F1F21E9DD0C4008CDF53 /* EndScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EndScene.sks; sourceTree = "<group>"; };
 		3327F1F41EA130EF008CDF53 /* testAccuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testAccuse.swift; sourceTree = "<group>"; };
 		332AA6281E9365E600BE145B /* testPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testPosition.swift; sourceTree = "<group>"; };
+		3338CEB01F1C4E2F002651FB /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Constants.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		334744491D4D495A00DD21A0 /* HardAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HardAIPlayer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		3347444B1D4D498D00DD21A0 /* TricksterAIPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TricksterAIPlayer.swift; sourceTree = "<group>"; };
 		3347444D1D4D503A00DD21A0 /* UIStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStates.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				3326558A1D5EA3710085BDD7 /* Hand.swift */,
 				33A901D41EB82D2C00FE16C0 /* Help.swift */,
 				33A5854A1EDB403E00DDB316 /* NotepadHelp.swift */,
+				3338CEB01F1C4E2F002651FB /* Constants.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				33A5854B1EDB403E00DDB316 /* NotepadHelp.swift in Sources */,
 				33D28CED1D336464001FB8C7 /* AppDelegate.swift in Sources */,
 				337787CB1D35F2C300825C34 /* Player.swift in Sources */,
+				3338CEB11F1C4E2F002651FB /* Constants.swift in Sources */,
 				337787CF1D35F3C800825C34 /* EasyAIPlayer.swift in Sources */,
 				3347444E1D4D503A00DD21A0 /* UIStates.swift in Sources */,
 				332655891D5D2F2D0085BDD7 /* NoteCard.swift in Sources */,

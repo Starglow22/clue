@@ -78,7 +78,7 @@ class Player: NSObject{
     
     func displayQuestion(_ question: Trio)
     {
-        let display = Game.getGame().roomScene!.childNode(withName: "QuestionPanel")!
+        let display = Game.getGame().roomScene!.childNode(withName: Constant.QUESTION_PANEL)!
         
         display.run(SKAction.unhide())
         
@@ -103,7 +103,7 @@ class Player: NSObject{
     
     func playRollAnimation(die: Int)
     {
-        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+        let root = Game.getGame().boardScene.childNode(withName: Constant.UICONTROLS)!
         let textDisplay = root.childNode(withName: "TextDisplay") as! SKLabelNode
         
         textDisplay.text = self.character.name + "'s turn!"
@@ -135,7 +135,7 @@ class Player: NSObject{
             turnsSinceEntered += 1
         }
         
-        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+        let root = Game.getGame().boardScene.childNode(withName: Constant.UICONTROLS)!
         root.childNode(withName: "Die")?.run(SKAction.hide())
         
         position?.isOccupied = false;
@@ -285,14 +285,14 @@ class Player: NSObject{
         }
         Game.getGame().updatePList()
         
-        let root = Game.getGame().boardScene.childNode(withName: "UICONTROLS")!
+        let root = Game.getGame().boardScene.childNode(withName: Constant.UICONTROLS)!
         let textDisplay = root.childNode(withName: "TextDisplay") as! SKLabelNode
         
         if(Game.getGame().currentPlayer is HumanPlayer)
         {
             Game.getGame().state = State.waitingForDieRoll
             textDisplay.text = "Your turn!"
-            Game.getGame().boardScene.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.unhide())
+            Game.getGame().boardScene.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "Die")?.run(SKAction.unhide())
             
         }else{
             Game.getGame().state = State.waitingForTurn

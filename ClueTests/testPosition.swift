@@ -21,7 +21,7 @@ class testPosition: XCTestCase {
         boardScene?.setUpTiles()
         
         let scene = MenuScene(fileNamed: "MenuScene")!
-        scene.characterName = "Miss Scarlett"
+        scene.characterName = Constant.SCARLETT_NAME
         scene.numPlayers = 2
         scene.difficulty = 1
         
@@ -30,8 +30,7 @@ class testPosition: XCTestCase {
         boardScene?.game = gameObj
         boardScene?.setUpTiles()
         
-        player = EasyAIPlayer(c: Card(n: "Miss Scarlett", t: Type.character, file: "scarlett"))
-    }
+        player = EasyAIPlayer(c: Constant.SCARLETT_CARD)    }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -39,78 +38,78 @@ class testPosition: XCTestCase {
     }
 
     func testClosestWhenWithin2Turns() {
-        //board["study"]?.adjacent = [board["tile19"]!, board["kitchen"]!]
+        //board[Constant.STUDY_TILE_NAME]?.adjacent = [board["tile19"]!, board[Constant.KITCHEN_TILE_NAME]!]
         
-        let result = boardScene?.board["tile19"]?.closestRoom(lastVisited: boardScene?.board["study"], numTurns: 1)
-        XCTAssert(result == boardScene!.board["hall"], "Returned: " + (result?.room?.name)!)
+        let result = boardScene?.board["tile19"]?.closestRoom(lastVisited: boardScene?.board[Constant.STUDY_TILE_NAME], numTurns: 1)
+        XCTAssert(result == boardScene!.board[Constant.HALL_TILE_NAME], "Returned: " + (result?.room?.name)!)
     }
     
     func testTakesPassageWay() {
-        let result = boardScene?.board["conservatory"]?.closestRoom(lastVisited: boardScene?.board["study"], numTurns: 1)
-        XCTAssert(result == boardScene!.board["lounge"], "Returned: " + (result?.sprite.name)!)
+        let result = boardScene?.board[Constant.CONSERVATORY_TILE_NAME]?.closestRoom(lastVisited: boardScene?.board[Constant.STUDY_TILE_NAME], numTurns: 1)
+        XCTAssert(result == boardScene!.board[Constant.LOUNGE_TILE_NAME], "Returned: " + (result?.sprite.name)!)
     }
     
     func testDoesntTakesPassageWay() {
-        let result = boardScene?.board["tile18"]?.closestRoom(lastVisited: boardScene?.board["study"], numTurns: 1)
-        XCTAssert(result! == boardScene!.board["hall"]!, "Returned: " + (result?.sprite.name)!)
+        let result = boardScene?.board["tile18"]?.closestRoom(lastVisited: boardScene?.board[Constant.STUDY_TILE_NAME], numTurns: 1)
+        XCTAssert(result! == boardScene!.board[Constant.HALL_TILE_NAME]!, "Returned: " + (result?.sprite.name)!)
     }
     
     func testCaseKnowsPersonAndWeaponPassageWay() {
-        player?.charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        player?.weaponSoln = Card(n: "Rope", t: Type.character, file: "rope")
-        player?.position = boardScene?.board["conservatory"]
+        player?.charSoln = Constant.SCARLETT_CARD
+        player?.weaponSoln = Constant.ROPE_CARD
+        player?.position = boardScene?.board[Constant.CONSERVATORY_TILE_NAME]
         
         XCTAssert(player?.move(num: 5) == 1, "Took too long path")
-        XCTAssert(player?.position == boardScene!.board["lounge"], "Returned: " + (player?.position?.sprite.name)!)
+        XCTAssert(player?.position == boardScene!.board[Constant.LOUNGE_TILE_NAME], "Returned: " + (player?.position?.sprite.name)!)
     }
     
     func testCaseKnowsPersonAndWeapon() {
-        player?.charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        player?.weaponSoln = Card(n: "Rope", t: Type.character, file: "rope")
-        player?.lastRoomEntered = boardScene?.board["lounge"]
+        player?.charSoln = Constant.SCARLETT_CARD
+        player?.weaponSoln = Constant.ROPE_CARD
+        player?.lastRoomEntered = boardScene?.board[Constant.LOUNGE_TILE_NAME]
         player?.turnsSinceEntered = 1
         player?.position = boardScene?.board["tile38"]
         
         player?.move(num: 5)
-        XCTAssert(player?.position == boardScene!.board["dining"], "Returned: " + (player?.position?.sprite.name)!)
+        XCTAssert(player?.position == boardScene!.board[Constant.DINING_ROOM_TILE_NAME], "Returned: " + (player?.position?.sprite.name)!)
     }
     
     func testCaseAccuseFromRoom() {
-        player?.charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        player?.weaponSoln = Card(n: "Rope", t: Type.weapon, file: "rope")
-        player?.roomSoln = Card(n: "Lounge", t: Type.location, file: "lounge")
-        player?.lastRoomEntered = boardScene?.board["lounge"]
+        player?.charSoln = Constant.SCARLETT_CARD
+        player?.weaponSoln = Constant.ROPE_CARD
+        player?.roomSoln = Constant.LOUNGE_CARD
+        player?.lastRoomEntered = boardScene?.board[Constant.LOUNGE_TILE_NAME]
         player?.turnsSinceEntered = 0
         player?.chooseToSuspect()
-        player?.position = boardScene?.board["lounge"]
+        player?.position = boardScene?.board[Constant.LOUNGE_TILE_NAME]
         
 //      Closest room without passage
         player?.move(num: 4)
-        XCTAssert(player?.position == boardScene!.board["dining"], "Returned: " + (player?.position?.sprite.name)!)
+        XCTAssert(player?.position == boardScene!.board[Constant.DINING_ROOM_TILE_NAME], "Returned: " + (player?.position?.sprite.name)!)
     }
     
     func testCaseAccuseFromOutsideRoomClose() {
-        player?.charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        player?.weaponSoln = Card(n: "Rope", t: Type.character, file: "rope")
-        player?.roomSoln = Card(n: "Study", t: Type.character, file: "Study")
+        player?.charSoln = Constant.SCARLETT_CARD
+        player?.weaponSoln = Constant.ROPE_CARD
+        player?.roomSoln = Constant.STUDY_CARD
         player?.chooseToSuspect()
         player?.position = boardScene?.board["tile19"]
-        player?.lastRoomEntered = boardScene?.board["study"]
+        player?.lastRoomEntered = boardScene?.board[Constant.STUDY_TILE_NAME]
         player?.turnsSinceEntered = 1
         
         player?.move(num: 4)
-        XCTAssert(player?.position == boardScene!.board["hall"], "Returned: " + (player?.position?.sprite.name)!)
+        XCTAssert(player?.position == boardScene!.board[Constant.HALL_TILE_NAME], "Returned: " + (player?.position?.sprite.name)!)
     }
     
     func testCaseAccuseFromOutsideRoomFar() {
-        player?.charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        player?.weaponSoln = Card(n: "Rope", t: Type.character, file: "rope")
-        player?.roomSoln = boardScene?.board["lounge"]?.room!
+        player?.charSoln = Constant.SCARLETT_CARD
+        player?.weaponSoln = Constant.ROPE_CARD
+        player?.roomSoln = Constant.LOUNGE_CARD
         player?.chooseToSuspect()
         XCTAssertTrue(player!.suspect, "Chose to accuse even if not in right room.")
         XCTAssertFalse(player!.notReadyToAccuse())
         player?.position = boardScene?.board["tile37"]
-        player?.lastRoomEntered = boardScene?.board["lounge"]
+        player?.lastRoomEntered = boardScene?.board[Constant.LOUNGE_TILE_NAME]
         player?.turnsSinceEntered = 1
         
         player?.move(num: 4)
@@ -118,68 +117,68 @@ class testPosition: XCTestCase {
     }
     
     func testNoExit() {
-        //board["study"]?.adjacent = [board["tile19"]!, board["kitchen"]!]
+        //board[Constant.STUDY_TILE_NAME]?.adjacent = [board["tile19"]!, board[Constant.KITCHEN_TILE_NAME]!]
         
-        player?.position = boardScene?.board["study"]
-        player?.lastRoomEntered = boardScene?.board["kitchen"]
+        player?.position = boardScene?.board[Constant.STUDY_TILE_NAME]
+        player?.lastRoomEntered = boardScene?.board[Constant.KITCHEN_TILE_NAME]
         player?.turnsSinceEntered = 1
         
         boardScene?.board["tile19"]?.isOccupied = true
         
-        let closest = boardScene?.board["study"]?.closestRoom(lastVisited: boardScene?.board["kitchen"], numTurns: 1)
-        XCTAssert(closest == boardScene?.board["hall"], closest!.room!.name)
+        let closest = boardScene?.board[Constant.STUDY_TILE_NAME]?.closestRoom(lastVisited: boardScene?.board[Constant.KITCHEN_TILE_NAME], numTurns: 1)
+        XCTAssert(closest == boardScene?.board[Constant.HALL_TILE_NAME], closest!.room!.name)
         
         player?.move(num: 4)
-        XCTAssert(player?.position == boardScene?.board["study"], "Returned: " + (player?.position?.sprite.name)!)
+        XCTAssert(player?.position == boardScene?.board[Constant.STUDY_TILE_NAME], "Returned: " + (player?.position?.sprite.name)!)
     }
     
     func testHumanNoExit() {
-        //board["study"]?.adjacent = [board["tile19"]!, board["kitchen"]!]
+        //board[Constant.STUDY_TILE_NAME]?.adjacent = [board["tile19"]!, board[Constant.KITCHEN_TILE_NAME]!]
         
         boardScene?.board["tile19"]?.isOccupied = true
-        let options = boardScene!.board["study"]!.reachablePositions(3, true, lastRoomEntered: boardScene?.board["kitchen"], turnsSinceEntered: 1)
+        let options = boardScene!.board[Constant.STUDY_TILE_NAME]!.reachablePositions(3, true, lastRoomEntered: boardScene?.board[Constant.KITCHEN_TILE_NAME], turnsSinceEntered: 1)
         XCTAssert(options.count == 0, String(options.count))
     }
     
     func testRoomEndOfMove() {
-        player?.roomSoln = Card(n: "Library", t: Type.location, file: "library")
-        player?.weaponSoln = Card(n: "Rope", t: Type.weapon, file: "rope")
-        player?.charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
+        player?.charSoln = Constant.SCARLETT_CARD
+        player?.weaponSoln = Constant.ROPE_CARD
+        player?.roomSoln = Constant.LIBRARY_CARD
         
         player?.position = boardScene!.board["tile106"] // door of billard
         player?.move(num: 4)
-        XCTAssert(player?.position == boardScene?.board["billard room"], "Returned: " + (player?.position?.sprite.name)!)
+        XCTAssert(player?.position == boardScene?.board[Constant.BILLARD_ROOM_TILE_NAME], "Returned: " + (player?.position?.sprite.name)!)
     }
     
     func testShortestPath() {
-        let path = boardScene!.board["tile51"]?.shortestPathTo(boardScene!.board["hall"]!, lastVisited: nil, numTurns: 1) // right of right part of double door to hall
-        XCTAssert(path! == [boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name), \(path![1].sprite.name), \(path![2].sprite.name)")
+        let path = boardScene!.board["tile51"]?.shortestPathTo(boardScene!.board[Constant.HALL_TILE_NAME]!, lastVisited: nil, numTurns: 1) // right of right part of double door to hall
+        XCTAssert(path! == [boardScene!.board["tile50"]!, boardScene!.board[Constant.HALL_TILE_NAME]!], "\(path![0].sprite.name), \(path![1].sprite.name), \(path![2].sprite.name)")
     }
     
     func testHallConnections() {
         let options = boardScene!.board["tile54"]?.reachablePositions(5, true, lastRoomEntered: nil, turnsSinceEntered: 0)
-        XCTAssert(options!.contains(boardScene!.board["hall"]!))
+        XCTAssert(options!.contains(boardScene!.board[Constant.HALL_TILE_NAME]!))
         
-        let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board["hall"]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
-        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name ?? "nil"), \(path![1].sprite.name ?? "nil"), \(path![2].sprite.name ?? "nil")")
+        let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board[Constant.HALL_TILE_NAME]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
+        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board[Constant.HALL_TILE_NAME]!], "\(path![0].sprite.name ?? "nil"), \(path![1].sprite.name ?? "nil"), \(path![2].sprite.name ?? "nil")")
     }
     
     func testBillardConnections() {
-        let options = boardScene!.board["tile119"]?.reachablePositions(5, true, lastRoomEntered: boardScene!.board["ballroom"]!, turnsSinceEntered: 2)
-        XCTAssert(options!.contains(boardScene!.board["billard room"]!))
+        let options = boardScene!.board["tile119"]?.reachablePositions(5, true, lastRoomEntered: boardScene!.board[Constant.BALLROOM_TILE_NAME]!, turnsSinceEntered: 2)
+        XCTAssert(options!.contains(boardScene!.board[Constant.BILLARD_ROOM_TILE_NAME]!))
         
-//        let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board["hall"]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
-//        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board["hall"]!], "\(path![0].sprite.name ?? "nil"), \(path![1].sprite.name ?? "nil"), \(path![2].sprite.name ?? "nil")")
+//        let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board[Constant.HALL_TILE_NAME]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
+//        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board[Constant.HALL_TILE_NAME]!], "\(path![0].sprite.name ?? "nil"), \(path![1].sprite.name ?? "nil"), \(path![2].sprite.name ?? "nil")")
     }
     
     func testDiningNPE() {
-        let path = boardScene!.board["dining"]!.shortestPathTo(boardScene!.board["conservatory"]!, lastVisited: boardScene!.board["lounge"]!, numTurns: 0)
+        let path = boardScene!.board[Constant.DINING_ROOM_TILE_NAME]!.shortestPathTo(boardScene!.board[Constant.CONSERVATORY_TILE_NAME]!, lastVisited: boardScene!.board[Constant.LOUNGE_TILE_NAME]!, numTurns: 0)
         
         XCTAssert(path != nil)
     }
     
     func testDiningNPE2() {
-        let path = boardScene!.board["dining"]!.shortestPathTo(boardScene!.board["conservatory"]!, lastVisited: boardScene!.board["lounge"]!, numTurns: 1)
+        let path = boardScene!.board[Constant.DINING_ROOM_TILE_NAME]!.shortestPathTo(boardScene!.board[Constant.CONSERVATORY_TILE_NAME]!, lastVisited: boardScene!.board[Constant.LOUNGE_TILE_NAME]!, numTurns: 1)
         
         XCTAssert(path != nil)
     }

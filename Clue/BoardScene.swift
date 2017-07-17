@@ -22,7 +22,7 @@ class BoardScene: SKScene {
 	   
     func firstDisplay()
     {
-        hand = Hand(sprite: self.childNode(withName: "Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!, isBoard: true)
+        hand = Hand(sprite: self.childNode(withName: Constant.HAND) as! SKSpriteNode, cards: (game?.humanPlayer.hand)!, isBoard: true)
         
         game = Game.getGame()
         playerNameDisplay = self.childNode(withName: "PlayersList")!
@@ -64,11 +64,11 @@ class BoardScene: SKScene {
         
         if(game?.state == State.waitingForDieRoll)
         {
-            (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = "Your turn! Please roll the die"
-            self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.unhide())
+            (self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "TextDisplay") as! SKLabelNode).text = "Your turn! Please roll the die"
+            self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "Die")?.run(SKAction.unhide())
         }else{
-            (self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode).text = (game?.currentPlayer.character.name)!+"'s turn"
-            self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
+            (self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "TextDisplay") as! SKLabelNode).text = (game?.currentPlayer.character.name)!+"'s turn"
+            self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "Die")?.run(SKAction.hide())
         }
         
         (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
@@ -81,15 +81,15 @@ class BoardScene: SKScene {
     override func mouseDown(with theEvent: NSEvent) {
         /* Called when a mouse click occurs */
         
-        let textDisplay = self.childNode(withName: "UICONTROLS")?.childNode(withName: "TextDisplay") as! SKLabelNode
+        let textDisplay = self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "TextDisplay") as! SKLabelNode
         
         let location = theEvent.location(in: self)
         let node = self.atPoint(location)
         
-        if(self.childNode(withName: "Help")!.frame.contains(location) && node.name == "Help") { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+        if(self.childNode(withName: Constant.HELP)!.frame.contains(location) && node.name == Constant.HELP) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
             help.clicked(self)
             return
-        }else if (self.childNode(withName: ".//Notepad-Help")!.frame.contains(self.convert(location, to: self.childNode(withName: "NoteCard")!)) && node.name == "Notepad-Help"){
+        }else if (self.childNode(withName: ".//Notepad-Help")!.frame.contains(self.convert(location, to: self.childNode(withName: Constant.NOTECARD)!)) && node.name == "Notepad-Help"){
             game!.noteCard.help.clicked(self)
             return
         }else if(help.displayed)
@@ -102,19 +102,19 @@ class BoardScene: SKScene {
         }
         
         // allow notecard to be interacted with regardless of state
-        if(node.name == "NoteCard")
+        if(node.name == Constant.NOTECARD)
         {
             game?.noteCard.clicked()
             return;
         }
         game?.noteCard.clearSelected()
-        if(node.parent?.parent?.name == "NoteCard")
+        if(node.parent?.parent?.name == Constant.NOTECARD)
         {
             game?.noteCard.selectBox(node as! SKLabelNode)
             return;
         }
         
-        if(node.name == "Hand")
+        if(node.name == Constant.HAND)
         {
             hand?.clicked(value: nil)
             return;
@@ -144,16 +144,16 @@ class BoardScene: SKScene {
                 //Allow secret passage arrows to be clickable
                 if(node.name! == "To lounge")
                 {
-                    selection = board["lounge"]
+                    selection = board[Constant.LOUNGE_TILE_NAME]
                 }else if(node.name! == "To study")
                 {
-                    selection = board["study"]
+                    selection = board[Constant.STUDY_TILE_NAME]
                 }else if(node.name! == "To conservatory")
                 {
-                    selection = board["conservatory"]
+                    selection = board[Constant.CONSERVATORY_TILE_NAME]
                 }else if(node.name! == "To kitchen")
                 {
-                    selection = board["kitchen"]
+                    selection = board[Constant.KITCHEN_TILE_NAME]
                 }
             }
             
@@ -181,7 +181,7 @@ class BoardScene: SKScene {
                 
                 game?.currentPlayer.moveToken(newPos: selection!, p: Array(pathToDestination))
                 
-                self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die")?.run(SKAction.hide())
+                self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "Die")?.run(SKAction.hide())
                 //textDisplay.runAction(SKAction.hide())
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(pathToDestination.count) * Player.MOVE_DELAY) {
@@ -215,12 +215,12 @@ class BoardScene: SKScene {
         if(roll == nil)
         {
             let roll2 = arc4random_uniform(6) + 1
-            let node  = self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die") as! SKSpriteNode
+            let node  = self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "Die") as! SKSpriteNode
             node.run(SKAction.rotate(byAngle: CGFloat(Double.pi * 16), duration: 1.5))
             node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll2)")))
             return Int(roll2);
         }else{
-            let node  = self.childNode(withName: "UICONTROLS")?.childNode(withName: "Die") as! SKSpriteNode
+            let node  = self.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "Die") as! SKSpriteNode
             node.run(SKAction.rotate(byAngle: CGFloat(Double.pi * 16), duration: 1.5))
             node.run(SKAction.setTexture(SKTexture(imageNamed: "Die\(roll!)")))
             return Int(roll!);
@@ -263,8 +263,8 @@ class BoardScene: SKScene {
         nextScene?.scaleMode = .aspectFill
         
         //bring noteCard with you so that it stays the same - can't belong to 2 scenes
-        let noteCard = self.childNode(withName: "NoteCard")
-        self.removeChildren(in: [self.childNode(withName: "NoteCard")!])
+        let noteCard = self.childNode(withName: Constant.NOTECARD)
+        self.removeChildren(in: [self.childNode(withName: Constant.NOTECARD)!])
         nextScene?.addChild(noteCard!)
         
         self.view?.presentScene(nextScene!, transition: reveal)
@@ -278,51 +278,51 @@ class BoardScene: SKScene {
             board["tile\(i)"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Tile\(i)") as! SKSpriteNode)
         }
         
-        board["study"] = Position(isRoom: true, room: game?.roomCards![8], node: root?.childNode(withName: "Study") as! SKSpriteNode)
-        board["hall"] = Position(isRoom: true, room: game?.roomCards![7], node: root?.childNode(withName: "Hall") as! SKSpriteNode)
-        board["lounge"] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNode(withName: "Lounge") as! SKSpriteNode)
-        board["library"] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNode(withName: "Library") as! SKSpriteNode)
-        board["billard room"] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard Room") as! SKSpriteNode)
-        board["dining"] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining") as! SKSpriteNode)
-        board["conservatory"] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNode(withName: "Conservatory") as! SKSpriteNode)
-        board["ballroom"] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNode(withName: "Ballroom") as! SKSpriteNode)
-        board["kitchen"] = Position(isRoom: true, room: game?.roomCards![0], node: root?.childNode(withName: "Kitchen") as! SKSpriteNode)
+        board[Constant.STUDY_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![8], node: root?.childNode(withName: "Study") as! SKSpriteNode)
+        board[Constant.HALL_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![7], node: root?.childNode(withName: "Hall") as! SKSpriteNode)
+        board[Constant.LOUNGE_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNode(withName: "Lounge") as! SKSpriteNode)
+        board[Constant.LIBRARY_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNode(withName: "Library") as! SKSpriteNode)
+        board[Constant.BILLARD_ROOM_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard Room") as! SKSpriteNode)
+        board[Constant.DINING_ROOM_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining") as! SKSpriteNode)
+        board[Constant.CONSERVATORY_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNode(withName: "Conservatory") as! SKSpriteNode)
+        board[Constant.BALLROOM_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNode(withName: "Ballroom") as! SKSpriteNode)
+        board[Constant.KITCHEN_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![0], node: root?.childNode(withName: "Kitchen") as! SKSpriteNode)
         
-        board["scarlett start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Scarlett start") as! SKSpriteNode)
-        board["green start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Green start") as! SKSpriteNode)
-        board["peacock start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Peacock start") as! SKSpriteNode)
-        board["white start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "White start") as! SKSpriteNode)
-        board["mustard start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Mustard start") as! SKSpriteNode)
-        board["plum start"] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Plum start") as! SKSpriteNode)
+        board[Constant.SCARLETT_START] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Scarlett start") as! SKSpriteNode)
+        board[Constant.GREEN_START] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Green start") as! SKSpriteNode)
+        board[Constant.PEACOCK_START] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Peacock start") as! SKSpriteNode)
+        board[Constant.WHITE_START] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "White start") as! SKSpriteNode)
+        board[Constant.MUSTARD_START] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Mustard start") as! SKSpriteNode)
+        board[Constant.PLUM_START] = Position(isRoom: false, room: nil, node: root?.childNode(withName: "Plum start") as! SKSpriteNode)
         connectTiles()
         
     }
     
     func connectTiles()
     {
-        board["study"]?.adjacent = [board["tile19"]!, board["kitchen"]!]
-        board["hall"]?.adjacent = [board["tile21"]!, board["tile49"]!, board["tile50"]!]
-        board["lounge"]?.adjacent = [board["tile39"]!, board["conservatory"]!]
-        board["library"]?.adjacent = [board["tile61"]!, board["tile83"]!]
-        board["billard room"]?.adjacent = [board["tile81"]!, board["tile106"]!]
-        board["dining"]?.adjacent = [board["tile66"]!, board["tile95"]!]
-        board["conservatory"]?.adjacent = [board["tile160"]!, board["lounge"]!]
-        board["ballroom"]?.adjacent = [board["tile162"]!, board["tile122"]!, board["tile127"]!, board["tile163"]!]
-        board["kitchen"]?.adjacent = [board["tile146"]!, board["study"]!]
+        board[Constant.STUDY_TILE_NAME]?.adjacent = [board["tile19"]!, board[Constant.KITCHEN_TILE_NAME]!]
+        board[Constant.HALL_TILE_NAME]?.adjacent = [board["tile21"]!, board["tile49"]!, board["tile50"]!]
+        board[Constant.LOUNGE_TILE_NAME]?.adjacent = [board["tile39"]!, board[Constant.CONSERVATORY_TILE_NAME]!]
+        board[Constant.LIBRARY_TILE_NAME]?.adjacent = [board["tile61"]!, board["tile83"]!]
+        board[Constant.BILLARD_ROOM_TILE_NAME]?.adjacent = [board["tile81"]!, board["tile106"]!]
+        board[Constant.DINING_ROOM_TILE_NAME]?.adjacent = [board["tile66"]!, board["tile95"]!]
+        board[Constant.CONSERVATORY_TILE_NAME]?.adjacent = [board["tile160"]!, board[Constant.LOUNGE_TILE_NAME]!]
+        board[Constant.BALLROOM_TILE_NAME]?.adjacent = [board["tile162"]!, board["tile122"]!, board["tile127"]!, board["tile163"]!]
+        board[Constant.KITCHEN_TILE_NAME]?.adjacent = [board["tile146"]!, board[Constant.STUDY_TILE_NAME]!]
         
         
-        board["scarlett start"]?.adjacent = [board["tile5"]!]
-        board["green start"]?.adjacent = [board["tile179"]!]
-        board["peacock start"]?.adjacent = [board["tile151"]!]
-        board["white start"]?.adjacent = [board["tile180"]!]
-        board["mustard start"]?.adjacent = [board["tile60"]!]
-        board["plum start"]?.adjacent = [board["tile24"]!]
+        board[Constant.SCARLETT_START]?.adjacent = [board["tile5"]!]
+        board[Constant.GREEN_START]?.adjacent = [board["tile179"]!]
+        board[Constant.PEACOCK_START]?.adjacent = [board["tile151"]!]
+        board[Constant.WHITE_START]?.adjacent = [board["tile180"]!]
+        board[Constant.MUSTARD_START]?.adjacent = [board["tile60"]!]
+        board[Constant.PLUM_START]?.adjacent = [board["tile24"]!]
         
         board["tile1"]?.adjacent = [board["tile2"]!]
         board["tile2"]?.adjacent = [board["tile3"]!, board["tile6"]!]
         board["tile3"]?.adjacent = [board["tile2"]!, board["tile7"]!]
         board["tile4"]?.adjacent = [board["tile5"]!, board["tile8"]!]
-        board["tile5"]?.adjacent = [board["tile4"]!, board["tile9"]!, board["scarlett start"]!]
+        board["tile5"]?.adjacent = [board["tile4"]!, board["tile9"]!, board[Constant.SCARLETT_START]!]
         board["tile6"]?.adjacent = [board["tile7"]!, board["tile10"]!, board["tile2"]!]
         board["tile7"]?.adjacent = [board["tile3"]!, board["tile6"]!, board["tile11"]!]
         board["tile8"]?.adjacent = [board["tile4"]!, board["tile9"]!, board["tile12"]!]
@@ -343,7 +343,7 @@ class BoardScene: SKScene {
         board["tile21"]?.adjacent = [board["tile20"]!, board["tile31"]!, board["tile11"]!]
         board["tile22"]?.adjacent = [board["tile32"]!, board["tile12"]!, board["tile23"]!]
         board["tile23"]?.adjacent = [board["tile22"]!, board["tile13"]!, board["tile33"]!]
-        board["tile24"]?.adjacent = [board["tile14"]!, board["tile25"]!, board["plum start"]!]
+        board["tile24"]?.adjacent = [board["tile14"]!, board["tile25"]!, board[Constant.PLUM_START]!]
         board["tile25"]?.adjacent = [board["tile15"]!, board["tile24"]!, board["tile26"]!]
         board["tile26"]?.adjacent = [board["tile16"]!, board["tile25"]!, board["tile27"]!]
         board["tile27"]?.adjacent = [board["tile17"]!, board["tile26"]!, board["tile28"]!]
@@ -382,7 +382,7 @@ class BoardScene: SKScene {
         board["tile57"]?.adjacent = [board["tile56"]!, board["tile58"]!, board["tile68"]!, board["tile41"]!]
         board["tile58"]?.adjacent = [board["tile57"]!, board["tile59"]!, board["tile69"]!, board["tile42"]!]
         board["tile59"]?.adjacent = [board["tile43"]!, board["tile58"]!, board["tile60"]!, board["tile70"]!]
-        board["tile60"]?.adjacent = [board["tile59"]!, board["tile71"]!, board["tile44"]!, board["mustard start"]!]
+        board["tile60"]?.adjacent = [board["tile59"]!, board["tile71"]!, board["tile44"]!, board[Constant.MUSTARD_START]!]
         
         board["tile61"]?.adjacent = [board["tile72"]!, board["tile62"]!, board["tile45"]!]
         board["tile62"]?.adjacent = [board["tile61"]!, board["tile73"]!, board["tile46"]!]
@@ -513,29 +513,29 @@ class BoardScene: SKScene {
         board["tile176"]?.adjacent = [board["tile175"]!, board["tile172"]!]
         board["tile177"]?.adjacent = [board["tile174"]!, board["tile178"]!]
         board["tile178"]?.adjacent = [board["tile177"]!, board["tile179"]!]
-        board["tile179"]?.adjacent = [board["tile178"]!, board["green start"]!]
-        board["tile180"]?.adjacent = [board["tile181"]!, board["white start"]!]
+        board["tile179"]?.adjacent = [board["tile178"]!, board[Constant.GREEN_START]!]
+        board["tile180"]?.adjacent = [board["tile181"]!, board[Constant.WHITE_START]!]
         
         board["tile181"]?.adjacent = [board["tile180"]!, board["tile182"]!]
         board["tile182"]?.adjacent = [board["tile181"]!, board["tile175"]!]
         
-        board["tile19"]?.adjacent += [board["study"]!]
-        board["tile21"]?.adjacent += [board["hall"]!]
-        board["tile49"]?.adjacent += [board["hall"]!]
-        board["tile50"]?.adjacent += [board["hall"]!]
-        board["tile39"]?.adjacent += [board["lounge"]!]
-        board["tile61"]?.adjacent += [board["library"]!]
-        board["tile83"]?.adjacent += [board["library"]!]
-        board["tile81"]?.adjacent += [board["billard room"]!]
-        board["tile106"]?.adjacent += [board["billard room"]!]
-        board["tile66"]?.adjacent += [board["dining"]!]
-        board["tile95"]?.adjacent += [board["dining"]!]
-        board["tile160"]?.adjacent += [board["conservatory"]!]
-        board["tile162"]?.adjacent += [board["ballroom"]!]
-        board["tile122"]?.adjacent += [board["ballroom"]!]
-        board["tile127"]?.adjacent += [board["ballroom"]!]
-        board["tile163"]?.adjacent += [board["ballroom"]!]
-        board["tile146"]?.adjacent += [board["kitchen"]!]
+        board["tile19"]?.adjacent += [board[Constant.STUDY_TILE_NAME]!]
+        board["tile21"]?.adjacent += [board[Constant.HALL_TILE_NAME]!]
+        board["tile49"]?.adjacent += [board[Constant.HALL_TILE_NAME]!]
+        board["tile50"]?.adjacent += [board[Constant.HALL_TILE_NAME]!]
+        board["tile39"]?.adjacent += [board[Constant.LOUNGE_TILE_NAME]!]
+        board["tile61"]?.adjacent += [board[Constant.LIBRARY_TILE_NAME]!]
+        board["tile83"]?.adjacent += [board[Constant.LIBRARY_TILE_NAME]!]
+        board["tile81"]?.adjacent += [board[Constant.BILLARD_ROOM_TILE_NAME]!]
+        board["tile106"]?.adjacent += [board[Constant.BILLARD_ROOM_TILE_NAME]!]
+        board["tile66"]?.adjacent += [board[Constant.DINING_ROOM_TILE_NAME]!]
+        board["tile95"]?.adjacent += [board[Constant.DINING_ROOM_TILE_NAME]!]
+        board["tile160"]?.adjacent += [board[Constant.CONSERVATORY_TILE_NAME]!]
+        board["tile162"]?.adjacent += [board[Constant.BALLROOM_TILE_NAME]!]
+        board["tile122"]?.adjacent += [board[Constant.BALLROOM_TILE_NAME]!]
+        board["tile127"]?.adjacent += [board[Constant.BALLROOM_TILE_NAME]!]
+        board["tile163"]?.adjacent += [board[Constant.BALLROOM_TILE_NAME]!]
+        board["tile146"]?.adjacent += [board[Constant.KITCHEN_TILE_NAME]!]
         
     }
     

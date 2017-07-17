@@ -25,7 +25,7 @@ class Help {
     
     func hide(_ scene: SKScene)
     {
-        scene.childNode(withName: "Help")?.childNode(withName: "Help-text")?.run(SKAction.hide())
+        scene.childNode(withName: Constant.HELP)?.childNode(withName: "Help-text")?.run(SKAction.hide())
         displayed = false
     }
     
@@ -79,8 +79,8 @@ class Help {
         displayed = true
         let text = self.text(scene)
         
-        addMultilineText(text: text, parent: scene.childNode(withName: "Help")!.childNode(withName: "Help-text")!)
-        scene.childNode(withName: "Help")?.childNode(withName: "Help-text")?.run(SKAction.unhide())
+        addMultilineText(text: text, parent: scene.childNode(withName: Constant.HELP)!.childNode(withName: "Help-text")!)
+        scene.childNode(withName: Constant.HELP)?.childNode(withName: "Help-text")?.run(SKAction.unhide())
         
     }
     

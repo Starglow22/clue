@@ -11,7 +11,7 @@ import SpriteKit
 class EndScene: SKScene {
 
     func setBackground() {
-        if((self.childNode(withName: "QuestionPanel")!.childNode(withName: "Result") as! SKLabelNode).text!.contains("You won")){
+        if((self.childNode(withName: Constant.QUESTION_PANEL)!.childNode(withName: "Result") as! SKLabelNode).text!.contains("You won")){
             (self.childNode(withName: "Bkg")! as! SKSpriteNode).texture = SKTexture(imageNamed: "win")
             //color = NSColor.init(red: 0, green: 142, blue: 0, alpha: 1)
         }else{

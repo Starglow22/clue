@@ -34,7 +34,7 @@ class testAccuse: XCTestCase {
         
         let scene = game.endScene
         XCTAssert(scene?.childNode(withName: "AnswerPanel") != nil)
-        XCTAssert(((scene?.childNode(withName: "QuestionPanel")?.childNode(withName: "Result") as! SKLabelNode).text?.contains("Game over. "))!)
+        XCTAssert(((scene?.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "Result") as! SKLabelNode).text?.contains("Game over. "))!)
     }
     
     func testAccuseWrongly() {
@@ -73,7 +73,7 @@ class testAccuse: XCTestCase {
         nextScene?.setUpTiles()
         
         let scene = MenuScene(fileNamed: "MenuScene")!
-        scene.characterName = "Miss Scarlett"
+        scene.characterName = Constant.SCARLETT_NAME
         scene.numPlayers = 2
         scene.difficulty = 1
         
@@ -83,40 +83,16 @@ class testAccuse: XCTestCase {
         nextScene?.setUpTiles()
         
         
-        let p1 = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        let p2 = Card(n: "Prof. Plum", t: Type.character, file: "plum")
-        let p3 = Card(n: "Mrs Peacock", t: Type.character, file: "peacock")
-        let p4 = Card(n: "Mr Green", t: Type.character, file: "green")
-        let p5 = Card(n: "Col. Mustard", t: Type.character, file: "mustard")
-        let p6 = Card(n: "Mrs White", t: Type.character, file: "white")
+        people = [Constant.SCARLETT_CARD, Constant.PLUM_CARD, Constant.PEACOCK_CARD, Constant.GREEN_CARD, Constant.MUSTARD_CARD, Constant.WHITE_CARD]
+        weapons = [Constant.CANDLESTICK_CARD, Constant.KNIFE_CARD, Constant.LEAD_PIPE_CARD, Constant.REVOLVER_CARD, Constant.ROPE_CARD, Constant.WRENCH_CARD]
+        rooms = [Constant.KITCHEN_CARD, Constant.BALLROOM_CARD, Constant.CONSERVATORY_CARD, Constant.DINING_ROOM_CARD, Constant.BILLARD_ROOM_CARD, Constant.LIBRARY_CARD, Constant.LOUNGE_CARD, Constant.HALL_CARD, Constant.STUDY_CARD]
         
-        let w1 = Card(n: "Candlestick", t: Type.weapon, file: "candlestick")
-        let w2 = Card(n: "Knife", t: Type.weapon, file: "knife")
-        let w3 = Card(n: "Lead Pipe", t: Type.weapon, file: "leadpipe")
-        let w4 = Card(n: "Revolver", t: Type.weapon, file: "revolver")
-        let w5 = Card(n: "Rope", t: Type.weapon, file: "rope")
-        let w6 = Card(n: "Wrench", t: Type.weapon, file: "wrench")
+        player = EasyAIPlayer(c: Constant.SCARLETT_CARD)
         
-        let r1 = Card(n: "Kitchen", t: Type.location, file: "kitchen")
-        let r2 = Card(n: "Ballroom", t: Type.location, file: "ballroom")
-        let r3 = Card(n: "Conservatory", t: Type.location, file: "conservatory")
-        let r4 = Card(n: "Dining room", t: Type.location, file: "dining")
-        let r5 = Card(n: "Billard Room", t: Type.location, file: "billard")
-        let r6 = Card(n: "Library", t: Type.location, file: "library")
-        let r7 = Card(n: "Lounge", t: Type.location, file: "lounge")
-        let r8 = Card(n: "Hall", t: Type.location, file: "hall")
-        let r9 = Card(n: "Study", t: Type.location, file: "study")
-        
-        people = [p1, p2, p3, p4, p5, p6]
-        weapons = [w1, w2, w3, w4, w5, w6]
-        rooms = [r1, r2, r3, r4, r5, r6, r7, r8, r9]
-        
-        player = EasyAIPlayer(c: p1)
-        
-        player?.hand = [p1, p2, w1, w2, r1, r2]
+        player?.hand = [Constant.SCARLETT_CARD, Constant.PLUM_CARD, Constant.CANDLESTICK_CARD, Constant.KNIFE_CARD, Constant.KITCHEN_CARD, Constant.BALLROOM_CARD]
         player?.markHandCards()
         
-        player?.position = nextScene?.board["conservatory"]
+        player?.position = nextScene?.board[Constant.CONSERVATORY_TILE_NAME]
         
     }
     

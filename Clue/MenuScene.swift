@@ -22,7 +22,7 @@ class MenuScene: SKScene {
         
         for child in self.children
         {
-            if(child.name != "Help")
+            if(child.name != Constant.HELP)
             {
                 child.alpha = 0.0;
             }
@@ -41,7 +41,7 @@ class MenuScene: SKScene {
         let location = theEvent.location(in: self)
         let node = self.atPoint(location)
         
-        if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+        if(self.childNode(withName: Constant.HELP)!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
             help.clicked(self)
         }else if(help.displayed)
         {
@@ -75,27 +75,27 @@ class MenuScene: SKScene {
                 
             case "C1"?:
                 selectCharacter(node)
-                characterName = "Miss Scarlett"
+                characterName = Constant.SCARLETT_NAME
                 
             case "C2"?:
                 selectCharacter(node)
-                characterName = "Mrs Peacock"
+                characterName = Constant.PEACOCK_NAME
                 
             case "C3"?:
                 selectCharacter(node)
-                characterName = "Mr Green"
+                characterName = Constant.GREEN_NAME
                 
             case "C4"?:
                 selectCharacter(node)
-                characterName = "Col. Mustard"
+                characterName = Constant.MUSTARD_NAME
                 
             case "C5"?:
                 selectCharacter(node)
-                characterName = "Prof. Plum"
+                characterName = Constant.PLUM_NAME
                 
             case "C6"?:
                 selectCharacter(node)
-                characterName = "Mrs White"
+                characterName = Constant.WHITE_NAME
                 
             case "Start"?:
                 let nextScene = BoardScene(fileNamed: "BoardScene")
@@ -117,18 +117,18 @@ class MenuScene: SKScene {
                 {
                     switch player.character.name
                     {
-                    case "Miss Scarlett":
-                        player.position = nextScene?.board["scarlett start"]
-                    case "Prof. Plum":
-                        player.position = nextScene?.board["plum start"]
-                    case "Mrs Peacock":
-                        player.position = nextScene?.board["peacock start"]
-                    case "Mr Green":
-                        player.position = nextScene?.board["green start"]
-                    case "Col. Mustard":
-                        player.position = nextScene?.board["mustard start"]
+                    case Constant.SCARLETT_NAME:
+                        player.position = nextScene?.board[Constant.SCARLETT_START]
+                    case Constant.PLUM_NAME:
+                        player.position = nextScene?.board[Constant.PLUM_START]
+                    case Constant.PEACOCK_NAME:
+                        player.position = nextScene?.board[Constant.PEACOCK_START]
+                    case Constant.GREEN_NAME:
+                        player.position = nextScene?.board[Constant.GREEN_START]
+                    case Constant.MUSTARD_NAME:
+                        player.position = nextScene?.board[Constant.MUSTARD_START]
                     default:
-                        player.position = nextScene?.board["white start"]
+                        player.position = nextScene?.board[Constant.WHITE_START]
                     }
                 }
                 
@@ -203,33 +203,10 @@ class MenuScene: SKScene {
     
     func initialize(scene: BoardScene) -> Game
     {
-        let p1 = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        let p2 = Card(n: "Prof. Plum", t: Type.character, file: "plum")
-        let p3 = Card(n: "Mrs Peacock", t: Type.character, file: "peacock")
-        let p4 = Card(n: "Mr Green", t: Type.character, file: "green")
-        let p5 = Card(n: "Col. Mustard", t: Type.character, file: "mustard")
-        let p6 = Card(n: "Mrs White", t: Type.character, file: "white")
-        
-        let w1 = Card(n: "Candlestick", t: Type.weapon, file: "candlestick")
-        let w2 = Card(n: "Knife", t: Type.weapon, file: "knife")
-        let w3 = Card(n: "Lead Pipe", t: Type.weapon, file: "leadpipe")
-        let w4 = Card(n: "Revolver", t: Type.weapon, file: "revolver")
-        let w5 = Card(n: "Rope", t: Type.weapon, file: "rope")
-        let w6 = Card(n: "Wrench", t: Type.weapon, file: "wrench")
-        
-        let r1 = Card(n: "Kitchen", t: Type.location, file: "kitchen")
-        let r2 = Card(n: "Ballroom", t: Type.location, file: "ballroom")
-        let r3 = Card(n: "Conservatory", t: Type.location, file: "conservatory")
-        let r4 = Card(n: "Dining room", t: Type.location, file: "dining")
-        let r5 = Card(n: "Billard Room", t: Type.location, file: "billard")
-        let r6 = Card(n: "Library", t: Type.location, file: "library")
-        let r7 = Card(n: "Lounge", t: Type.location, file: "lounge")
-        let r8 = Card(n: "Hall", t: Type.location, file: "hall")
-        let r9 = Card(n: "Study", t: Type.location, file: "study")
-        
-        let people = [p1, p2, p3, p4, p5, p6]
-        let weapons = [w1, w2, w3, w4, w5, w6]
-        let rooms = [r1, r2, r3, r4, r5, r6, r7, r8, r9]
+
+        let people = [Constant.SCARLETT_CARD, Constant.PLUM_CARD, Constant.PEACOCK_CARD, Constant.GREEN_CARD, Constant.MUSTARD_CARD, Constant.WHITE_CARD]
+        let weapons = [Constant.CANDLESTICK_CARD, Constant.KNIFE_CARD, Constant.LEAD_PIPE_CARD, Constant.REVOLVER_CARD, Constant.ROPE_CARD, Constant.WRENCH_CARD]
+        let rooms = [Constant.KITCHEN_CARD, Constant.BALLROOM_CARD, Constant.CONSERVATORY_CARD, Constant.DINING_ROOM_CARD, Constant.BILLARD_ROOM_CARD, Constant.LIBRARY_CARD, Constant.LOUNGE_CARD, Constant.HALL_CARD, Constant.STUDY_CARD]
         
         
         // pick solution
@@ -345,18 +322,18 @@ class MenuScene: SKScene {
             p.sprite = (scene.childNode(withName: "BoardBackground")!.childNode(withName: p.character.name) as! SKSpriteNode)
             
             switch p.character.name {
-            case "Miss Scarlett":
-                p.position = scene.board["scarlett start"]!
-            case "Prof. Plum":
-                p.position = scene.board["plum start"]!
-            case "Mrs Peacock":
-                p.position = scene.board["peacock start"]!
-            case "Mr Green":
-                p.position = scene.board["green start"]!
-            case "Col. Mustard":
-                p.position = scene.board["mustard start"]!
-            case "Mrs White":
-                p.position = scene.board["white start"]!
+            case Constant.SCARLETT_NAME:
+                p.position = scene.board[Constant.SCARLETT_START]!
+            case Constant.PLUM_NAME:
+                p.position = scene.board[Constant.PLUM_START]!
+            case Constant.PEACOCK_NAME:
+                p.position = scene.board[Constant.PEACOCK_START]!
+            case Constant.GREEN_NAME:
+                p.position = scene.board[Constant.GREEN_START]!
+            case Constant.MUSTARD_NAME:
+                p.position = scene.board[Constant.MUSTARD_START]!
+            case Constant.WHITE_NAME:
+                p.position = scene.board[Constant.WHITE_START]!
                 
             default: break
                 

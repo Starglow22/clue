@@ -23,13 +23,13 @@ class EasyAIPlayer: Player {
     var roomSoln: Card?
     
     override init(c: Card) {
-        charInfo = ["Miss Scarlett": nil, "Prof. Plum": nil, "Mrs Peacock": nil, "Mr Green": nil, "Col. Mustard": nil, "Mrs White": nil]
+        charInfo = [Constant.SCARLETT_NAME: nil, Constant.PLUM_NAME: nil, Constant.PEACOCK_NAME: nil, Constant.GREEN_NAME: nil, Constant.MUSTARD_NAME: nil, Constant.WHITE_NAME: nil]
         
         weaponInfo = ["Candlestick": nil, "Knife": nil, "Lead Pipe": nil, "Revolver": nil, "Rope": nil, "Wrench": nil]
         
         roomInfo = ["Kitchen": nil, "Ballroom": nil, "Conservatory": nil, "Dining room": nil, "Billard Room": nil, "Library": nil, "Lounge": nil, "Hall": nil, "Study": nil]
         
-        shown = ["Miss Scarlett": [], "Prof. Plum": [], "Mrs Peacock": [], "Mr Green": [], "Col. Mustard": [], "Mrs White": []]
+        shown = [Constant.SCARLETT_NAME: [], Constant.PLUM_NAME: [], Constant.PEACOCK_NAME: [], Constant.GREEN_NAME: [], Constant.MUSTARD_NAME: [], Constant.WHITE_NAME: []]
         
         super.init(c: c)
     }

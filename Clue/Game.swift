@@ -17,7 +17,6 @@ class Game: NSObject {
         return instance!
     }
     
-    
     var allPlayers: [Player]
     var remainingPlayers: [Player]
     var currentPlayer: Player
@@ -44,7 +43,7 @@ class Game: NSObject {
         solution = s
         state = State.waitingForTurn
         boardScene = scene
-        noteCard = NoteCard(sprite: boardScene.childNode(withName: "NoteCard") as! SKSpriteNode)
+        noteCard = NoteCard(sprite: boardScene.childNode(withName: Constant.NOTECARD) as! SKSpriteNode)
         humanPlayer = human
         
         //Backdoor to test AI accusing wrong in UI
@@ -52,11 +51,11 @@ class Game: NSObject {
 //        {
 //            (allPlayers[1] as! EasyAIPlayer).roomSoln = s.location
 //            (allPlayers[1] as! EasyAIPlayer).weaponSoln = Card(n: "Rope", t: Type.weapon, file: "rope")
-//            (allPlayers[1] as! EasyAIPlayer).charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
+//            (allPlayers[1] as! EasyAIPlayer).charSoln = Card(n: Constant.SCARLETT_NAME, t: Type.character, file: "scarlett")
 //        }else{
 //            (allPlayers[0] as! EasyAIPlayer).roomSoln = s.location
 //            (allPlayers[0] as! EasyAIPlayer).weaponSoln = Card(n: "Rope", t: Type.weapon, file: "rope")
-//            (allPlayers[0] as! EasyAIPlayer).charSoln = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
+//            (allPlayers[0] as! EasyAIPlayer).charSoln = Card(n: Constant.SCARLETT_NAME, t: Type.character, file: "scarlett")
 //        }
         
         super.init()
@@ -91,9 +90,9 @@ class Game: NSObject {
             endScene!.childNode(withName: "AnswerPanel")!.run(SKAction.hide())
             roomScene?.view?.presentScene(endScene!, transition: reveal)
             
-            display = endScene!.childNode(withName: "QuestionPanel")!
+            display = endScene!.childNode(withName: Constant.QUESTION_PANEL)!
         }else{
-            display = Game.getGame().roomScene!.childNode(withName: "QuestionPanel")!
+            display = Game.getGame().roomScene!.childNode(withName: Constant.QUESTION_PANEL)!
         }
         
         if(Game.getGame().currentPlayer is HumanPlayer)
@@ -150,18 +149,18 @@ class Game: NSObject {
         let scene = Game.getGame().boardScene
         
         switch p.character.name {
-        case "Miss Scarlett":
-            p.position = scene.board["scarlett start"]!
-        case "Prof. Plum":
-            p.position = scene.board["plum start"]!
-        case "Mrs Peacock":
-            p.position = scene.board["peacock start"]!
-        case "Mr Green":
-            p.position = scene.board["green start"]!
-        case "Col. Mustard":
-            p.position = scene.board["mustard start"]!
-        case "Mrs White":
-            p.position = scene.board["white start"]!
+        case Constant.SCARLETT_NAME:
+            p.position = scene.board[Constant.SCARLETT_START]!
+        case Constant.PLUM_NAME:
+            p.position = scene.board[Constant.PLUM_START]!
+        case Constant.PEACOCK_NAME:
+            p.position = scene.board[Constant.PEACOCK_START]!
+        case Constant.GREEN_NAME:
+            p.position = scene.board[Constant.GREEN_START]!
+        case Constant.MUSTARD_NAME:
+            p.position = scene.board[Constant.MUSTARD_START]!
+        case Constant.WHITE_NAME:
+            p.position = scene.board[Constant.WHITE_START]!
             
         default: break
         }

@@ -9,6 +9,9 @@
 import SpriteKit
 
 class RoomScene: SKScene {
+    let CHARACTERS = "Characters"
+    let WEAPONS = "Weapons"
+    
     let help = Help()
     
     var game : Game?
@@ -37,43 +40,43 @@ class RoomScene: SKScene {
         
         if(hand == nil)
         {
-            hand = Hand(sprite: self.childNode(withName: "Hand") as! SKSpriteNode, cards: (game?.humanPlayer.hand)!, isBoard: false)
+            hand = Hand(sprite: self.childNode(withName: Constant.HAND) as! SKSpriteNode, cards: (game?.humanPlayer.hand)!, isBoard: false)
         }
         
         self.childNode(withName: "Mode")?.run(SKAction.hide())
-        self.childNode(withName: "Characters")?.run(SKAction.hide())
-        self.childNode(withName: "Weapons")?.run(SKAction.hide())
+        self.childNode(withName: CHARACTERS)?.run(SKAction.hide())
+        self.childNode(withName: WEAPONS)?.run(SKAction.hide())
         self.childNode(withName: "Done")?.run(SKAction.hide())
         self.childNode(withName: "Result")?.run(SKAction.hide())
         self.childNode(withName: "Return")?.run(SKAction.hide())
-        self.childNode(withName: "QuestionPanel")?.run(SKAction.hide())
+        self.childNode(withName: Constant.QUESTION_PANEL)?.run(SKAction.hide())
         
         self.childNode(withName: "Result")?.run(SKAction.moveTo(y: CGFloat(260), duration: 0))
-        self.childNode(withName: "QuestionPanel")?.run(SKAction.move(to: CGPoint(x: 415, y: 540), duration: 0))
+        self.childNode(withName: Constant.QUESTION_PANEL)?.run(SKAction.move(to: CGPoint(x: 415, y: 540), duration: 0))
         
-        (self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.childNode(withName: "None") as! SKLabelNode).text = "I have none"
-        self.childNode(withName: "QuestionPanel")?.childNode(withName: "Accuse")?.run(SKAction.hide())
+        (self.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "None")?.childNode(withName: "None") as! SKLabelNode).text = "I have none"
+        self.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "Accuse")?.run(SKAction.hide())
         
         (self.childNode(withName: "Result")?.childNode(withName: "Image") as! SKSpriteNode).texture = SKTexture(imageNamed: "cardBack")
         
         if(game?.state == State.waitingForDoneWithNoteTaking)
         {
-            self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.hide())
+            self.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "None")?.run(SKAction.hide())
         }
         
         
         (self.childNode(withName: "CurrentPlayer") as! SKSpriteNode).texture = SKTexture(imageNamed: (game?.currentPlayer.character.imageName)!)
         
-        for i in 0...self.childNode(withName: "Characters")!.children.count-1
+        for i in 0...self.childNode(withName: CHARACTERS)!.children.count-1
         {
-            let node = (self.childNode(withName: "Characters")?.childNode(withName: "C"+(i+1).description))!
+            let node = (self.childNode(withName: CHARACTERS)?.childNode(withName: "C"+(i+1).description))!
             let sprite = node as! SKSpriteNode
             sprite.texture = SKTexture(imageNamed: people![i].imageName)
         }
         
-        for i in 0...self.childNode(withName: "Weapons")!.children.count-1
+        for i in 0...self.childNode(withName: WEAPONS)!.children.count-1
         {
-            let node = (self.childNode(withName: "Weapons")?.childNode(withName: "W"+(i+1).description))!
+            let node = (self.childNode(withName: WEAPONS)?.childNode(withName: "W"+(i+1).description))!
             let sprite = node as! SKSpriteNode
             sprite.texture = SKTexture(imageNamed: weapons![i].imageName)
         }
@@ -131,8 +134,8 @@ class RoomScene: SKScene {
         }else if(game?.state == State.waitingForAnswer){
             hand?.clicked(value: true)
             self.childNode(withName: "Return")?.run(SKAction.hide())
-            self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.unhide())
-            self.childNode(withName: "QuestionPanel")?.run(SKAction.unhide())
+            self.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "None")?.run(SKAction.unhide())
+            self.childNode(withName: Constant.QUESTION_PANEL)?.run(SKAction.unhide())
         }else if(game?.state == State.waitingForDoneWithNoteTaking){
             self.childNode(withName: "Return")?.run(SKAction.unhide())
             hand?.clicked(value: false)
@@ -146,24 +149,24 @@ class RoomScene: SKScene {
         let node = self.atPoint(location)
         
         // allow notecard to be interacted with regardless of state
-        if(node.name == "NoteCard")
+        if(node.name == Constant.NOTECARD)
         {
             game?.noteCard.clicked()
             return;
         }
         game?.noteCard.clearSelected()
-        if(node.parent?.parent?.name == "NoteCard")
+        if(node.parent?.parent?.name == Constant.NOTECARD)
         {
             game?.noteCard.selectBox(node as! SKLabelNode)
         }
         
-        if(node.name == "Hand")
+        if(node.name == Constant.HAND)
         {
             hand?.clicked(value: nil)
             return;
         }
         
-        if(self.childNode(withName: "Help")!.frame.contains(location) && node.name == "Help") { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+        if(self.childNode(withName: ".//Notepad-Help")!.frame.contains(self.convert(location, to: self.childNode(withName: Constant.NOTECARD)!)) && node.name == "Notepad-Help") { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
             help.clicked(self)
             return
         }else if (self.childNode(withName: ".//Notepad-Help")!.frame.contains(location) && node.name == "Notepad-Help"){
@@ -185,26 +188,26 @@ class RoomScene: SKScene {
                 suspect = true
                 game?.currentPlayer.suspect = true
                 self.childNode(withName: "Mode")?.run(SKAction.hide())
-                self.childNode(withName: "Characters")?.run(SKAction.unhide())
-                self.childNode(withName: "Weapons")?.run(SKAction.unhide())
+                self.childNode(withName: CHARACTERS)?.run(SKAction.unhide())
+                self.childNode(withName: WEAPONS)?.run(SKAction.unhide())
                 game?.state = State.waitingForQuestion
             }else if (node.name == "ACCUSE"){
                 suspect = false
                 game?.currentPlayer.suspect = false
                 self.childNode(withName: "Mode")?.run(SKAction.hide())
-                self.childNode(withName: "Characters")?.run(SKAction.unhide())
-                self.childNode(withName: "Weapons")?.run(SKAction.unhide())
+                self.childNode(withName: CHARACTERS)?.run(SKAction.unhide())
+                self.childNode(withName: WEAPONS)?.run(SKAction.unhide())
                 game?.state = State.waitingForQuestion
             }
             
             
         case State.waitingForQuestion:
-            if(node.parent == self.childNode(withName: "Characters"))
+            if(node.parent == self.childNode(withName: CHARACTERS))
             {
                 let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)! - 1
                 person = people![i]
                 
-            }else if (node.parent == self.childNode(withName: "Weapons")){
+            }else if (node.parent == self.childNode(withName: WEAPONS)){
                 let i = Int((node.name?.substring(from: (node.name?.characters.index(before: (node.name?.endIndex)!))!))!)! - 1
                 weapon = weapons![i]
             }
@@ -216,19 +219,19 @@ class RoomScene: SKScene {
             
             if(node.name == "Done")
             {
-                self.childNode(withName: "Characters")?.run(SKAction.hide())
-                self.childNode(withName: "Weapons")?.run(SKAction.hide())
+                self.childNode(withName: CHARACTERS)?.run(SKAction.hide())
+                self.childNode(withName: WEAPONS)?.run(SKAction.hide())
                 self.childNode(withName: "Done")?.run(SKAction.hide())
                 
                 self.childNode(withName: "Result")?.run(SKAction.moveTo(y: CGFloat(545), duration: 0))
                 
-                self.childNode(withName: "QuestionPanel")?.run(SKAction.move(to: CGPoint(x: 745, y:510), duration: 0)) //y:260
-                self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.run(SKAction.hide())
-                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Ask") as! SKLabelNode).text = "You asked for:"
-                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Person") as! SKLabelNode).text = person!.name
-                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Weapon") as! SKLabelNode).text = weapon!.name
-                (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Location") as! SKLabelNode).text = (game?.currentPlayer.position?.room)!.name
-                self.childNode(withName: "QuestionPanel")!.run(SKAction.unhide())
+                self.childNode(withName: Constant.QUESTION_PANEL)?.run(SKAction.move(to: CGPoint(x: 745, y:510), duration: 0)) //y:260
+                self.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "None")?.run(SKAction.hide())
+                (self.childNode(withName: Constant.QUESTION_PANEL)!.childNode(withName: "Ask") as! SKLabelNode).text = "You asked for:"
+                (self.childNode(withName: Constant.QUESTION_PANEL)!.childNode(withName: "Person") as! SKLabelNode).text = person!.name
+                (self.childNode(withName: Constant.QUESTION_PANEL)!.childNode(withName: "Weapon") as! SKLabelNode).text = weapon!.name
+                (self.childNode(withName: Constant.QUESTION_PANEL)!.childNode(withName: "Location") as! SKLabelNode).text = (game?.currentPlayer.position?.room)!.name
+                self.childNode(withName: Constant.QUESTION_PANEL)!.run(SKAction.unhide())
                 
                 let question = Trio(person: person!, weapon: weapon!, location: (game?.currentPlayer.position?.room)! )
                 answer = game?.currentPlayer.ask(question)
@@ -265,13 +268,13 @@ class RoomScene: SKScene {
             }
             
         case State.waitingForAnswer:
-            if(node.parent?.name == "Hand")
+            if(node.parent?.name == Constant.HAND)
             {
                 if (question!.contains((hand?.getCard(node))!))
                 {
                     doAnswer()
                     game?.currentPlayer.resumeAsk(question!, humanAns: hand?.getCard(node))
-                    (self.childNode(withName: "QuestionPanel")!.childNode(withName: "Ask") as! SKLabelNode).text = "You showed \(hand!.getCard(node).name) to \(game!.currentPlayer.character.name)"
+                    (self.childNode(withName: Constant.QUESTION_PANEL)!.childNode(withName: "Ask") as! SKLabelNode).text = "You showed \(hand!.getCard(node).name) to \(game!.currentPlayer.character.name)"
                 }
             }
             
@@ -279,7 +282,7 @@ class RoomScene: SKScene {
             {
                 if(hand!.cards.contains(question!.person) || hand!.cards.contains(question!.weapon) || hand!.cards.contains(question!.location))
                 {
-                    (self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")?.childNode(withName: "None") as! SKLabelNode).text = "Are you sure?"
+                    (self.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "None")?.childNode(withName: "None") as! SKLabelNode).text = "Are you sure?"
                 }else{
                     doAnswer()
                     game?.currentPlayer.resumeAsk(question!, humanAns: nil)
@@ -294,9 +297,9 @@ class RoomScene: SKScene {
     {
         game!.state = State.waitingForDoneWithNoteTaking
         updateState()
-        self.childNode(withName: "QuestionPanel")?.childNode(withName: "None")!.run(SKAction.hide())
+        self.childNode(withName: Constant.QUESTION_PANEL)?.childNode(withName: "None")!.run(SKAction.hide())
         self.childNode(withName: "Return")?.run(SKAction.unhide())
-        let textDisplay = self.childNode(withName: "QuestionPanel")!.childNode(withName: "Ask") as! SKLabelNode
+        let textDisplay = self.childNode(withName: Constant.QUESTION_PANEL)!.childNode(withName: "Ask") as! SKLabelNode
         textDisplay.text = textDisplay.text?.replacingOccurrences(of: "asks", with: "asked");
         game?.noteCard.set(true)
     }
@@ -332,8 +335,8 @@ class RoomScene: SKScene {
         nextScene?.scaleMode = .aspectFill
         
         //bring noteCard with you so that it stays the same - can't belong to 2 scenes
-        let noteCard = self.childNode(withName: "NoteCard")
-        self.removeChildren(in: [self.childNode(withName: "NoteCard")!])
+        let noteCard = self.childNode(withName: Constant.NOTECARD)
+        self.removeChildren(in: [self.childNode(withName: Constant.NOTECARD)!])
         nextScene?.addChild(noteCard!)
         
         self.view?.presentScene(nextScene!, transition: reveal)
@@ -360,9 +363,9 @@ class RoomScene: SKScene {
     func resizeCardIcons()
     {
         let SCALE = 1.2
-        for i in 0...self.childNode(withName: "Characters")!.children.count-1
+        for i in 0...self.childNode(withName: CHARACTERS)!.children.count-1
         {
-            let node = (self.childNode(withName: "Characters")?.childNode(withName: "C"+(i+1).description))!
+            let node = (self.childNode(withName: CHARACTERS)?.childNode(withName: "C"+(i+1).description))!
             if(people![i] != person)
             {
                 node.run(SKAction.resize(toWidth: CGFloat(90), height: CGFloat(110), duration: 0.1))
@@ -372,9 +375,9 @@ class RoomScene: SKScene {
             
         }
         
-        for i in 0...self.childNode(withName: "Weapons")!.children.count-1
+        for i in 0...self.childNode(withName: WEAPONS)!.children.count-1
         {
-            let node = (self.childNode(withName: "Weapons")?.childNode(withName: "W"+(i+1).description))!
+            let node = (self.childNode(withName: WEAPONS)?.childNode(withName: "W"+(i+1).description))!
             if(weapons![i] != weapon)
             {
                 node.run(SKAction.resize(toWidth: CGFloat(90), height: CGFloat(110), duration: 0.1))

@@ -32,7 +32,7 @@ class StartScene: SKScene {
             self.view?.presentScene(nextScene!, transition: reveal)
         }
         
-        if(self.childNode(withName: "Help")!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
+        if(self.childNode(withName: Constant.HELP)!.frame.contains(location)) { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
             help.clicked(self)
         }else if(help.displayed)
         {

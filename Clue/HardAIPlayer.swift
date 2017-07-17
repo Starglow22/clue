@@ -18,7 +18,8 @@ class HardAIPlayer: EasyAIPlayer {
     
 //    override func move(num: Int) -> Int
 //    {
-//        return 0
+    // avoid returning to a room that has been shown mby the next person in line
+//        returns
 //    }
     
 //    override func isInRoom() -> Bool

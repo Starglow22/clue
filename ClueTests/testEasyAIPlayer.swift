@@ -83,8 +83,8 @@ class testEasyAIPlayer: XCTestCase {
     }
     
     func testDoesNotSuspectKnown() {
-        player!.charInfo["Mrs Peacock"] = mockPlayer!
-        player!.charInfo["Mr Green"] = mockPlayer!
+        player!.charInfo[Constant.PEACOCK_NAME] = mockPlayer!
+        player!.charInfo[Constant.GREEN_NAME] = mockPlayer!
         player!.weaponInfo["Lead Pipe"] = mockPlayer!
         player!.weaponInfo["Revolver"] = mockPlayer!
         
@@ -111,11 +111,11 @@ class testEasyAIPlayer: XCTestCase {
     func testTakeNotes() {
         let trio = Trio(person: people![3], weapon: weapons![3], location: rooms![3])
         player?.takeNotes(Answer(card: people![3], person: mockPlayer!), question: trio)
-        XCTAssert(player!.charInfo["Mr Green"]! == mockPlayer!, "Did not take correct note - person")
+        XCTAssert(player!.charInfo[Constant.GREEN_NAME]! == mockPlayer!, "Did not take correct note - person")
         // does not take extraneous notes
         for s in player!.charInfo
         {
-            if(s.key != "Mr Green" && s.key != "Miss Scarlett" && s.key != "Prof. Plum"){
+            if(s.key != Constant.GREEN_NAME && s.key != Constant.SCARLETT_NAME && s.key != Constant.PLUM_NAME){
                 XCTAssert(s.value == nil, "Took other notes")
             }
         }
@@ -130,14 +130,14 @@ class testEasyAIPlayer: XCTestCase {
     func testTakeNotesNoAnswerOne() {
         let trio = Trio(person: people![3], weapon: weapons![1], location: rooms![1])
         player?.takeNotes(Answer(card: nil, person: mockPlayer!), question: trio)
-        XCTAssert(player!.charInfo["Mr Green"]! == nil, "Took wrong note - person")
+        XCTAssert(player!.charInfo[Constant.GREEN_NAME]! == nil, "Took wrong note - person")
         XCTAssert(player!.charSoln == people![3], "Did not note solution")
     }
     
     func testTakeNotesNoAnswerMany() {
         let trio = Trio(person: people![3], weapon: weapons![3], location: rooms![3])
         player?.takeNotes(Answer(card: nil, person: mockPlayer!), question: trio)
-        XCTAssert(player!.charInfo["Mr Green"]! == nil, "Took wrong note - person")
+        XCTAssert(player!.charInfo[Constant.GREEN_NAME]! == nil, "Took wrong note - person")
         XCTAssert(player!.charSoln == people![3], "Did not note solution")
         
         XCTAssert(player!.weaponInfo["Revolver"]! == nil, "Took wrong note - weapon")
@@ -148,9 +148,9 @@ class testEasyAIPlayer: XCTestCase {
     }
     
     func testFindsSolution() {
-        player!.charInfo["Mrs Peacock"] = mockPlayer!
-        player!.charInfo["Mr Green"] = mockPlayer!
-        player!.charInfo["Col. Mustard"] = mockPlayer!
+        player!.charInfo[Constant.PEACOCK_NAME] = mockPlayer!
+        player!.charInfo[Constant.GREEN_NAME] = mockPlayer!
+        player!.charInfo[Constant.MUSTARD_NAME] = mockPlayer!
         player!.weaponInfo["Lead Pipe"] = mockPlayer!
         player!.weaponInfo["Revolver"] = mockPlayer!
         player!.weaponInfo["Rope"] = mockPlayer!
@@ -163,8 +163,8 @@ class testEasyAIPlayer: XCTestCase {
         
         player?.takeNotes(Answer(card: rooms![8], person: mockPlayer), question: Trio(person: people![2], weapon: weapons![3], location: rooms![8]))
         
-        XCTAssert(Game.getGame().boardScene.board["conservatory"]!.room == rooms![2])
-        XCTAssert(Game.getGame().boardScene.board["conservatory"]!.room!.name == rooms![2].name)
+        XCTAssert(Game.getGame().boardScene.board[Constant.CONSERVATORY_TILE_NAME]!.room == rooms![2])
+        XCTAssert(Game.getGame().boardScene.board[Constant.CONSERVATORY_TILE_NAME]!.room!.name == rooms![2].name)
         
         player!.chooseToSuspect()
         XCTAssertFalse(player!.suspect, "Did not choose to accuse")
@@ -178,18 +178,18 @@ class testEasyAIPlayer: XCTestCase {
         player!.weaponSoln = weapons![1]
         player!.roomSoln = rooms![2]
         
-        player?.position = Game.getGame().boardScene.board["dining"]
+        player?.position = Game.getGame().boardScene.board[Constant.DINING_ROOM_TILE_NAME]
         player?.lastRoomEntered = nil
         
         player?.move(num: 5)
         
-        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["lounge"]!.room, (player?.position?.sprite.name)!)
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board[Constant.LOUNGE_TILE_NAME]!.room, (player?.position?.sprite.name)!)
         
         player!.chooseToSuspect()
         XCTAssertTrue(player!.suspect, "Chose to accuse")
         
         player?.move(num: 5)
-        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["conservatory"]!.room, (player?.position?.sprite.name)!)
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board[Constant.CONSERVATORY_TILE_NAME]!.room, (player?.position?.sprite.name)!)
     }
     
     func testDiningRoomToConservatoryToAccuseComingFromLounge() {
@@ -197,20 +197,20 @@ class testEasyAIPlayer: XCTestCase {
         player!.weaponSoln = weapons![1]
         player!.roomSoln = rooms![2]
         
-        player?.position = Game.getGame().boardScene.board["dining"]
-        player?.lastRoomEntered = Game.getGame().boardScene.board["lounge"]
+        player?.position = Game.getGame().boardScene.board[Constant.DINING_ROOM_TILE_NAME]
+        player?.lastRoomEntered = Game.getGame().boardScene.board[Constant.LOUNGE_TILE_NAME]
         player?.turnsSinceEntered = 1
         
         player?.move(num: 5)
         player?.move(num: 4)
         
-        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["ballroom"]!.room, (player?.position?.sprite.name)!)
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board[Constant.BALLROOM_TILE_NAME]!.room, (player?.position?.sprite.name)!)
         
         player!.chooseToSuspect()
         XCTAssertTrue(player!.suspect, "Chose to accuse")
         
         player?.move(num: 5)
-        XCTAssert(player?.position?.room == Game.getGame().boardScene.board["conservatory"]!.room, (player?.position?.sprite.name)!)
+        XCTAssert(player?.position?.room == Game.getGame().boardScene.board[Constant.CONSERVATORY_TILE_NAME]!.room, (player?.position?.sprite.name)!)
     }
     
     override func setUp() {
@@ -221,7 +221,7 @@ class testEasyAIPlayer: XCTestCase {
         nextScene?.setUpTiles()
         
         let scene = MenuScene(fileNamed: "MenuScene")!
-        scene.characterName = "Miss Scarlett"
+        scene.characterName = Constant.SCARLETT_NAME
         scene.numPlayers = 2
         scene.difficulty = 1
         
@@ -231,43 +231,19 @@ class testEasyAIPlayer: XCTestCase {
         nextScene?.setUpTiles()
         
         
-        let p1 = Card(n: "Miss Scarlett", t: Type.character, file: "scarlett")
-        let p2 = Card(n: "Prof. Plum", t: Type.character, file: "plum")
-        let p3 = Card(n: "Mrs Peacock", t: Type.character, file: "peacock")
-        let p4 = Card(n: "Mr Green", t: Type.character, file: "green")
-        let p5 = Card(n: "Col. Mustard", t: Type.character, file: "mustard")
-        let p6 = Card(n: "Mrs White", t: Type.character, file: "white")
+        people = [Constant.SCARLETT_CARD, Constant.PLUM_CARD, Constant.PEACOCK_CARD, Constant.GREEN_CARD, Constant.MUSTARD_CARD, Constant.WHITE_CARD]
+        weapons = [Constant.CANDLESTICK_CARD, Constant.KNIFE_CARD, Constant.LEAD_PIPE_CARD, Constant.REVOLVER_CARD, Constant.ROPE_CARD, Constant.WRENCH_CARD]
+        rooms = [Constant.KITCHEN_CARD, Constant.BALLROOM_CARD, Constant.CONSERVATORY_CARD, Constant.DINING_ROOM_CARD, Constant.BILLARD_ROOM_CARD, Constant.LIBRARY_CARD, Constant.LOUNGE_CARD, Constant.HALL_CARD, Constant.STUDY_CARD]
         
-        let w1 = Card(n: "Candlestick", t: Type.weapon, file: "candlestick")
-        let w2 = Card(n: "Knife", t: Type.weapon, file: "knife")
-        let w3 = Card(n: "Lead Pipe", t: Type.weapon, file: "leadpipe")
-        let w4 = Card(n: "Revolver", t: Type.weapon, file: "revolver")
-        let w5 = Card(n: "Rope", t: Type.weapon, file: "rope")
-        let w6 = Card(n: "Wrench", t: Type.weapon, file: "wrench")
+        player = EasyAIPlayer(c: Constant.SCARLETT_CARD)
+        mockPlayer = Player(c: Constant.PLUM_CARD)
         
-        let r1 = Card(n: "Kitchen", t: Type.location, file: "kitchen")
-        let r2 = Card(n: "Ballroom", t: Type.location, file: "ballroom")
-        let r3 = Card(n: "Conservatory", t: Type.location, file: "conservatory")
-        let r4 = Card(n: "Dining room", t: Type.location, file: "dining")
-        let r5 = Card(n: "Billard Room", t: Type.location, file: "billard")
-        let r6 = Card(n: "Library", t: Type.location, file: "library")
-        let r7 = Card(n: "Lounge", t: Type.location, file: "lounge")
-        let r8 = Card(n: "Hall", t: Type.location, file: "hall")
-        let r9 = Card(n: "Study", t: Type.location, file: "study")
-        
-        people = [p1, p2, p3, p4, p5, p6]
-        weapons = [w1, w2, w3, w4, w5, w6]
-        rooms = [r1, r2, r3, r4, r5, r6, r7, r8, r9]
-        
-        player = EasyAIPlayer(c: p1)
-        mockPlayer = Player(c: p2)
-        
-        player?.hand = [p1, p2, w1, w2, r1, r2]
+        player?.hand = [Constant.SCARLETT_CARD, Constant.PLUM_CARD, Constant.CANDLESTICK_CARD, Constant.KNIFE_CARD, Constant.KITCHEN_CARD, Constant.BALLROOM_CARD]
         player?.markHandCards()
         
-        player?.position = nextScene?.board["conservatory"]
+        player?.position = nextScene?.board[Constant.CONSERVATORY_TILE_NAME]
         
-        mockPlayer?.position = nextScene?.board["plum start"]
+        mockPlayer?.position = nextScene?.board[Constant.PLUM_START]
         
     }
     
