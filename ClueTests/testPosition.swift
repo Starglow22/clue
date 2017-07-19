@@ -44,6 +44,11 @@ class testPosition: XCTestCase {
         XCTAssert(result == boardScene!.board[Constant.HALL_TILE_NAME], "Returned: " + (result?.room?.name)!)
     }
     
+    func testClosestWhenEdgeOf2Turns() {
+        let result = boardScene?.board["tile19"]?.closestRoom(lastVisited: boardScene?.board[Constant.STUDY_TILE_NAME], numTurns: 2)
+        XCTAssert(result == boardScene!.board[Constant.STUDY_TILE_NAME], "Returned: " + (result?.room?.name)!)
+    }
+    
     func testTakesPassageWay() {
         let result = boardScene?.board[Constant.CONSERVATORY_TILE_NAME]?.closestRoom(lastVisited: boardScene?.board[Constant.STUDY_TILE_NAME], numTurns: 1)
         XCTAssert(result == boardScene!.board[Constant.LOUNGE_TILE_NAME], "Returned: " + (result?.sprite.name)!)

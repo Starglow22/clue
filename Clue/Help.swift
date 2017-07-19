@@ -48,7 +48,7 @@ class Help {
                 return "Click on the die to roll it."
                 
             case State.waitingForMoveDestination:
-                return "Select your destination. You cannot move diagonally or through tiles occupied by other players, though any number of people can be in a room at any time. You may not return to a room within 2 turns of entering it. Being a grand old mansion, there are also secret passages connecting the most distant rooms."
+                return "Select your destination. You cannot move diagonally or through tiles occupied by other players, though any number of people can be in a room at any time. You may not return to a room within 2 turns of entering it. Being a grand old mansion, there are also secret passages connecting the most distant rooms, don't forget to take advantage of them."
                 
             default: return ""
             }

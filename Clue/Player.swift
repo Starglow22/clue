@@ -49,7 +49,7 @@ class Player: NSObject{
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             let distance  = self.move(num: roll)
             DispatchQueue.main.asyncAfter(deadline: .now() + (Double)(min(distance, roll))*Player.MOVE_DELAY) {
-                if(self.isInRoom())
+                if(self.isInRoom() && distance != 0) // in case could not take exit
                 {
                     Game.getGame().state = State.waitingForDoneWithNoteTaking
                     Game.getGame().moveToRoomView()
@@ -120,7 +120,7 @@ class Player: NSObject{
     
     func move(num: Int) -> Int
     {
-        return 0
+        return -1 // not implemented
     }
     
     //animation - move through path
@@ -130,7 +130,7 @@ class Player: NSObject{
         if(position!.isRoom)
         {
             lastRoomEntered = position
-            turnsSinceEntered = 0
+            turnsSinceEntered = 1
         }else{
             turnsSinceEntered += 1
         }
@@ -291,7 +291,7 @@ class Player: NSObject{
         if(Game.getGame().currentPlayer is HumanPlayer)
         {
             Game.getGame().state = State.waitingForDieRoll
-            textDisplay.text = "Your turn!"
+            textDisplay.text = "Your turn! Please roll the die"
             Game.getGame().boardScene.childNode(withName: Constant.UICONTROLS)?.childNode(withName: "Die")?.run(SKAction.unhide())
             
         }else{
