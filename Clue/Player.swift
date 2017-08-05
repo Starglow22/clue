@@ -126,7 +126,6 @@ class Player: NSObject{
     //animation - move through path
     func moveToken(newPos: Position, p: [Position]?)
     {
-        
         if(position!.isRoom)
         {
             lastRoomEntered = position
@@ -163,8 +162,39 @@ class Player: NSObject{
             i += 1;
         }
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + (i+1)*Player.MOVE_DELAY) {
+            self.fixMultiplePlayersInRoom()
+        }
     }
     
+    private func fixMultiplePlayersInRoom(){
+        if(position!.isRoom)
+        {
+            var numInRoom = 0
+            for player in Game.getGame().allPlayers
+            {
+                if(player.position == self.position){
+                    let xOffset = CGFloat((numInRoom % 3) * 5)
+                    let yOffset = CGFloat((numInRoom / 3) * -5)
+                    if (xOffset > 0 || yOffset < 0)
+                    {
+                        player.sprite?.run(SKAction.move(to: CGPoint(x:player.sprite!.position.x + xOffset, y:player.sprite!.position.y + yOffset), duration: 0))
+                    }
+                    numInRoom += 1
+                }
+            }
+            //that assumes the order is always the same
+//            let numOtherInRoom = Game.getGame().allPlayers.filter({ (player) -> Bool in
+//                return player.position == self.position && player != self
+//            }).count
+//            let xOffset = CGFloat((numOtherInRoom % 3) * 5)
+//            let yOffset = CGFloat((numOtherInRoom / 3) * -5)
+//            if (xOffset > 0 || yOffset > 0)
+//            {
+//                self.sprite?.run(SKAction.move(to: CGPoint(x:sprite!.position.x + xOffset, y:sprite!.position.y + yOffset), duration: Player.MOVE_DELAY))
+//            }
+        }
+    }
     
     func isInRoom() -> Bool
     {
