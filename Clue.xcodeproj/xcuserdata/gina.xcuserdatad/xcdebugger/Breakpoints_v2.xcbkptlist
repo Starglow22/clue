@@ -642,11 +642,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ClueTests/testPosition.swift"
-            timestampString = "522125834.01301"
+            timestampString = "523344955.91736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "testDiningNPE()"
             landmarkType = "7">
          </BreakpointContent>
@@ -769,22 +769,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Clue/EasyAIPlayer.swift"
-            timestampString = "518226548.035178"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
-            landmarkName = "move(num:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Clue/RoomScene.swift"
             timestampString = "521957751.877878"
             startingColumnNumber = "9223372036854775807"
@@ -833,13 +817,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Clue/EasyAIPlayer.swift"
-            timestampString = "518230843.535176"
+            filePath = "Clue/HardAIPlayer.swift"
+            timestampString = "523343686.005008"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "move(num:)"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "observe(question:personAsking:personAnswering:showedCard:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Clue/MenuScene.swift"
+            timestampString = "523433152.838584"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
+            landmarkName = "initialize(scene:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

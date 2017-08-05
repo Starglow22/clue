@@ -83,7 +83,7 @@ class Position{
     }
     
     //breadth first search
-    func closestRoomFrom(selection: [String]) -> Position //unknown.length > 1, string are names of rooms
+    func closestRoomFrom(selection: [String], lastVisited: Position?, numTurns : Int) -> Position //unknown.length > 1, string are names of rooms
     {
         var queue = self.adjacent;
         var visited = [self];
@@ -99,7 +99,7 @@ class Position{
                 }
             }
             
-        }while(!(pos.isRoom && selection.contains((pos.room?.name)!)))
+        }while(!(pos.isRoom && selection.contains((pos.room?.name)!) && !(pos == lastVisited && numTurns < 2)))
         
         return pos;
     }

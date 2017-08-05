@@ -232,8 +232,13 @@ class MenuScene: SKScene {
         
         //        let numHard = (difficulty + 10%numPlayers) / Int(floor(10.0 / Double(numPlayers)))
         //        let numTrick = (difficulty + 10%numPlayers)-1 % Int(floor(10.0 / Double(numPlayers)))
+        if(difficulty == 1)
+        {
+            difficulty = 0
+        }
         let numHard = Int(floor(Double(difficulty * numPlayers)/10.0))
-        let numTrick = (Double(difficulty * numPlayers)/10.0).truncatingRemainder(dividingBy: 1.0) > 0.5 ? 1 : 0
+//        let numTrick = Int(ceil(Double(difficulty * numPlayers)/10.0)) - numHard
+        let numTrick = (Double(difficulty * numPlayers)/10.0).truncatingRemainder(dividingBy: 1.0) >= 0.5 ? 1 : 0
         let numEasy = numPlayers - numHard - numTrick
         
         var AIPlayers = [Player]()

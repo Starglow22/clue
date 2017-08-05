@@ -98,6 +98,7 @@ class testAccuse: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
+        Game.getGame().restart(EndScene(fileNamed: "EndScene")!)
     }
     
 }

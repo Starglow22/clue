@@ -216,6 +216,9 @@ class Player: NSObject{
             counter = counter % numPlayers
         }
         
+        players.forEach { (p:Player) in
+            p.observe(question: question, personAsking:self, personAnswering: responder, showedCard: answer != nil)
+        }
         return Answer(card: answer, person: responder)
     }
     
@@ -261,6 +264,9 @@ class Player: NSObject{
             (display.childNode(withName: "Text") as! SKLabelNode).text = "No one had anything!"
         }
         
+        players.forEach { (p:Player) in
+            p.observe(question: question, personAsking:self, personAnswering: result.person, showedCard: answer != nil)
+        }
         takeNotes(result, question: question)
     }
     
@@ -270,6 +276,10 @@ class Player: NSObject{
         
     }
     
+    func observe(question: Trio, personAsking: Player, personAnswering:Player?,  showedCard:Bool)
+    {
+        
+    }
     
     func passTurn()
     {

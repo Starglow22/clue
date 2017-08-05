@@ -111,41 +111,41 @@ class EasyAIPlayer: Player {
             //handle case where you know culprit and weapon but not room
             if(charSoln != nil && weaponSoln != nil)
             {
-                var unknown = [String]();
-                for s in roomInfo
-                {
-                    if(s.1 == nil)
-                    {
-                        unknown.append(s.0)
-                    }
-                }
-                if(turnsSinceEntered < 2 && lastRoomEntered != nil && unknown.contains((lastRoomEntered?.room?.name)!))
-                {
-                    unknown.remove(at: unknown.index(of: (lastRoomEntered?.room?.name)!)!)
-                }
-                
-                target = position!.closestRoomFrom(selection: unknown)
-                
+                target = position!.closestRoomFrom(selection: unknownRooms(), lastVisited: self.lastRoomEntered, numTurns: self.turnsSinceEntered)
             }else{
                 target = (position!.closestRoom(lastVisited: lastRoomEntered, numTurns: turnsSinceEntered))
             }
         }else{
-            target = Game.getGame().boardScene.board[(roomSoln?.name.lowercased())!]!
-            var tempPath = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
-            if(tempPath == nil){
-                return 0; //no possible moves
-            }
-            if(position?.room == roomSoln || (lastRoomEntered == target && turnsSinceEntered < 2 && tempPath!.count < 2 && tempPath!.last == target))
+            let optionalTarget = navigateToSolutionRoom(numMoves: num)
+            if(optionalTarget == nil)
             {
-                //just go somewhere near but don't take secret passages (heuristic)
-                target = position!.closestRoomFrom(selection: ["Ballroom", "Dining room", "Billard Room", "Library", "Hall"])
-            }else{
-                if(roomSoln == lastRoomEntered?.room && turnsSinceEntered < 2 && num >= tempPath!.count){
-                    target = tempPath![tempPath!.count - 1 - (2-turnsSinceEntered)]
-                }
+                return 0
             }
+            target = optionalTarget!
         }
         
+        return plotPath(target: target, numMoves: num)
+        
+    }
+    
+    func unknownRooms() ->[String]{
+        var unknown = [String]();
+        for s in roomInfo
+        {
+            if(s.1 == nil)
+            {
+                unknown.append(s.0)
+            }
+        }
+        if(turnsSinceEntered < 2 && lastRoomEntered != nil && unknown.contains((lastRoomEntered?.room?.name)!))
+        {
+            unknown.remove(at: unknown.index(of: (lastRoomEntered?.room?.name)!)!)
+        }
+        
+        return unknown
+    }
+    
+    func plotPath(target: Position, numMoves: Int) -> Int{
         var pathToDestination = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
         
         if(pathToDestination == nil)
@@ -153,16 +153,36 @@ class EasyAIPlayer: Player {
             return 0; // no possible path
         }
         
-        if(pathToDestination!.count <= num)
+        if(pathToDestination!.count <= numMoves)
         {
             moveToken(newPos: pathToDestination![pathToDestination!.count-1], p: Array(pathToDestination!));
         }else{
-            moveToken(newPos: pathToDestination![num-1], p: Array(pathToDestination!.dropLast(pathToDestination!.count-num)));
+            moveToken(newPos: pathToDestination![numMoves-1], p: Array(pathToDestination!.dropLast(pathToDestination!.count-numMoves)));
             //not using all moves (eg entering room) causes -ve index
         }
         
         return pathToDestination!.count
+
+    }
+    
+    func navigateToSolutionRoom(numMoves: Int) -> Position?
+    {
+        var target = Game.getGame().boardScene.board[(roomSoln?.name.lowercased())!]!
+        var tempPath = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
+        if(tempPath == nil){
+            return nil; //no possible moves
+        }
+        if(position?.room == roomSoln || (lastRoomEntered == target && turnsSinceEntered < 2 && tempPath!.count < 2 && tempPath!.last == target))
+        {
+            //just go somewhere near but don't take secret passages (heuristic)
+            target = position!.closestRoomFrom(selection: ["Ballroom", "Dining room", "Billard Room", "Library", "Hall"], lastVisited: self.lastRoomEntered, numTurns: self.turnsSinceEntered)
+        }else{
+            if(roomSoln == lastRoomEntered?.room && turnsSinceEntered < 2 && numMoves >= tempPath!.count){
+                target = tempPath![tempPath!.count - 1 - (2-turnsSinceEntered)]
+            }
+        }
         
+        return target
     }
     
     func notReadyToAccuse() -> Bool
@@ -237,7 +257,7 @@ class EasyAIPlayer: Player {
                 }
             }
             weaponGuess = options[(Int)(arc4random_uniform(UInt32(options.count)))].name
-
+            
             return Trio(person: Card.getCardWithName(charGuess)!, weapon: Card.getCardWithName(weaponGuess)!, location: self.position!.room!)
         }else{
             if(charSoln != nil){ // knows character
@@ -276,7 +296,7 @@ class EasyAIPlayer: Player {
             var guess: Trio?
             let suspect = Card.getCardWithName(charGuess)!
             let weapon = Card.getCardWithName(weaponGuess)!
-        
+            
             guess = Trio(person: suspect, weapon: weapon, location: self.position!.room!)
             
             return guess!

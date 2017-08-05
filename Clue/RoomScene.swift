@@ -167,10 +167,10 @@ class RoomScene: SKScene {
         }
         
         if(self.childNode(withName: ".//Notepad-Help")!.frame.contains(self.convert(location, to: self.childNode(withName: Constant.NOTECARD)!)) && node.name == "Notepad-Help") { // self.atPoint uses accumulated bounding rectangle including children but not what I want for help. Fine for other uses.
-            help.clicked(self)
-            return
-        }else if (self.childNode(withName: ".//Notepad-Help")!.frame.contains(location) && node.name == "Notepad-Help"){
             game!.noteCard.help.clicked(self)
+            return
+        }else if (self.childNode(withName: Constant.HELP)!.frame.contains(location) && node.name == Constant.HELP){
+            help.clicked(self)
             return
         }else if(help.displayed)
         {

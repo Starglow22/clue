@@ -356,7 +356,7 @@ class BoardScene: SKScene {
         board["tile33"]?.adjacent = [board["tile32"]!, board["tile38"]!, board["tile23"]!]
         board["tile34"]?.adjacent = [board["tile29"]!, board["tile35"]!]
         board["tile35"]?.adjacent = [board["tile34"]!, board["tile36"]!, board["tile30"]!, board["tile45"]!]
-        board["tile36"]?.adjacent = [board["tile35"]!, board["tile31"]!, board["tile45"]!]
+        board["tile36"]?.adjacent = [board["tile35"]!, board["tile31"]!, board["tile46"]!]
         board["tile37"]?.adjacent = [board["tile38"]!, board["tile53"]!, board["tile32"]!]
         board["tile38"]?.adjacent = [board["tile37"]!, board["tile39"]!, board["tile54"]!, board["tile33"]!]
         board["tile39"]?.adjacent = [board["tile38"]!, board["tile40"]!, board["tile55"]!]

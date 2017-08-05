@@ -11,7 +11,7 @@ import XCTest
 class testPosition: XCTestCase {
     
     var boardScene : BoardScene?
-    var player : EasyAIPlayer?
+    var player : HardAIPlayer?
 
     override func setUp() {
         super.setUp()
@@ -30,7 +30,10 @@ class testPosition: XCTestCase {
         boardScene?.game = gameObj
         boardScene?.setUpTiles()
         
-        player = EasyAIPlayer(c: Constant.SCARLETT_CARD)    }
+        player = HardAIPlayer(c: Constant.SCARLETT_CARD)
+        //for testing with HardAIPlayer
+        gameObj.allPlayers=[player!, Player(c: Constant.WHITE_CARD)]
+    }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -157,7 +160,19 @@ class testPosition: XCTestCase {
     
     func testShortestPath() {
         let path = boardScene!.board["tile51"]?.shortestPathTo(boardScene!.board[Constant.HALL_TILE_NAME]!, lastVisited: nil, numTurns: 1) // right of right part of double door to hall
-        XCTAssert(path! == [boardScene!.board["tile50"]!, boardScene!.board[Constant.HALL_TILE_NAME]!], "\(path![0].sprite.name), \(path![1].sprite.name), \(path![2].sprite.name)")
+        XCTAssert(path! == [boardScene!.board["tile50"]!, boardScene!.board[Constant.HALL_TILE_NAME]!], "\(path![0].sprite.name!), \(path![1].sprite.name!), \(path![2].sprite.name!)")
+    }
+    
+    func testClosestRoomFromDiscardsLastVisitedWithin2Turns() {
+        let closest = boardScene!.board[Constant.CONSERVATORY_TILE_NAME]!.closestRoomFrom(selection: [Constant.BILLARD_ROOM_CARD.name, Constant.BALLROOM_CARD.name, Constant.LOUNGE_CARD.name], lastVisited: boardScene!.board[Constant.LOUNGE_TILE_NAME]!, numTurns: 1)
+        
+        XCTAssertEqual(closest.room!.name, boardScene!.board[Constant.BALLROOM_TILE_NAME]!.room!.name)
+    }
+    
+    func testClosestRoomFrom() {
+        let closest = boardScene!.board[Constant.CONSERVATORY_TILE_NAME]!.closestRoomFrom(selection: [Constant.BILLARD_ROOM_CARD.name, Constant.BALLROOM_CARD.name], lastVisited: nil, numTurns: 0)
+        
+        XCTAssertEqual(closest.room!.name, boardScene!.board[Constant.BALLROOM_TILE_NAME]!.room!.name)
     }
     
     func testHallConnections() {
