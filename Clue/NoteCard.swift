@@ -79,7 +79,7 @@ class NoteCard: NSObject {
     
     func handleKey(_ event: NSEvent)
     {
-        if(selected != nil && event.characters?.trimmingCharacters(in: CharacterSet.alphanumerics.inverted) != "") // is valid key
+        if(selected != nil && event.characters?.trimmingCharacters(in: CharacterSet.alphanumerics.inverted.subtracting(CharacterSet.punctuationCharacters)) != "") // is valid key
         {
             selected?.text = event.characters
         }else{

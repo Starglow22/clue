@@ -282,7 +282,7 @@ class BoardScene: SKScene {
         board[Constant.HALL_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![7], node: root?.childNode(withName: "Hall") as! SKSpriteNode)
         board[Constant.LOUNGE_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![6], node: root?.childNode(withName: "Lounge") as! SKSpriteNode)
         board[Constant.LIBRARY_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![5], node: root?.childNode(withName: "Library") as! SKSpriteNode)
-        board[Constant.BILLARD_ROOM_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard Room") as! SKSpriteNode)
+        board[Constant.BILLARD_ROOM_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![4], node: root?.childNode(withName: "Billard") as! SKSpriteNode)
         board[Constant.DINING_ROOM_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![3], node: root?.childNode(withName: "Dining") as! SKSpriteNode)
         board[Constant.CONSERVATORY_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![2], node: root?.childNode(withName: "Conservatory") as! SKSpriteNode)
         board[Constant.BALLROOM_TILE_NAME] = Position(isRoom: true, room: game?.roomCards![1], node: root?.childNode(withName: "Ballroom") as! SKSpriteNode)

@@ -186,6 +186,8 @@ class testPosition: XCTestCase {
     func testBillardConnections() {
         let options = boardScene!.board["tile119"]?.reachablePositions(5, true, lastRoomEntered: boardScene!.board[Constant.BALLROOM_TILE_NAME]!, turnsSinceEntered: 2)
         XCTAssert(options!.contains(boardScene!.board[Constant.BILLARD_ROOM_TILE_NAME]!))
+        let options2 = boardScene!.board["tile106"]?.reachablePositions(5, true, lastRoomEntered: boardScene!.board[Constant.BALLROOM_TILE_NAME]!, turnsSinceEntered: 2)
+        XCTAssert(options2!.contains(boardScene!.board[Constant.BILLARD_ROOM_TILE_NAME]!))
         
 //        let path = boardScene!.board["tile54"]?.shortestPathTo(boardScene!.board[Constant.HALL_TILE_NAME]!, lastVisited: nil, numTurns: 0) // right of right part of double door to hall
 //        XCTAssert(path! == [boardScene!.board["tile53"]!, boardScene!.board["tile52"]!, boardScene!.board["tile51"]!, boardScene!.board["tile50"]!, boardScene!.board[Constant.HALL_TILE_NAME]!], "\(path![0].sprite.name ?? "nil"), \(path![1].sprite.name ?? "nil"), \(path![2].sprite.name ?? "nil")")
