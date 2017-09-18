@@ -134,7 +134,7 @@ class testPosition: XCTestCase {
         boardScene?.board["tile19"]?.isOccupied = true
         
         let closest = boardScene?.board[Constant.STUDY_TILE_NAME]?.closestRoom(lastVisited: boardScene?.board[Constant.KITCHEN_TILE_NAME], numTurns: 1)
-        XCTAssert(closest == boardScene?.board[Constant.HALL_TILE_NAME], closest!.room!.name)
+        XCTAssert(closest == nil, closest!.room!.name)
         
         player?.move(num: 4)
         XCTAssert(player?.position == boardScene?.board[Constant.STUDY_TILE_NAME], "Returned: " + (player?.position?.sprite.name)!)
@@ -166,13 +166,20 @@ class testPosition: XCTestCase {
     func testClosestRoomFromDiscardsLastVisitedWithin2Turns() {
         let closest = boardScene!.board[Constant.CONSERVATORY_TILE_NAME]!.closestRoomFrom(selection: [Constant.BILLARD_ROOM_CARD.name, Constant.BALLROOM_CARD.name, Constant.LOUNGE_CARD.name], lastVisited: boardScene!.board[Constant.LOUNGE_TILE_NAME]!, numTurns: 1)
         
-        XCTAssertEqual(closest.room!.name, boardScene!.board[Constant.BALLROOM_TILE_NAME]!.room!.name)
+        XCTAssertEqual(closest?.room!.name, boardScene!.board[Constant.BALLROOM_TILE_NAME]!.room!.name)
     }
     
     func testClosestRoomFrom() {
         let closest = boardScene!.board[Constant.CONSERVATORY_TILE_NAME]!.closestRoomFrom(selection: [Constant.BILLARD_ROOM_CARD.name, Constant.BALLROOM_CARD.name], lastVisited: nil, numTurns: 0)
         
-        XCTAssertEqual(closest.room!.name, boardScene!.board[Constant.BALLROOM_TILE_NAME]!.room!.name)
+        XCTAssertEqual(closest?.room!.name, boardScene!.board[Constant.BALLROOM_TILE_NAME]!.room!.name)
+    }
+    
+    func testClosestRoomNoPathTo() {
+        boardScene!.board["tile160"]?.isOccupied = true
+        let closest = boardScene!.board["tile161"]!.closestRoom(lastVisited: nil, numTurns: 0)
+        
+        XCTAssertEqual(closest?.room!.name, boardScene!.board[Constant.BALLROOM_TILE_NAME]!.room!.name)
     }
     
     func testHallConnections() {

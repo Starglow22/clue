@@ -61,45 +61,53 @@ class Position{
     }
     
     //breadth first search
-    func closestRoom(lastVisited: Position?, numTurns : Int) -> Position //_ queue: [Position], visited: [Position]) -> Position
+    func closestRoom(lastVisited: Position?, numTurns : Int) -> Position? //_ queue: [Position], visited: [Position]) -> Position
     {
-        var queue = self.adjacent;
-        var visited = [self];
+        var queue = [self];
+        var visited = [Position]();
         var pos: Position;
         repeat{
+            if(queue.isEmpty)
+            {
+                return nil
+            }
             pos = queue.removeFirst();
             visited.append(pos);
             
             for p in pos.adjacent{
-                if(!queue.contains(p) && !visited.contains(p) && !(pos.isRoom && p.isRoom) && !(pos == lastVisited && numTurns < 2))
+                if(!queue.contains(p) && !visited.contains(p) && !p.isOccupied && !(pos.isRoom && p.isRoom && pos != self) && !(pos == lastVisited && numTurns < 2))
                 {
                     queue.append(p);
                 }
             }
             
-        }while(!pos.isRoom || (pos == lastVisited && numTurns < 2))
+        }while(!pos.isRoom || pos == self || (pos == lastVisited && numTurns < 2))
         
         return pos;
     }
     
     //breadth first search
-    func closestRoomFrom(selection: [String], lastVisited: Position?, numTurns : Int) -> Position //unknown.length > 1, string are names of rooms
+    func closestRoomFrom(selection: [String], lastVisited: Position?, numTurns : Int) -> Position? //unknown.length > 1, string are names of rooms
     {
-        var queue = self.adjacent;
-        var visited = [self];
+        var queue = [self];
+        var visited = [Position]();
         var pos: Position;
         repeat{
+            if(queue.isEmpty)
+            {
+                return nil
+            }
             pos = queue.removeFirst();
             visited.append(pos);
             
             for p in pos.adjacent{
-                if(!queue.contains(p) && !visited.contains(p) && !(p.isRoom && pos.isRoom && pos != self))
+                if(!queue.contains(p) && !visited.contains(p) && !p.isOccupied && !(p.isRoom && pos.isRoom && pos != self))
                 {
                     queue.append(p);
                 }
             }
             
-        }while(!(pos.isRoom && selection.contains((pos.room?.name)!) && !(pos == lastVisited && numTurns < 2)))
+        }while(!pos.isRoom || pos == self || (pos == lastVisited && numTurns < 2) || !selection.contains((pos.room?.name)!))
         
         return pos;
     }

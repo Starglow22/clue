@@ -213,6 +213,18 @@ class testEasyAIPlayer: XCTestCase {
         XCTAssert(player?.position?.room == Game.getGame().boardScene.board[Constant.CONSERVATORY_TILE_NAME]!.room, (player?.position?.sprite.name)!)
     }
     
+    func testClosestRoomFromNoPathTo() {
+        let boardScene = Game.getGame().boardScene
+        player?.position = boardScene.board["tile161"]
+        boardScene.board["tile160"]?.isOccupied = true
+        player?.lastRoomEntered = boardScene.board[Constant.BALLROOM_TILE_NAME]
+        player?.turnsSinceEntered = 1
+
+        player?.move(num: 3)
+        
+        XCTAssertEqual(player?.position?.sprite.name, "Tile119")
+    }
+    
     override func setUp() {
         super.setUp()
         

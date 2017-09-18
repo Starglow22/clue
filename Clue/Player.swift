@@ -199,7 +199,6 @@ class Player: NSObject{
     func isInRoom() -> Bool
     {
         return (position?.isRoom)!;
-        
     }
     
     func chooseToSuspect()

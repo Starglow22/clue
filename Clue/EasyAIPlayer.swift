@@ -105,7 +105,7 @@ class EasyAIPlayer: Player {
     
     override func move(num: Int) -> Int
     {
-        var target: Position
+        var target: Position?
         if(notReadyToAccuse())
         {
             //handle case where you know culprit and weapon but not room
@@ -117,14 +117,17 @@ class EasyAIPlayer: Player {
             }
         }else{
             let optionalTarget = navigateToSolutionRoom(numMoves: num)
-            if(optionalTarget == nil)
+            if(optionalTarget != nil)
             {
-                return 0
+                target = optionalTarget!
             }
-            target = optionalTarget!
+        }
+        if(target == nil)
+        {
+            return 0
         }
         
-        return plotPath(target: target, numMoves: num)
+        return plotPath(target: target!, numMoves: num)
         
     }
     
@@ -167,8 +170,8 @@ class EasyAIPlayer: Player {
     
     func navigateToSolutionRoom(numMoves: Int) -> Position?
     {
-        var target = Game.getGame().boardScene.board[(roomSoln?.name.lowercased())!]!
-        var tempPath = position!.shortestPathTo(target, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
+        var target = Game.getGame().boardScene.board[(roomSoln?.name.lowercased())!]
+        var tempPath = position!.shortestPathTo(target!, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)
         if(tempPath == nil){
             return nil; //no possible moves
         }
@@ -176,6 +179,10 @@ class EasyAIPlayer: Player {
         {
             //just go somewhere near but don't take secret passages (heuristic)
             target = position!.closestRoomFrom(selection: ["Ballroom", "Dining room", "Billard Room", "Library", "Hall"], lastVisited: self.lastRoomEntered, numTurns: self.turnsSinceEntered)
+            if(target == nil)
+            {
+                return nil
+            }
         }else{
             if(roomSoln == lastRoomEntered?.room && turnsSinceEntered < 2 && numMoves >= tempPath!.count){
                 target = tempPath![tempPath!.count - 1 - (2-turnsSinceEntered)]

@@ -19,7 +19,7 @@ class HardAIPlayer: EasyAIPlayer {
     {
         // avoid returning to a room that has been shown by the next person in line - do not consider
         // Go to a more distant room if your roll allows you to enter it
-        var target: Position
+        var target: Position?
         if(notReadyToAccuse())
         {
             if(charSoln != nil && weaponSoln != nil)
@@ -38,26 +38,37 @@ class HardAIPlayer: EasyAIPlayer {
                 }
                 
                 target = position!.closestRoomFrom(selection: options, lastVisited: self.lastRoomEntered, numTurns: self.turnsSinceEntered)
-                
-                options.remove(at: options.index(of: target.room!.name)!)
-                let nextClosest = position!.closestRoomFrom(selection: options, lastVisited: self.lastRoomEntered, numTurns: self.turnsSinceEntered)
-                let distanceToNext = position!.shortestPathTo(nextClosest, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)?.count
-                
-                if(distanceToNext != nil && distanceToNext! <= num)
+                if(target == nil)
                 {
-                    target = nextClosest
+                    return 0;
+                }
+                
+                options.remove(at: options.index(of: target!.room!.name)!)
+                let nextClosest = position!.closestRoomFrom(selection: options, lastVisited: self.lastRoomEntered, numTurns: self.turnsSinceEntered)
+                
+                if(nextClosest != nil)
+                {
+                    let distanceToNext = position!.shortestPathTo(nextClosest!, lastVisited: lastRoomEntered, numTurns: turnsSinceEntered)?.count
+                    
+                    if(distanceToNext != nil && distanceToNext! <= num)
+                    {
+                        target = nextClosest
+                    }
                 }
             }
         }else{
             let optionalTarget = navigateToSolutionRoom(numMoves: num)
-            if(optionalTarget == nil)
+            if(optionalTarget != nil)
             {
-                return 0
+                target = optionalTarget!
             }
-            target = optionalTarget!
         }
         
-        return plotPath(target: target, numMoves: num)
+        if(target == nil){
+            return 0
+        }
+        
+        return plotPath(target: target!, numMoves: num)
     }
     
     
